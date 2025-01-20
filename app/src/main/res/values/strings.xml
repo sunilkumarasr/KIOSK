@@ -1,0 +1,210 @@
+<resources>
+    <string name="app_name">Provizit Frontdesk</string>
+    <!--    meeting_requestfrom-->
+    <string name="Meeting_request">Meeting request</string>
+    <string name="Host_email_number">If you know your host\'s email or mobile number (example: 966551234567) please enter it below:</string>
+    <string name="Meeting_Host">Enter host\'s email or mobile number</string>
+    <string name="Meeting_pls_dept">Please select department</string>
+    <string name="Pleaseselectvisitor">Please select visitor type</string>
+    <string name="Meeting_pls_visit">Please select purpose of visit</string>
+    <string name="Meeting_p_visit">Purpose (other) / Note:</string>
+    <string name="btn_next">Next</string>
+    <string name="back">Back</string>
+    <string name="Department">Department:  </string>
+    <string name="Departmentss">Department</string>
+    <string name="Designation">Designation:  </string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="Change">Change</string>
+    <string name="Search">Search</string>
+
+    <string name="click">Click \'\'YES\'\',If you would like to meet this person</string>
+    <!--    login_activity-->
+    <string name="Login_Email">Email</string>
+    <string name="Login_Password">Password</string>
+    <string name="btn_Login">Login</string>
+    <!--    visitor_login-->
+    <string name="visitor_email">Enter your email</string>
+    <string name="visitor_mobile">Enter your mobile number</string>
+    <string name="visitor_Useemail">Use email</string>
+    <string name="visitor_Usemobile">Use mobile</string>
+    <string name="btn_Proceed">Proceed</string>
+    <!--    otp_activity-->
+    <string name="otp_pls_email">Please enter the code we sent to this email</string>
+    <string name="otp_pls_mobile">Please enter the code we sent to this mobile number</string>
+    <string name="valid_otp">Enter valid OTP</string>
+    <string name="otp_Resend">Resend OTP</string>
+    <!--    enter_your_details-->
+    <string name="enter_yourdetails">Enter your details</string>
+    <!--    <string name="enter_mobile">Enter your mobile number</string>-->
+    <string name="enter_email">Enter your email ID</string>
+    <string name="enter_mobile">Enter your mobile number</string>
+    <string name="enter_SelectDocument">Select your ID type</string>
+    <string name="enter_SelectNationality">Select nationality</string>
+    <string name="enter_IDNumber">ID number</string>
+    <string name="enter_EnterName">Enter name * </string>
+    <string name="enter_Enterdesignation">Designation</string>
+    <string name="enter_EnterOrganization">Organization</string>
+    <string name="enter_Enter_Org_Address">Enter organization Address</string>
+    <!--    nda_activity-->
+    <string name="nda_visitor">VISITOR NONDISCLOSURE AGREEMENT</string>
+    <string name="nda_Name">Name:  </string>
+    <string name="nda_Mobile">Mobile: </string>
+    <string name="nda_Email">Email: </string>
+    <string name="English">English</string>
+    <string name="nda_DateandTime">Date and Time: </string>
+    <string name="nda_checkbox">I have read and accept this NDA</string>
+    <string name="nda_text">text</string>
+    <string name="nda_IAccept">I Accept</string>
+    <!--    confirmation-->
+    <string name="con_Confirmation">Confirmation</string>
+    <string name="con_prsI">Personal Information</string>
+    <string name="con_Name">Name</string>
+    <string name="con_Designation">Designation</string>
+    <string name="con_Email">Email</string>
+    <string name="con_Mobile">Mobile</string>
+    <string name="con_Organization">Organization</string>
+    <string name="con_Nationality">Nationality</string>
+    <string name="con_Idtype">ID type</string>
+    <string name="con_IDIDnumber">ID number</string>
+    <string name="con_Confirm">Confirm</string>
+    <!--    meeting_details-->
+    <!--    <string name="md_Proceed">Proceed</string>-->
+    <!--    <string name="md_Tomeet">To meet</string>-->
+    <!--    your_requestSent-->
+    <string name="your_sent">Your request has been sent</string>
+    <string name="your_please">Please approach the Receptionist to receive your Entry Pass by email / SMS.</string>
+    <string name="host_acceptance">Please wait for host acceptance</string>
+    <string name="your_OK">OK</string>
+    <!--    visitor_pass-->
+    <string name="visitor_pass">Visitor Entry Pass</string>
+    <string name="visitor_BadgeNo">Badge No: </string>
+    <string name="visitor_ToMeet">To Meet</string>
+    <string name="visitor_Validupto">Valid upto: </string>
+    <string name="visitor_11PM">11:59PM</string>
+    <!--    already_checkin-->
+    <string name="already_please">Please collect your entry pass from receptionist</string>
+    <!--    <string name="already_OK">OK</string>-->
+    <!--    enteryour_belogings-->
+    <string name="belogings_enter">Enter your Belongings</string>
+    <string name="belogings_Laptop">Laptop</string>
+    <string name="belogings_ToolBox">ToolBox</string>
+    <string name="belogings_Others">Others</string>
+    <string name="belogings_None">None</string>
+    <string name="belogings">Belongings</string>
+    <string name="belogings_Skip">Skip</string>
+    <!--    enterYour_vehicle-->
+    <string name="vehiles">Enter your vehicle details</string>
+    <string name="vehiles_name">Enter vehicle name</string>
+    <string name="vehiles_number">Enter vehicle number</string>
+    <string name="vehiles_details">Vehicle Details</string>
+    <string name="enter_vehiles_model">Enter Vehicle Model</string>
+    <string name="enter_vehiles_color">Enter Vehicle Color</string>
+    <string name="enter_vehiles_licence_number">Enter Vehicle Licence Number</string>
+    <string name="enter_vehiles_price">Enter Vehicle Price</string>
+    <string name="select_vehicle_type">Select Vehicle Type</string>
+    <!--    Invitation-->
+    <string name="Invitation">Invitation</string>
+    <!--    Invitation Details-->
+    <string name="Invitation_details">Invitation Details</string>
+    <string name="Invitation_Host">Host</string>
+    <string name="Invitation_date">Date &amp; Time</string>
+    <string name="Invitation_Venue">Venue</string>
+    <string name="Invitation_Location">Location</string>
+    <string name="Invitation_Agenda">Agenda</string>
+
+
+    <string name="or">OR</string>
+
+    <!--    captureImage-->
+    <string name="FrameLayout">FrameLayout</string>
+    <!--    validation-->
+    <string name="Mobile_number">Enter mobile</string>
+    <string name="Invalidmobile_number">You have entered an invalid mobile number!</string>
+    <string name="Signout">Signout</string>
+    <string name="Cancel">Cancel</string>
+    <string name="sure_signout">Enter your password to logout.</string>
+    <string name="Dear">Visitors Self-service</string>
+    <string name="You">Scan the above QR code with your mobile device.</string>
+    <string name="Yourself">Enter your details manually</string>
+    <string name="QrCode">If you have an invitation, please open and scan the QR Code by tapping the QR Code sign </string>
+    <!--Networkpopup-->
+    <string name="network_string">Connection not available.\n Kindly check your connectivity.</string>
+    <string name="tryagain">Try Again</string>
+
+    <!--Meeting details-->
+    <string name="meetingdetails">Meeting Details</string>
+    <string name="visitor">Visitor</string>
+    <string name="tomeet">To Meet</string>
+    <string name="purpose">Purpose</string>
+    <string name="where">Where</string>
+    <string name="Date">Date</string>
+    <string name="Time">Time</string>
+    <string name="CabinName">Cabin Name</string>
+    <string name="Subject">Subject</string>
+    <!--check-out first-->
+    <string name="checkoutfirst">Our system shows that you are already checked-in.\n You need to check-out first to check-in again.</string>
+    <string name="Checkmeout">Check me out</string>
+    <string name="declined">We cannot process your request now. Please visit later.</string>
+    <string name="declined_visitor">Your request has been declined</string>
+
+    <!--Progress bar-->
+    <string name="Loading">Loading</string>
+    <string name="whileloading">Wait while loading…</string>
+    <string name="CheckInDetails">CheckIn Details</string>
+    <string name="Host">Host</string>
+
+    //note
+    <string name="no_host">We couldn\'t find anyone with this email or mobile number</string>
+    // new meeting request
+    <string name="found_meeting">Found meeting!</string>
+    <string name="continue_meeting">Continue with above meeting</string>
+    <string name="Request_newmeeting">Request for new meeting</string>
+
+    //new login henancement
+    <string name="Selfcheckin">Self check-in / Request a meeting</string>
+    <string name="please_scan_the_QRcode">If you have the invitation, please scan the QR code included in your invitation</string>
+    <string name="mobile_to_check_in">Please scan the QR code with your mobile to check-in or request a meeting</string>
+    <string name="Useyourmobile">Use your mobile</string>
+    <string name="Scanthecode">Scan the code on invitation</string>
+
+    // privacy policy
+    <string name="Iagreetothe">I agree to the</string>
+    <string name="PrivacyPolicyterms">Privacy Policy terms</string>
+    <string name="PrivacyPolicy">Privacy Policy</string>
+    // New request meeting
+    <string name="Welcome">Welcome</string>
+    <string name="meetingwith">You have a meeting with</string>
+    <string name="wouldliketomeet">Would like to meet someone else?</string>
+    <string name="Clickhere">Click here.</string>
+    <string name="Visitor">Visitor</string>
+    //exitPopup
+    <string name="Exit">Exit</string>
+    <string name="Areyousure">Are you sure you want to Exit this App?</string>
+    <string name="Yess">Yes</string>
+    <string name="Noo">No</string>
+
+    <string name="Version">v</string>
+
+    //workpermit
+    <string name="workPermitDetails">Work Permit Details</string>
+    <string name="WorkPermitInformation">Work Permit Information</string>
+    <string name="contractor">Contractor</string>
+    <string name="Maintenance">Maintenance</string>
+    <string name="dummyTime">07 PM to 08:00PM</string>
+    <string name="dummyDate">10Jan 2025 to 15 Jan 2025</string>
+    <string name="dummyRoom">STC Meeting Room 2</string>
+    <string name="SuccessfullyCheckIn">Successfully checkIn</string>
+    <string name="SuccessfullyCheckOut">Successfully checkOut</string>
+    //Material Permit
+    <string name="materialPermit">Material Permit</string>
+    <string name="CompanyName">Company Name:</string>
+    <string name="VehicleNumber">Vehicle Number:</string>
+    <string name="materialInformation">Material Information</string>
+    <string name="materialName">Material Name</string>
+    <string name="SerialName">Serial Name</string>
+    <string name="Quantity">Quantity</string>
+
+    //Access denied
+    <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
+</resources>

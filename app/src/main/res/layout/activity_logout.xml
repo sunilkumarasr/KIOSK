@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".logins.LogoutActivity">
+
+    <include
+        android:id="@+id/relative_internet"
+        layout="@layout/no_internet" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/LinearLayout_ui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/m_border"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="55dp"
+                android:layout_marginBottom="50dp"
+                android:src="@drawable/logotop" />
+
+            <TextView
+                style="@style/regular_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/sure_signout"
+                android:textColor="#414F6c"
+                android:textSize="@dimen/_18sdp" />
+
+            <LinearLayout
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/Login_Password"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:hintTextAppearance="@style/TextLabel">
+
+                    <EditText
+                        style="@style/regular_font"
+                        android:id="@+id/password_signout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_baseline_lock_24"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:inputType="textPassword"
+                        android:paddingStart="18dp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_15sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_signout"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#323D59"
+                    android:text="@string/Signout"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_11sdp"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="#323D59"
+                    app:strokeWidth="1dp"
+                    android:layout_weight="1"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancle"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#323D59"
+                    android:text="@string/Cancel"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_11sdp"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="#323D59"
+                    app:strokeWidth="1dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="version"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>

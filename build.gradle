@@ -1,0 +1,23 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '8.6.0' apply false
+    id 'com.android.library' version '8.6.0' apply false
+    id "org.sonarqube" version "4.0.0.2929"
+}
+
+task printVersion {
+    doLast {
+        println "Version Name: ${android.defaultConfig.versionName}"
+        println "Version Code: ${android.defaultConfig.versionCode}"
+    }
+}
+sonarqube {
+    properties {
+        property "sonar.projectKey", "provizitkiosk"  // Unique key for your project
+        property "sonar.host.url", "http://localhost:9000" // SonarQube server URL
+        property "sonar.login", "sqp_ae65a7db164b58e0b039554f776e12d23b8c7c37" // Authentication token
+    }
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

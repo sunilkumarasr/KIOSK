@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="700dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="15dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp">
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/medium_font"
+            android:id="@+id/policy_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@color/colorPrimary"
+            android:text="@string/PrivacyPolicy"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp" />
+
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:layout_below="@+id/policy_title"
+            android:scrollbars="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1000dp">
+                <TextView
+                    android:id="@+id/txt_content"
+                    style="@style/medium_font"
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="25dp"
+                    android:padding="10sp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+            </RelativeLayout>
+
+        </ScrollView>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/scrollview"
+            android:background="@color/colorPrimary" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <Button
+                    android:id="@+id/btn_ok"
+                    style="@style/medium_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorPrimary"
+                    android:padding="10sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/your_OK"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+
+</androidx.cardview.widget.CardView>

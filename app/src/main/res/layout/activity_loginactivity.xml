@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_img"
+    tools:context=".logins.AdminLoginActivity">
+
+    <include
+        android:id="@+id/relative_internet"
+        layout="@layout/no_internet" />
+
+    <RelativeLayout
+        android:id="@+id/relative_ui"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtVersion">
+
+        <ImageView
+            android:id="@+id/logo1"
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:src="@drawable/logotop" />
+
+        <RelativeLayout
+            android:id="@+id/relative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="@dimen/_270ssp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="#414F6c"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextAppearance="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/login_email"
+                        style="@style/medium_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_45sdp"
+                        android:drawableLeft="@drawable/ic_mail_inbox_app"
+                        android:drawablePadding="10dp"
+                        android:hint="@string/Login_Email"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textColorHint="#414F6c"
+                        android:textSize="@dimen/_15sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="@dimen/_270ssp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="#414F6c"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextAppearance="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/login_password"
+                        style="@style/medium_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_45sdp"
+                        android:drawableLeft="@drawable/ic_baseline_lock_24"
+                        android:drawablePadding="10dp"
+                        android:hint="@string/Login_Password"
+                        android:inputType="textPassword"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textColorHint="#414F6c"
+                        android:textSize="@dimen/_15sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_login"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_below="@+id/ni"
+                    android:layout_centerHorizontal="true"
+                    android:backgroundTint="#323D59"
+                    android:text="@string/btn_Login"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_15sdp"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="#323D59"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="version"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>

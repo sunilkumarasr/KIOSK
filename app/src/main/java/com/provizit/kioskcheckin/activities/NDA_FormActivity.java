@@ -1,0 +1,360 @@
+package com.provizit.kioskcheckin.activities;
+
+import static android.view.View.GONE;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.Html;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.animation.AnimationSet;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.bumptech.glide.Glide;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.Meetings.NewMeetingRequestActivity;
+import com.provizit.kioskcheckin.config.ConnectionReceiver;
+import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
+import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
+import com.provizit.kioskcheckin.mvvm.ApiViewModel;
+import com.provizit.kioskcheckin.R;
+import com.provizit.kioskcheckin.services.Conversions;
+import com.provizit.kioskcheckin.api.DataManger;
+import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
+import com.provizit.kioskcheckin.services.GetNdaActiveDetailsModel;
+import com.provizit.kioskcheckin.config.Preferences;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+
+public class NDA_FormActivity extends AppCompatActivity implements View.OnClickListener {
+
+    //internet connection
+    BroadcastReceiver broadcastReceiver;
+    RelativeLayout relative_internet;
+    RelativeLayout relative_ui;
+    ImageView company_logo;
+    TextView name, mobile, email, time, nda_name;
+    LinearLayout linear_checkbox_selection,linaerEmail;
+    String status_check = "0";
+    CheckBox checkBox;
+    GetNdaActiveDetailsModel ndamodel;
+    ApiViewModel apiViewModel;
+    Button btn_accept;
+
+    ImageView back_image;
+
+    GetCVisitorDetailsModel model;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_nda_form);
+        inits();
+        btn_accept = findViewById(R.id.btn_accept);
+        btn_accept.setTypeface(ResourcesCompat.getFont(this, R.font.arbfonts_dinnextttlrabic_medium));
+        back_image = findViewById(R.id.back_image);
+        linear_checkbox_selection = findViewById(R.id.linear_checkbox_selection);
+        checkBox = findViewById(R.id.checkbox);
+        name = findViewById(R.id.name);
+        mobile = findViewById(R.id.mobile);
+        linaerEmail = findViewById(R.id.linaerEmail);
+        email = findViewById(R.id.email);
+        time = findViewById(R.id.time);
+        nda_name = findViewById(R.id.nda_name);
+        company_logo = findViewById(R.id.company_logo);
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String VersionName = sharedPreferences.getString("VersionName", "1.0");
+        TextView txtVersion = findViewById(R.id.txtVersion);
+        txtVersion.setText(VersionName);
+
+        Intent intent = getIntent();
+        model = (GetCVisitorDetailsModel) intent.getSerializableExtra("model_key");
+        Float meeting_status = model.getItems().getMeetingStatus();
+        name.setText(model.getIncomplete_data().getName());
+        mobile.setText(model.getIncomplete_data().getMobile());
+        if (!model.getIncomplete_data().getEmail().equalsIgnoreCase("") && model.getIncomplete_data().getEmail()!=null){
+            linaerEmail.setVisibility(View.VISIBLE);
+            email.setText(model.getIncomplete_data().getEmail());
+        }
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        time.setText(dtf.format(now));
+        TextView textView = (TextView) findViewById(R.id.textView);
+        ndamodel = new GetNdaActiveDetailsModel();
+        apiViewModel = new ViewModelProvider(NDA_FormActivity.this).get(ApiViewModel.class);
+
+        //internet connection
+        relative_internet = findViewById(R.id.relative_internet);
+
+        registoreNetWorkBroadcast();
+
+        // Get the current layout direction
+        int layoutDirection = getResources().getConfiguration().getLayoutDirection();
+
+        // If layout direction is right-to-left, move the icon to the left
+        if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+            btn_accept.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_arrow_forward_24, 0);
+
+        }
+
+        // Check if the layout direction is right-to-left
+        if (isRightToLeft()) {
+            // If layout direction is right-to-left, mirror the image
+            back_image.setScaleX(-1f);
+        } else {
+            // If layout direction is left-to-right, reset the image scaling
+            back_image.setScaleX(1f);
+        }
+
+        //company logo
+        String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
+        if (c_Logo.equalsIgnoreCase("")) {
+        } else {
+            Glide.with(NDA_FormActivity.this).load(c_Logo)
+                    .into(company_logo);
+        }
+
+        apiViewModel.getndafdetials(getApplicationContext(), "id", "active");
+        apiViewModel.getResponseforNdaActiveDetails().observe(this, model1 -> {
+            ndamodel = model1;
+            try {
+                if (ndamodel != null) {
+                    try {
+                        String htmlText = ndamodel.getItems().getContent();
+                        Document doc = Jsoup.parse(htmlText);
+                        String xmlText = doc.outerHtml();
+                        textView.setText(Html.fromHtml(xmlText));
+                        nda_name.setText(ndamodel.getItems().getName());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        apiViewModel.getResponseactionvisitor().observe(this, model1 -> {
+            try {
+                Intent intent1;
+                if(meeting_status==1){
+                    intent1 = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+
+                }else {
+                    intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                }
+                intent1.putExtra("model_key", model);
+                startActivity(intent1);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        linear_checkbox_selection.setOnClickListener(this);
+        checkBox.setOnClickListener(this);
+        btn_accept.setOnClickListener(this);
+        back_image.setOnClickListener(this);
+    }
+
+    // Function to check if the layout direction is right-to-left
+    private boolean isRightToLeft() {
+        return getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
+
+    //disable auto click action after scann
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            // Barcode scanner has scanned a barcode, disable triggered items
+            return true;
+        } else {
+            disableTriggeredItems();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    //usb scanner
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_ENTER:
+                    return true;
+                case KeyEvent.KEYCODE_BACK:
+                    Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                    startActivity(intent);
+                    return true;
+                default:
+                    char keyChar = (char) event.getUnicodeChar();
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void disableTriggeredItems() {
+        back_image.setFocusable(false);
+        back_image.setFocusableInTouchMode(false);
+        linear_checkbox_selection.setFocusable(false);
+        linear_checkbox_selection.setFocusableInTouchMode(false);
+        checkBox.setFocusable(false);
+        checkBox.setFocusableInTouchMode(false);
+        btn_accept.setFocusable(false);
+        btn_accept.setFocusableInTouchMode(false);
+        runthred();
+    }
+
+    private void runthred() {
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+
+            back_image.setFocusable(true);
+            back_image.setFocusableInTouchMode(true);
+            linear_checkbox_selection.setFocusable(true);
+            linear_checkbox_selection.setFocusableInTouchMode(true);
+            checkBox.setFocusable(true);
+            checkBox.setFocusableInTouchMode(true);
+            btn_accept.setFocusable(true);
+            btn_accept.setFocusableInTouchMode(true);
+
+        }, 500);
+    }
+
+    private void inits() {
+        relative_ui = findViewById(R.id.relative_ui);
+        broadcastReceiver = new ConnectionReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (isConnecteds(context)) {
+                    relative_internet.setVisibility(GONE);
+                    relative_ui.setVisibility(View.VISIBLE);
+                } else {
+                    relative_internet.setVisibility(View.VISIBLE);
+                    relative_ui.setVisibility(GONE);
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.linear_checkbox_selection:
+                AnimationSet animation1 = Conversions.animation();
+                v.startAnimation(animation1);
+                if (status_check.equalsIgnoreCase("0")) {
+                    status_check = "1";
+                    checkBox.setChecked(true);
+                    btn_accept.setEnabled(true);
+                    btn_accept.setBackgroundColor(btn_accept.getContext().getResources().getColor(R.color.colorPrimary));
+                } else {
+                    status_check = "0";
+                    checkBox.setChecked(false);
+                    btn_accept.setEnabled(false);
+                    btn_accept.setBackgroundColor(btn_accept.getContext().getResources().getColor(R.color.light_gray));
+                }
+                break;
+            case R.id.checkbox:
+                if (checkBox.isChecked()) {
+                    status_check = "1";
+                    btn_accept.setEnabled(true);
+                    btn_accept.setBackgroundColor(btn_accept.getContext().getResources().getColor(R.color.colorPrimary));
+                } else {
+                    status_check = "0";
+                    btn_accept.setEnabled(false);
+                    btn_accept.setBackgroundColor(btn_accept.getContext().getResources().getColor(R.color.light_gray));
+                }
+                break;
+            case R.id.btn_accept:
+                if (checkBox.isChecked()) {
+                    if (model.getItems().getVisitorStatus() == 1) {
+                        JSONObject jsonObj_ = new JSONObject();
+                        try {
+                            jsonObj_.put("id", model.getIncomplete_data().get_id().get$oid());
+                            jsonObj_.put("formtype", "nda");
+                            jsonObj_.put("nda_terms", "true");
+                            jsonObj_.put("nda_id", ndamodel.getItems().get_id().get$oid());
+                            jsonObj_.put("emp_id", model.getIncomplete_data().get_id().get$oid());
+
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
+                        }
+                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
+                            apiViewModel.actionvisitor(getApplicationContext(), jsonObj_, model);
+                        } else {
+                            DataManger.internetpopup(NDA_FormActivity.this);
+                        }
+
+                    } else {
+
+                        Intent intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                        intent.putExtra("model_key", model);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please Accept the terms and conditions", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.back_image:
+                animation1 = Conversions.animation();
+                v.startAnimation(animation1);
+                Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    protected void registoreNetWorkBroadcast() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+        startActivity(intent);
+    }
+
+}
+

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_img"
+    tools:context=".activities.Meetings.MeetingRequestDetailsActivity2">
+
+    <include
+        android:id="@+id/relative_internet"
+        layout="@layout/no_internet" />
+
+    <RelativeLayout
+        android:id="@+id/relative_ui"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtVersion">
+
+        <LinearLayout
+            android:id="@+id/relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp">
+
+            <ImageView
+                android:id="@+id/back_image"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/backimg" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/company_logo"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_below="@id/relative"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:src="@drawable/logotop" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/line1"
+            android:layout_below="@id/company_logo">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/meeting_details"
+                    style="@style/bold_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:text="@string/meetingdetails"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_20sdp" />
+
+                <TextView
+                    android:id="@+id/meeting_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/meeting_details"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="@string/CabinName"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18dp"
+                    android:visibility="gone" />
+
+
+                <LinearLayout
+                    android:id="@+id/linear_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/meeting_room"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:background="@drawable/m_border"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_top_rounds_only"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/meetingrequest"
+                            style="@style/bold_font"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/visitor"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13sdp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/emp_img"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_100sdp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_user_white" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/name"
+                                style="@style/bold_font"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Abid Ali"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:id="@+id/designation"
+                                style="@style/medium_font"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:textColor="@color/colorPrimary"
+                                android:text="Developer"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:id="@+id/email"
+                                style="@style/medium_font"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:text="abid.ali@provizit.com"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:id="@+id/mobile"
+                                style="@style/medium_font"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:text="+91-9666123456"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:id="@+id/organization"
+                                style="@style/medium_font"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:text="Future tech solution"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_11sdp" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/bold_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="8dp"
+                        android:text="@string/tomeet"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/linear_with_dep"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/linear_host_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="15dp"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:weightSum="2">
+
+                                    <TextView
+                                        android:id="@+id/host_leble"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/Host"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/txt_host"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:text="Abid Ali"
+                                        android:textAlignment="textStart"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear_department"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="15dp"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:weightSum="2">
+
+                                    <TextView
+                                        android:id="@+id/label_subject"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/Departmentss"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/txt_department"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:text="Department"
+                                        android:textAlignment="textStart"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <TextView
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/Subject"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/emp_subject"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:text="Interview"
+                                        android:textAlignment="textStart"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/linear_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <TextView
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/where"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/emp_name"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:text="Celina James"
+                                        android:textAlignment="textStart"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <TextView
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/Date"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/meeting_st"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:text="Fri, 28 july 2005"
+                                        android:textAlignment="textStart"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:id="@+id/linear_date_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <TextView
+                                        android:id="@+id/static_time"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/Time"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/txt_time"
+                                        style="@style/medium_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:text="11:30 AM to 12:00 PM"
+                                        android:textAlignment="textStart"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+
+                                <TextView
+                                    style="@style/medium_font"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:text="created or which something or"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/visitor_img"
+                                    android:layout_width="@dimen/_100sdp"
+                                    android:layout_height="@dimen/_100sdp"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@drawable/ic_user_white" />
+
+                                <LinearLayout
+                                    android:id="@+id/linear_with"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/emp_name_2"
+                                        style="@style/bold_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="*****"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/emp_department"
+                                        style="@style/bold_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text=""
+                                        android:textAlignment="center"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <TextView
+                                        android:id="@+id/emp_designation"
+                                        style="@style/bold_font"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="*******"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:gravity="right">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/proceed"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:backgroundTint="#323D59"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_24"
+                android:text="@string/btn_Proceed"
+                android:textColor="#fff"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                app:cornerRadius="5dp"
+                app:strokeColor="#414F6C"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="version"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>

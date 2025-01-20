@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_img"
+    tools:context=".activities.InvitationActivity">
+    <LinearLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/backimg" />
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logotop" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/relative"
+        android:layout_above="@+id/txtVersion"
+        android:fadeScrollbars="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/meetingrequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:text="@string/Invitation"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:id="@+id/border_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/meetingrequest"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:padding="15dp"
+                android:background="@drawable/p_border">
+
+                <LinearLayout
+                    android:id="@+id/linear1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/emp_img"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_user_white" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Banda Nagaraju"
+                            android:textColor="#414F6C"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/text_designer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Designer"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/text_mail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="nagaraju@gmail.com"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/text_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="+91-9666123456"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Future tech solution"
+                            android:textSize="18dp" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <View
+                    android:id="@+id/line_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/linear1"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line_view"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center_horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/text_meet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/visitor_ToMeet"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Urukundu"
+                            android:textColor="#414F6C"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/text_it"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="IT"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/text_manager"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="First level manager"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/text_reason"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="The reason something is done or"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/text_reason"
+                            android:text="created or which something or"
+                            android:textSize="13dp" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/visitor_img"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_user_white" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/border_layout"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_ok"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="200dp"
+                    android:layout_height="55dp"
+                    android:hint="@string/your_OK"
+                    android:backgroundTint="#323D59"
+                    android:textColorHint="#fff"
+                    android:textSize="17dp"
+                    android:textStyle="bold"
+                    app:cornerRadius="5dp"
+                    app:strokeColor="#414F6C"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="version"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>

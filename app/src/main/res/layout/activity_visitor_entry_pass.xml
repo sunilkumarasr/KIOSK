@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_img"
+    tools:context=".activities.VisitorEntryPassActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false">
+        <RelativeLayout
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/logotop"
+                />
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="150dp"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#414F6c"
+                    android:text="@string/visitor_pass"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold"
+                   />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/badgeNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="100dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/visitor_BadgeNo"
+                    android:textAlignment="textEnd"
+                    android:textColor="#707070"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="XXXX"
+                    android:textColor="#414F6c"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/badgeNo"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/p_image"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_80sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_user_white" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Urukundu"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/designation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="Mobile developer"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="+91 -9678994332"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/organization"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="Future Tech Solutions"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="Yemmiganur"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/linear1"
+                android:layout_centerInParent="true"
+                android:background="#707070" />
+
+            <LinearLayout
+                android:id="@id/linear2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/linear1"
+                android:layout_marginTop="30dp"
+               android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/emp_pic"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_80sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_user_white"
+                    />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/visitor_ToMeet"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/e_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="Anil Kumar"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/e_desiganation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="First Level Manger"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:singleLine="true"
+                        android:text="6 Dec 2022 02:15PM - 03:20PM"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/cabin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="Anil Kumar Cabin"
+                        android:textAlignment="textStart"
+                        android:textColor="#414F6c"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear2"
+                android:layout_centerInParent="true"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:paddingBottom="8dp"
+                    android:text="@string/visitor_Validupto"
+                    android:textColor="#707070"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/validUpto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:paddingBottom="8dp"
+                    android:text="7 Dec 2022"
+                    android:textColor="#707070"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:paddingBottom="8dp"
+                    android:text="@string/visitor_11PM"
+                    android:textColor="#707070"
+                    android:textSize="@dimen/_8sdp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="version"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>

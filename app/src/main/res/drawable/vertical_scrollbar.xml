@@ -1,0 +1,9 @@
+<!-- res/drawable/vertical_scrollbar.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/dark_gray" /> <!-- Set the color as needed -->
+
+    <corners android:radius="4dp" /> <!-- Adjust the corner radius as needed -->
+
+</shape>

@@ -1,0 +1,214 @@
+<resources>
+    <string name="app_name">Provizit Frontdesk</string>
+    <!--    meeting_requestfrom-->
+    <string name="Meeting_request">طلب إذن دخول</string>
+    <string name="Host_email_number">إذا لديك رقم جوال/بريد الإلكتروني للموظف المطلوب</string>
+    <string name="Meeting_Host">كتابة البريد الإلكتروني example@company.com أو رقم الجوال 9665xxxxxxxx </string>
+    <string name="Meeting_pls_dept">تحديد القسم</string>
+    <string name="Pleaseselectvisitor">تحديد تصنيف الزائر</string>
+    <string name="Meeting_pls_visit">تحديد الغرض من الزيارة</string>
+    <string name="Meeting_p_visit">غرض الزيارة</string>
+    <string name="btn_next">التالي</string>
+    <string name="back">خلف</string>
+    <string name="Department">القسم:</string>
+    <string name="Departmentss">قسم</string>
+    <string name="Designation">الوظيفة:</string>
+    <string name="Yes">موافق</string>
+    <string name="No">غير موافق</string>
+    <string name="Change">يتغير</string>
+    <string name="Search">بحث</string>
+    <string name="click">إضغط على زر )موافق( إذا كنت ترغب في مقابلة هذا الشخص أو)غير موافق( إلعادة البحث </string>
+    <!--    login_activity-->
+    <string name="Login_Email">بريد إلكتروني</string>
+    <string name="Login_Password">كلمة المرور</string>
+    <string name="btn_Login">تسجيل الدخول</string>
+    <!--    visitor_login-->
+    <string name="visitor_email">إستخدم بريدك الإلكتروني</string>
+    <string name="visitor_mobile">أدخل رقم جوالك</string>
+    <string name="visitor_Useemail">إستخدم بريد الإلكتروني</string>
+    <string name="visitor_Usemobile">إستخدم رقم جوالك</string>
+    <string name="btn_Proceed">التالي</string>
+    <!--    otp_activity-->
+    <string name="otp_pls_email">أدخل رمز التحقق المرسل على البريد الإلكتروني</string>
+    <string name="otp_pls_mobile">أدخل رمز التحقق المرسل على الجوال</string>
+    <string name="otp_Resend">إعادة إرسال OTP</string>
+    <string name="valid_otp">أدخل OTP صالح</string>
+    <!--    enter_your_details-->
+    <string name="enter_yourdetails">تسجيل معلومات الزائر</string>
+    <!--    <string name="enter_mobile">Enter your mobile number</string>-->
+    <string name="enter_email">أدخل عنوان البريد الإلكتروني الخاص بك</string>
+    <string name="enter_mobile">رقم الجوال</string>
+    <string name="enter_SelectDocument">نوع الهوية</string>
+    <string name="enter_SelectNationality">اختر الجنسية</string>
+    <string name="enter_IDNumber">رقم الهوية</string>
+    <string name="enter_EnterName">الإسم الكامل *</string>
+    <string name="enter_Enterdesignation">المسمى الوظيفي</string>
+    <string name="enter_EnterOrganization">إسم الجهة</string>
+    <string name="enter_Enter_Org_Address">أدخل عنوان المنظمة</string>
+    <!--    nda_activity-->
+    <string name="nda_visitor">اتفاقية عدم إفشاء الزائر</string>
+    <string name="nda_Name">اإلسم:</string>
+    <string name="nda_Mobile">متحرك:</string>
+    <string name="nda_Email">بريد إلكتروني:</string>
+    <string name="English">عربى</string>
+    <string name="nda_DateandTime">التاريخ و الوقت:</string>
+    <string name="nda_checkbox">لقد قرأت وأوافق على اتفاقية عدم الإفشاء هذه</string>
+    <string name="nda_text">نص</string>
+    <string name="nda_IAccept">انا موافق</string>
+    <!--    confirmation-->
+    <string name="con_Confirmation">تأكيد</string>
+    <string name="con_prsI">معلومات شخصية</string>
+    <string name="con_Name">اسم</string>
+    <string name="con_Designation">تعيين</string>
+    <string name="con_Email">بريد إلكتروني</string>
+    <string name="con_Mobile">متحرك</string>
+    <string name="con_Organization">منظمة</string>
+    <string name="con_Nationality">جنسية</string>
+    <string name="con_Idtype">نوع الهوية</string>
+    <string name="con_IDIDnumber">رقم الهوية</string>
+    <string name="con_Confirm">يتأكد</string>
+    <!--    meeting_details-->
+    <!--    <string name="md_Proceed">Proceed</string>-->
+    <!--    <string name="md_Tomeet">To meet</string>-->
+    <!--    your_requestSent-->
+    <string name="your_sent">تم إرسال طلبك</string>
+    <string name="your_please">سيتم إرسال بطاقة الدخول إلى البريد الإلكتروني/رسالة نصية إلى جوالك</string>
+
+    <string name="host_acceptance">يرجى منكم الإنتظار لحين موافقة الموظف على طلبك وسيتم إشعاركم عبر البريدالإلكتروني أو الجوال</string>
+    <string name="your_OK">موافق</string>
+    <!--    visitor_pass-->
+    <string name="visitor_pass">تصريح دخول الزائر</string>
+    <string name="visitor_BadgeNo">رقم الشارة:</string>
+    <string name="visitor_ToMeet">لكي نلتقي</string>
+    <string name="visitor_Validupto">صالح حتى:</string>
+    <string name="visitor_11PM">11:59 مساءً</string>
+    <!--    already_checkin-->
+    <string name="already_please">يرجى استلام تصريح الدخول الخاص بك من موظف الاستقبال</string>
+    <!--    <string name="already_OK">OK</string>-->
+    <!--    enteryour_belogings-->
+    <string name="belogings_enter">أدخل متعلقاتك</string>
+    <string name="belogings_Laptop">حاسوب محمول</string>
+    <string name="belogings_ToolBox">ToolBox</string>
+    <string name="belogings_Others">آحرون</string>
+    <string name="belogings_None">لا أحد</string>
+    <string name="belogings">متاع</string>
+    <string name="belogings_Skip">تخطى</string>
+    <!--    enterYour_vehicle-->
+    <string name="vehiles">أدخل تفاصيل مركبتك</string>
+    <string name="vehiles_name">أدخل اسم المركبة</string>
+    <string name="vehiles_number">أدخل رقم السيارة</string>
+    <string name="vehiles_details">تفاصيل السيارة</string>
+    <string name="enter_vehiles_model">أدخل طراز السيارة</string>
+    <string name="enter_vehiles_color">أدخل لون المركبة</string>
+    <string name="enter_vehiles_licence_number">أدخل رقم رخصة المركبة</string>
+    <string name="enter_vehiles_price">أدخل سعر السيارة</string>
+    <string name="select_vehicle_type">اختر نوع المركبة</string>
+    <!--    Invitation-->
+    <string name="Invitation">رسالة دعوة</string>
+    <!--    Invitation Details-->
+    <string name="Invitation_details">تفاصيل الدعوة</string>
+    <string name="Invitation_Host">مضيف</string>
+    <string name="Invitation_date"> تاريخ &amp; وقت</string>
+    <string name="Invitation_Venue">مكان</string>
+    <string name="Invitation_Location">موقع</string>
+    <string name="Invitation_Agenda">جدول أعمال</string>
+
+    <string name="or">أو أطلب إذن الدخول من ممثل الأقسام المتاحة</string>
+
+    <!--    captureImage-->
+    <string name="FrameLayout">تخطيط الإطار</string>
+    <!--    validation-->
+    <string name="Mobile_number">أدخل المحمول</string>
+    <string name="Invalidmobile_number">لقد قمت بإدخال رقم الجوال الخاطئ</string>
+    <string name="Signout">خروج</string>
+    <string name="Cancel">يلغي</string>
+    <string name="sure_signout">أدخل كلمة المرور الخاصة بك لتسجيل الخروج.</string>
+    <string name="Dear">الخدمة الذاتية للزائر</string>
+    <string name="You">امسح رمز الاستجابة السريعة أعلاه بجهازك المحمول.</string>
+    <string name="Yourself">أدخل التفاصيل الخاصة بك يدويًا</string>
+    <string name="QrCode">إذا كانت لديك دعوة ، فيرجى فتح رمز الاستجابة السريعة ومسح ضوئيًا بالنقر فوق رمز الاستجابة السريعة</string>
+
+    <string name="network_string">الاتصال غير متوفر. \n يرجى التحقق من الاتصال.</string>
+    <string name="tryagain">حاول ثانية</string>
+    <!--Meeting details-->
+    <string name="meetingdetails">تفاصيل الاجتماع</string>
+    <string name="visitor">زائر</string>
+    <string name="tomeet">لكي نلتقي</string>
+    <string name="purpose">غاية</string>
+    <string name="where">أين</string>
+    <string name="Date">تاريخ</string>
+    <string name="Time">وقت</string>
+    <string name="CabinName">اسم الكابينة</string>
+    <string name="Subject">موضوع</string>
+
+    <!--check-out first-->
+    <string name="checkoutfirst">يُظهر نظامنا أنك قمت بتسجيل الوصول بالفعل.
+تحتاج إلى تسجيل المغادرة أولاً لتسجيل الوصول مرة أخرى.
+</string>
+    <string name="Checkmeout">تفقدني</string>
+    <string name="declined">لا يمكننا معالجة طلبك الآن. يرجى زيارتنا لاحقًا.</string>
+    <!--Progress bar-->
+    <string name="Loading">تحميل</string>
+    <string name="whileloading">انتظر ريثما يتم التحميل ...</string>
+    <string name="CheckInDetails">تحقق في التفاصيل</string>
+    <string name="Host">يستضيف</string>
+
+    //note
+    <string name="no_host">لم نتمكن من العثور على أي شخص لديه هذا البريد الإلكتروني أو رقم الهاتف المحمول</string>
+    // new meeting request
+    <string name="found_meeting">وجدت لقاء!</string>
+    <string name="continue_meeting">تواصل مع الاجتماع أعلاه</string>
+    <string name="Request_newmeeting">طلب لقاء جديد</string>
+
+    //new login henancement
+    <string name="Selfcheckin">تسجيل دخول ذاتياً/طلب إذن دخول</string>
+    <string name="please_scan_the_QRcode">إذا كان لديك دعوةإجتماع/زيارة/تصريح/فعالية، فضلاً قم بتمرير رمز الإستجابة السريعة الموجود على بطاقة الدعوة المرسلة أمام جهاز القارئ أدناه.</string>
+    <string name="mobile_to_check_in">إمسح الرمز من جهازك وإستخدم خدمة ذاتية بدون لمس لتسجيل الدخول/طلب إذن دخول.</string>
+    <string name="Useyourmobile">إستخدم كاميرا جوالك</string>
+    <string name="Scanthecode">مرر الرمز الموجود على الدعوة</string>
+
+    // privacy policy
+    <string name="Iagreetothe">أوافق على شروط</string>
+    <string name="PrivacyPolicyterms">سياسة الخصوصية</string>
+    <string name="PrivacyPolicy">سياسة الخصوصية</string>
+
+    // New request meeting
+    <string name="Welcome">مرحباً</string>
+    <string name="meetingwith">لديك لقاء مع</string>
+    <string name="wouldliketomeet">هل ترغب في مقابلة شخص آخر؟</string>
+    <string name="Clickhere">انقر هنا</string>
+    <string name="Visitor">الزائر</string>
+    //exitPopup
+    <string name="Exit">خروج</string>
+    <string name="Areyousure">هل أنت متأكد من إغالق التطبيق؟</string>
+    <string name="Yess">نعم</string>
+    <string name="Noo">ال</string>
+
+    <string name="Version">v</string>
+
+    //workpermit
+    <string name="workPermitDetails">ورک پرمٹ کی تفصیلات</string>
+    <string name="WorkPermitInformation">ورک پرمٹ کی معلومات</string>
+    <string name="contractor">ٹھیکیدار</string>
+    <string name="Maintenance">Maintenance</string>
+    <string name="dummyTime">07 PM to 08:00PM</string>
+    <string name="dummyDate">10Jan 2025 to 15 Jan 2025</string>
+    <string name="dummyRoom">STC Meeting Room 2</string>
+    <string name="SuccessfullyCheckIn">تم تسجيل الدخول بنجاح</string>
+    <string name="SuccessfullyCheckOut">تم الخروج بنجاح</string>
+
+    //Material Permit
+    <string name="materialPermit">تصريح المواد</string>
+    <string name="CompanyName">اسم الشركة:</string>
+    <string name="VehicleNumber">رقم المركبة:</string>
+    <string name="materialInformation">المعلومات المادية</string>
+    <string name="materialName">اسم المادة</string>
+    <string name="SerialName">اسم المسلسل</string>
+    <string name="Quantity">كمية</string>
+
+    //Access denied
+    <string name="number_email_belongs">هذا الرقم/البريد الإلكتروني يخص أحد موظفي هذه المؤسسة</string>
+    <string name="declined_visitor">تم رفض طلبك</string>
+
+
+</resources>
