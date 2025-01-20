@@ -118,14 +118,14 @@ public interface API {
     Call<BlockedvisitorrequestsModel> getblockedvisitorrequests(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String comp_id, @Query("emp_id") String emp_id);
 
     @GET("workpermits/getworkpermitDetails")
-    Call<WorkPermitModel> getworkpermitDetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id);
+    Call<WorkPermitModel> getworkpermitDetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id, @Query("type") String type);
 
 
     @POST("workpermits/updateworkpermita")
     Call<WorkPermitModel> updateworkpermita(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
 
     @GET("entry/getentrypermitdetails")
-    Call<EntryPermitModel> getentrypermitdetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id);
+    Call<EntryPermitModel> getentrypermitdetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id, @Query("type") String type);
 
     @POST("entry/materialcheckin")
     Call<EntryPermitModel> materialcheckin(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);

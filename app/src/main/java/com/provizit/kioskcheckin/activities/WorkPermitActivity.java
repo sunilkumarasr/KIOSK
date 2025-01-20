@@ -67,7 +67,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
     ArrayList<String> EndList;
     ArrayList<ContractorsData> contractorsDataList;
     String comp_id = "";
-    String email = "";
+    String inputValue = "";
     String id = "";
 
     @Override
@@ -89,7 +89,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         btnNext = findViewById(R.id.btnNext);
 
         comp_id = getIntent().getStringExtra("comp_id");
-        email = getIntent().getStringExtra("email");
+        inputValue = getIntent().getStringExtra("inputValue");
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String VersionName = sharedPreferences.getString("VersionName", "1.0");
@@ -110,7 +110,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         progress.setCanceledOnTouchOutside(true);
 
         apiViewModel = new ViewModelProvider(WorkPermitActivity.this).get(ApiViewModel.class);
-        apiViewModel.getworkpermitDetails(getApplicationContext(), comp_id);
+        apiViewModel.getworkpermitDetails(getApplicationContext(), comp_id, "today");
         progress.show();
 
         apiViewModel.getworkpermitDetails_response().observe(this, model -> {
@@ -158,7 +158,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     if (!contractorsDataList.isEmpty()) {
                         for (int i = 0; i < contractorsDataList.size(); i++) {
                             ContractorsData contractor = contractorsDataList.get(i);
-                            if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(email)) {
+                            if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue)) {
                                 txtCName.setText(contractor.getName());
                                 if (contractor.getCheckin() == (0)) {
                                     btnNext.setText("CheckIn");
@@ -290,9 +290,9 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             JSONObject jsonObj_ = new JSONObject();
             try {
                 jsonObj_.put("formtype", "checkin");
-                jsonObj_.put("email", email);
+//                jsonObj_.put("email", inputValue);
                 jsonObj_.put("id", id);
-                jsonObj_.put("emp_id", Emp_id);
+//                jsonObj_.put("emp_id", Emp_id);
                 JsonParser jsonParser = new JsonParser();
                 gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
                 System.out.println("gsonObject::" + gsonObject);
@@ -305,9 +305,9 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             JSONObject jsonObj_ = new JSONObject();
             try {
                 jsonObj_.put("formtype", "checkout");
-                jsonObj_.put("email", email);
+//                jsonObj_.put("email", inputValue);
                 jsonObj_.put("id", id);
-                jsonObj_.put("emp_id", Emp_id);
+//                jsonObj_.put("emp_id", Emp_id);
                 JsonParser jsonParser = new JsonParser();
                 gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
                 System.out.println("gsonObject::" + gsonObject);

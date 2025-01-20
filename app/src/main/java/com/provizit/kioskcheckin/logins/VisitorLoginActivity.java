@@ -81,6 +81,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.text.InputFilter;
 import android.widget.Toast;
@@ -558,14 +560,23 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             else if (spre[0].trim().equalsIgnoreCase("material")){
                 //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                 String input = spre[1].trim();
-                String email = spre[2].toString().trim();
+                String inputValue = spre[2].toString().trim();
+
+                String inputType = "";
+                if (isEmailValid(input)) {
+                    inputType = "email";
+                }else {
+                    inputType = "phone";
+                }
 
                 if (input.length() >= 24) {
                     // Get the last 24 characters from the string
                     String last24Chars = input.substring(input.length() - 24);
-                    Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
                     intent.putExtra("comp_id", last24Chars);
-                    intent.putExtra("email", email);
+                    intent.putExtra("inputType", inputType);
+                    intent.putExtra("inputValue", inputValue);
+                    intent.putExtra("permitType", "material");
                     startActivity(intent);
                 } else {
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
@@ -574,14 +585,23 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             else if (spre[0].trim().equalsIgnoreCase("workpermit")){
                 //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                 String input = spre[1].trim();
-                String email = spre[2].toString().trim();
+                String inputValue = spre[2].toString().trim();
+
+                String inputType = "";
+                if (isEmailValid(input)) {
+                    inputType = "email";
+                }else {
+                    inputType = "phone";
+                }
 
                 if (input.length() >= 24) {
                     // Get the last 24 characters from the string
                     String last24Chars = input.substring(input.length() - 24);
-                    Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
                     intent.putExtra("comp_id", last24Chars);
-                    intent.putExtra("email", email);
+                    intent.putExtra("inputType", inputType);
+                    intent.putExtra("inputValue", inputValue);
+                    intent.putExtra("permitType", "workpermit");
                     startActivity(intent);
                 } else {
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
@@ -1115,6 +1135,13 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     }
                 })
                 .show();
+    }
+
+    private static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     @Override

@@ -489,7 +489,7 @@ public class ApiRepository {
     }
 
     //work permit
-    public void getworkpermitDetails(getworkpermitDetails_ModelResponse logresponse, Context context, String id) {
+    public void getworkpermitDetails(getworkpermitDetails_ModelResponse logresponse, Context context, String id, String type) {
         DataManger dataManger = DataManger.getDataManager();
         dataManger.getworkpermitDetails(new Callback<WorkPermitModel>() {
             @Override
@@ -505,7 +505,7 @@ public class ApiRepository {
             public void onFailure(Call<WorkPermitModel> call, Throwable t) {
                 logresponse.onFailure(new Throwable(t));
             }
-        }, context, id);
+        }, context, id, type);
     }
 
     //work permit checkIn Status
@@ -529,7 +529,7 @@ public class ApiRepository {
         }, context, jsonObject);
     }
 
-    public void getentrypermitdetails(getentrypermitdetails_ModelResponse logresponse, Context context, String id) {
+    public void getentrypermitdetails(getentrypermitdetails_ModelResponse logresponse, Context context, String id, String type) {
         DataManger dataManger = DataManger.getDataManager();
         dataManger.getentrypermitdetails(new Callback<EntryPermitModel>() {
             @Override
@@ -545,7 +545,7 @@ public class ApiRepository {
             public void onFailure(Call<EntryPermitModel> call, Throwable t) {
                 logresponse.onFailure(new Throwable(t));
             }
-        }, context, id);
+        }, context, id, type);
     }
 
     //work permit checkIn Status

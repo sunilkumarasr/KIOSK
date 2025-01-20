@@ -73,7 +73,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
     Button btnCancel,btnNext;
 
     String comp_id = "";
-    String email = "";
+    String inputValue = "";
     String id = "";
     boolean checkInType = false;
 
@@ -89,7 +89,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_materialpermit);
 
         comp_id = getIntent().getStringExtra("comp_id");
-        email = getIntent().getStringExtra("email");
+        inputValue = getIntent().getStringExtra("inputValue");
 
         back_image = findViewById(R.id.back_image);
         logo = findViewById(R.id.logo);
@@ -123,7 +123,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         apiViewModel = new ViewModelProvider(MaterialPermitActivity.this).get(ApiViewModel.class);
 
         //Details
-        apiViewModel.getentrypermitdetails(getApplicationContext(), comp_id);
+        apiViewModel.getentrypermitdetails(getApplicationContext(), comp_id,"today");
         progress.show();
         //Visitor_id_blocklist
         apiViewModel.getentrypermitDetails_response().observe(this, model -> {
@@ -172,7 +172,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     if (!supplier_details.isEmpty()) {
                         for (int i = 0; i < supplier_details.size(); i++) {
                             SupplierDetails supplierDetails = supplier_details.get(i);
-                            if (supplierDetails != null && supplierDetails.getSupplier_email() != null && supplierDetails.getSupplier_email().equalsIgnoreCase(email)) {
+                            if (supplierDetails != null && supplierDetails.getSupplier_email() != null && supplierDetails.getSupplier_email().equalsIgnoreCase(inputValue)) {
                                 txtCompany.setText(supplierDetails.getContact_person());
                                 txtVehicleType.setText(supplierDetails.getVehicle_type());
                                 txtVehicleNumber.setText(supplierDetails.getVehicle_no());

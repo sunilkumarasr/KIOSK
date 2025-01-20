@@ -435,11 +435,11 @@ public class DataManger {
     }
 
     //work permit
-    public void getworkpermitDetails(Callback<WorkPermitModel> cb, Context context, String id) {
+    public void getworkpermitDetails(Callback<WorkPermitModel> cb, Context context, String id, String type) {
         API apiService = retrofit2.create(API.class);
         String newEncrypt = encrypt(context, false);
         String bearer = BEARER_PREFIX + newEncrypt;
-        Call<WorkPermitModel> call = apiService.getworkpermitDetails(bearer, newEncrypt, id);
+        Call<WorkPermitModel> call = apiService.getworkpermitDetails(bearer, newEncrypt, id, type);
         call.enqueue((Callback<WorkPermitModel>) cb);
     }
 
@@ -455,11 +455,11 @@ public class DataManger {
         call.enqueue((Callback<WorkPermitModel>) cb);
     }
 
-    public void getentrypermitdetails(Callback<EntryPermitModel> cb, Context context, String id) {
+    public void getentrypermitdetails(Callback<EntryPermitModel> cb, Context context, String id, String type) {
         API apiService = retrofit2.create(API.class);
         String newEncrypt = encrypt(context, false);
         String bearer = BEARER_PREFIX + newEncrypt;
-        Call<EntryPermitModel> call = apiService.getentrypermitdetails(bearer, newEncrypt, id);
+        Call<EntryPermitModel> call = apiService.getentrypermitdetails(bearer, newEncrypt, id, type);
         call.enqueue((Callback<EntryPermitModel>) cb);
     }
 
