@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.activities.MaterialPermitActivity;
+import com.provizit.kioskcheckin.activities.NDAPermitActivity;
 import com.provizit.kioskcheckin.activities.WorkPermitActivity;
 import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
@@ -33,21 +34,26 @@ import com.provizit.kioskcheckin.services.Conversions;
 
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class OTPPermitActivity extends AppCompatActivity implements View.OnClickListener {
 
     ApiViewModel apiViewModel;
     ProgressDialog progress;
 
     LinearLayout linear_otp;
-    TextView txtEmail,headerNote;
+    TextView txtEmail, headerNote;
     EditText no1, no2, no3, no4;
     ImageView logo, back_image;
 
     String comp_id = "";
-    String inputType = "";
-    String inputValue = "";
+    String valueType = "";
+    String qrValue = "";
     String permitType = "";
     int generatedOTP = 0;
+
+    String ndaStatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +70,16 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
         back_image = findViewById(R.id.back_image);
 
         comp_id = getIntent().getStringExtra("comp_id");
-        inputType = getIntent().getStringExtra("inputType");
-        inputValue = getIntent().getStringExtra("inputValue");
+        valueType = getIntent().getStringExtra("valueType");
+        qrValue = getIntent().getStringExtra("qrValue");
         permitType = getIntent().getStringExtra("permitType");
+
 
         progress = new ProgressDialog(this);
         progress.setTitle(getResources().getString(R.string.Loading));
         progress.setMessage(getResources().getString(R.string.whileloading));
         progress.setCancelable(true);
         progress.setCanceledOnTouchOutside(true);
-
 
         apiViewModel = new ViewModelProvider(OTPPermitActivity.this).get(ApiViewModel.class);
 
@@ -90,9 +96,10 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                         .into(logo);
             }
         }
-        txtEmail.setText(inputValue);
-        
-        if (inputType.equals("email")) {
+        txtEmail.setText(qrValue);
+
+
+        if (valueType.equalsIgnoreCase("email")) {
             headerNote.setText(getResources().getString(R.string.otp_pls_email));
             if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
                 emailMethod();
@@ -107,6 +114,23 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                 DataManger.internetpopup(OTPPermitActivity.this);
             }
         }
+
+        //nda check
+        apiViewModel.getuserLDetails(getApplicationContext(), "visitor");
+        apiViewModel.getResponseforcompany().observe(this, model -> {
+            try {
+                if (model.getItems().getVisitor().getNdaform() != null) {
+                    if (model.getItems().getVisitor().getNdaform()) {
+                        ndaStatus = "true";
+                    } else {
+                        ndaStatus = "false";
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
 
         no2.setEnabled(false);
         no3.setEnabled(false);
@@ -186,23 +210,42 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (no4.getText().length() == 1) {
                     String otpvalue = no1.getText().toString() + no2.getText().toString() + no3.getText().toString() + no4.getText().toString();
                     if (otpvalue.equals(generatedOTP + "") || otpvalue.equals("5025")) {
                         Conversions.hideKeyboard(OTPPermitActivity.this);
-                        if (permitType.equalsIgnoreCase("workpermit")){
-                            Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
+
+                        if (ndaStatus.equalsIgnoreCase("true")){
+                            Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
                             intent.putExtra("comp_id", comp_id);
-                            intent.putExtra("inputValue", inputValue);
+                            intent.putExtra("inputValue", qrValue);
+                            intent.putExtra("valueType", valueType);
+                            intent.putExtra("permitType", permitType);
+                            intent.putExtra("ndaStatus", ndaStatus);
                             startActivity(intent);
                         }else {
-                            Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
-                            intent.putExtra("comp_id", comp_id);
-                            intent.putExtra("inputValue", inputValue);
-                            startActivity(intent);
+                            if (permitType.equalsIgnoreCase("workpermit")) {
+                                Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
+                                intent.putExtra("comp_id", comp_id);
+                                intent.putExtra("inputValue", qrValue);
+                                intent.putExtra("valueType", valueType);
+                                intent.putExtra("permitType", permitType);
+                                intent.putExtra("ndaStatus", ndaStatus);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
+                                intent.putExtra("comp_id", comp_id);
+                                intent.putExtra("inputValue", qrValue);
+                                intent.putExtra("valueType", valueType);
+                                intent.putExtra("permitType", permitType);
+                                intent.putExtra("ndaStatus", ndaStatus);
+                                startActivity(intent);
+                            }
                         }
+
                     } else {
                         no1.setText("");
                         no2.setText("");
@@ -212,10 +255,11 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                         no3.setEnabled(false);
                         no4.setEnabled(false);
                         no1.requestFocus();
-                        Toast.makeText(getApplicationContext(),"Wrong OTP",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Wrong OTP", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 if (no4.getText().toString().length() == 0) {
@@ -297,13 +341,16 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
         generatedOTP = Conversions.getNDigitRandomNumber(4);
         JSONObject jsonObj_ = new JSONObject();
         try {
-            jsonObj_.put("email", inputValue);
-            jsonObj_.put("val", inputValue);
+            jsonObj_.put("comp_id", comp_id);
+            jsonObj_.put("email", qrValue);
             jsonObj_.put("otp", generatedOTP);
+            jsonObj_.put("sotp", generatedOTP);
+            jsonObj_.put("val", qrValue);
+            apiViewModel.otpsendemailclient(getApplicationContext(), jsonObj_);
         } catch (Exception ignored) {
 
         }
-        apiViewModel.otpsendemailclient(getApplicationContext(), jsonObj_);
+
     }
 
     private void mobileMethod() {
@@ -311,14 +358,15 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
         String senderId = Preferences.loadStringValue(getApplicationContext(), Preferences.senderId, "");
         JSONObject jsonObj_ = new JSONObject();
         try {
-            jsonObj_.put("mobile", inputValue);
+            jsonObj_.put("comp_id", comp_id);
+            jsonObj_.put("mobile", qrValue);
             jsonObj_.put("otp", generatedOTP);
             jsonObj_.put("senderid", senderId);
+            apiViewModel.verifylinkmobile(getApplicationContext(), jsonObj_);
         } catch (Exception ignored) {
 
         }
-        apiViewModel.verifylinkmobile(getApplicationContext(), jsonObj_);
-    }
 
+    }
 
 }

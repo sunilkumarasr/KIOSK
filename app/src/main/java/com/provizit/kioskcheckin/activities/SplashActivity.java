@@ -15,12 +15,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
-
 import com.provizit.kioskcheckin.logins.AdminLoginActivity;
-import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
+import com.provizit.kioskcheckin.logins.OTPPermitActivity;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.config.Preferences;
+import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
+
 import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity {
@@ -119,18 +120,23 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
-
     private void SplashAnimation() {
-       String Login_Status = Preferences.loadStringValue(getApplicationContext(), Preferences.Login_Status, "");
+        String Login_Status = Preferences.loadStringValue(getApplicationContext(), Preferences.Login_Status, "");
         new Handler().postDelayed(() -> {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+//                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+                Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                intent.putExtra("comp_id", "6799da33340e743440035363");
+                intent.putExtra("valueType", "email");
+                intent.putExtra("qrValue", "up.e.ndradev6303@gmail.com");
+                intent.putExtra("permitType", "workpermit");
+                startActivity(intent);
             }
         }, 3000);
     }
-
+    //material###stcproak12***6798b4a4340e74344003531a###aj169408@gmail.com
     @Override
     protected void onResume() {
         super.onResume();

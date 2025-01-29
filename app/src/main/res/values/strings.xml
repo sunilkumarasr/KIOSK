@@ -194,8 +194,8 @@
     <string name="dummyTime">07 PM to 08:00PM</string>
     <string name="dummyDate">10Jan 2025 to 15 Jan 2025</string>
     <string name="dummyRoom">STC Meeting Room 2</string>
-    <string name="SuccessfullyCheckIn">Successfully checkIn</string>
-    <string name="SuccessfullyCheckOut">Successfully checkOut</string>
+    <string name="SuccessfullyCheckIn">Successfully checked-In</string>
+    <string name="SuccessfullyCheckOut">Successfully checked-Out</string>
     //Material Permit
     <string name="materialPermit">Material Permit</string>
     <string name="CompanyName">Company Name:</string>

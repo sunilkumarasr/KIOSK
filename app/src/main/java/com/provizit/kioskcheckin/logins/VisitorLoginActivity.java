@@ -558,116 +558,95 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 }
             }
             else if (spre[0].trim().equalsIgnoreCase("material")){
-                //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                 String input = spre[1].trim();
-                String inputValue = spre[2].toString().trim();
+                if (spre.length == 3) {
 
-                String inputType = "";
-                if (isEmailValid(input)) {
-                    inputType = "email";
-                }else {
-                    inputType = "phone";
-                }
+                    String valueType = "";
+                    String qrValue = "";
 
-                if (input.length() >= 24) {
-                    // Get the last 24 characters from the string
-                    String last24Chars = input.substring(input.length() - 24);
-                    Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
-                    intent.putExtra("comp_id", last24Chars);
-                    intent.putExtra("inputType", inputType);
-                    intent.putExtra("inputValue", inputValue);
-                    intent.putExtra("permitType", "material");
-                    startActivity(intent);
+                    String newVal = spre[2].toString().trim();
+                    char first = newVal.charAt(0);
+                    String str = String.valueOf(first);
+                    if (str.equalsIgnoreCase("+")) {
+                        countrycode = extractCountryCode(newVal);
+                        String newStr = newVal.substring(countrycode.length());
+                        countrycode = countrycode.substring(1);
+                        ccp.setDefaultCountryUsingPhoneCode(Integer.parseInt(countrycode));
+                        ccp.setCountryForNameCode(countrycode);
+                        visitor_mobile.setText(newStr);
+                        valueType = "mobile";
+                        qrValue = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
+                    } else {
+                        visitor_email.setText(newVal.trim());
+                        valueType = "email";
+                        qrValue = newVal.trim();
+                        qrValue = newVal.trim().replaceAll("\u0000", "");
+                    }
+                    if (input.length() >= 24) {
+                        // Get the last 24 characters from the string
+                        //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
+                        String last24Chars = input.substring(input.length() - 24);
+                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                        intent.putExtra("comp_id", last24Chars);
+                        intent.putExtra("valueType", valueType);
+                        intent.putExtra("qrValue", qrValue);
+                        intent.putExtra("permitType", "material");
+                        startActivity(intent);
+                    } else {
+                        ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
+                    }
                 } else {
-                    ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
+                    ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
+
             }
             else if (spre[0].trim().equalsIgnoreCase("workpermit")){
-                //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                 String input = spre[1].trim();
-                String inputValue = spre[2].toString().trim();
+                if (spre.length == 3) {
+                    String valueType = "";
+                    String qrValue = "";
 
-                String inputType = "";
-                if (isEmailValid(input)) {
-                    inputType = "email";
-                }else {
-                    inputType = "phone";
-                }
-
-                if (input.length() >= 24) {
-                    // Get the last 24 characters from the string
-                    String last24Chars = input.substring(input.length() - 24);
-                    Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
-                    intent.putExtra("comp_id", last24Chars);
-                    intent.putExtra("inputType", inputType);
-                    intent.putExtra("inputValue", inputValue);
-                    intent.putExtra("permitType", "workpermit");
-                    startActivity(intent);
+                    String newVal = spre[2].toString().trim();
+                    char first = newVal.charAt(0);
+                    String str = String.valueOf(first);
+                    if (str.equalsIgnoreCase("+")) {
+                        countrycode = extractCountryCode(newVal);
+                        String newStr = newVal.substring(countrycode.length());
+                        countrycode = countrycode.substring(1);
+                        ccp.setDefaultCountryUsingPhoneCode(Integer.parseInt(countrycode));
+                        ccp.setCountryForNameCode(countrycode);
+                        visitor_mobile.setText(newStr);
+                        valueType = "mobile";
+                        qrValue = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
+                    } else {
+                        visitor_email.setText(newVal.trim());
+                        valueType = "email";
+                        qrValue = newVal.trim();
+                        qrValue = newVal.trim().replaceAll("\u0000", "");
+                    }
+                    if (input.length() >= 24) {
+                        // Get the last 24 characters from the string
+                        //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
+                        String last24Chars = input.substring(input.length() - 24);
+                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                        intent.putExtra("comp_id", last24Chars);
+                        intent.putExtra("valueType", valueType);
+                        intent.putExtra("qrValue", qrValue);
+                        intent.putExtra("permitType", "workpermit");
+                        startActivity(intent);
+                    } else {
+                        ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
+                    }
                 } else {
-                    ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
+                    ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
+
             }else {
                 ViewController.worngingPopup(VisitorLoginActivity.this, "Try Again");
-
             }
         }
 
     }
-
-
-//    private void handleBarcodeScan(String barResult) {
-//
-//        Toast.makeText(getApplicationContext(),"barResult: "+barResult,Toast.LENGTH_LONG).show();
-//
-//        spaceValstatus = false;
-//        spaceVal = 0;
-//        usbScannedData = "";
-//
-//        if (!barResult.equalsIgnoreCase("")) {
-//            barResult = barResult.trim();
-//
-//            // Split the input string based on '###' delimiter
-//            String[] parts = barResult.split("###");
-//
-//            if (parts.length >= 4) {
-//                String material = parts[0].trim();  // Extract material
-//                String idOrValue = parts[1].trim();  // Extract ID or value (e.g., proaa02)
-//                String id = parts[2].trim();  // Extract email or phone (e.g., anilcherry205@gmail.com or mobile number)
-//                String emailOrPhone = parts[3].trim();  // Extract email or phone (e.g., anilcherry205@gmail.com or mobile number)
-//
-//                // Log the values for debugging
-//                Log.d("Material", material);
-//                Log.d("ID/Value", idOrValue);
-//                Log.d("ID/", id);
-//                Log.d("Email/Phone", emailOrPhone);
-//
-//                // Determine if it's a phone number or email based on the first character
-//                char firstChar = emailOrPhone.charAt(0);
-//
-//                if (firstChar == '+') {
-//                    // If it's a phone number, handle it
-//                    String phoneNumber = emailOrPhone.substring(1); // Remove the '+' from the phone number
-//                    visitor_mobile.setText(phoneNumber); // Set phone number to the mobile field
-//                    mobile_method(); // Call mobile method
-//                } else {
-//                    // If it's an email address, handle it
-//                    visitor_email.setText(emailOrPhone); // Set email to the email field
-//                    email_decode_method(emailOrPhone); // Call the email method
-//                }
-//
-//                // Process the material value as needed
-//                // For example, log or display the material
-//                Log.d("Material Value", material);
-//
-//                Toast.makeText(getApplicationContext(),"Result: "+material,Toast.LENGTH_LONG).show();
-//
-//            } else {
-//                // If the barcode doesn't contain the expected number of parts, show an error
-//                ViewController.worngingPopup(VisitorLoginActivity.this, barResult);
-//            }
-//
-//        }
-//    }
 
 
     //mobile length for country code bases logic
@@ -1008,13 +987,16 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             visitor_email.setError("Enter valid email");
         } else {
             progress.show();
+            String Comp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
             int otp = Conversions.getNDigitRandomNumber(4);
             Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.otp, otp + "");
             JSONObject jsonObj_ = new JSONObject();
             try {
+                jsonObj_.put("comp_id", Comp_id);
                 jsonObj_.put("email", visitor_email.getText().toString().trim());
                 jsonObj_.put("val", visitor_email.getText().toString().trim());
                 jsonObj_.put("otp", otp);
+                jsonObj_.put("sotp", otp);
                 apiViewModel.otpsendemailclient(getApplicationContext(), jsonObj_);
             } catch (Exception e) {
 
@@ -1138,9 +1120,9 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     }
 
     private static boolean isEmailValid(String email) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
+        String expression = "^[\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$";
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(email.trim()); // Trim input to remove extra spaces
         return matcher.matches();
     }
 

@@ -81,19 +81,21 @@
                             android:orientation="horizontal">
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/imgContractor"
-                                android:layout_width="@dimen/_60sdp"
-                                android:layout_height="@dimen/_60sdp"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
                                 android:src="@drawable/ic_user_white"/>
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
                                 android:layout_marginStart="@dimen/_17sdp"
                                 android:orientation="vertical">
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/txtCName"
                                     style="@style/regular_font"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="*********"
                                     android:textColor="@color/colorPrimary"
@@ -101,6 +103,8 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center_vertical"
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal">
                                     <androidx.appcompat.widget.AppCompatImageView
@@ -110,7 +114,7 @@
                                     <androidx.appcompat.widget.AppCompatTextView
                                         android:id="@+id/txtCompany"
                                         style="@style/regular_font"
-                                        android:layout_width="match_parent"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="@dimen/_5sdp"
                                         android:text="*********"
@@ -129,26 +133,21 @@
                             android:padding="@dimen/_17sdp"
                             android:orientation="horizontal">
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/imgWork"
                                 android:layout_width="@dimen/_40sdp"
                                 android:layout_height="@dimen/_40sdp"
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/setting_ic"/>
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtWorkName"
+                                style="@style/bold_font"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
                                 android:layout_marginStart="@dimen/_17sdp"
-                                android:orientation="vertical">
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/txtWorkName"
-                                    style="@style/bold_font"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="*********"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="@dimen/_18sdp" />
-                            </LinearLayout>
+                                android:text="*********"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_18sdp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -203,15 +202,23 @@
                                 android:layout_height="@dimen/_40sdp"
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/location_icon"/>
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/txtLocation"
-                                style="@style/regular_font"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
                                 android:layout_marginStart="@dimen/_17sdp"
-                                android:text="*********"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="@dimen/_17sdp" />
+                                android:orientation="vertical">
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/txtLocation"
+                                    style="@style/regular_font"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="*********"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/_17sdp" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>

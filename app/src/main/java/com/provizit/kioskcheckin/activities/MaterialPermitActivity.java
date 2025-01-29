@@ -1,69 +1,41 @@
 package com.provizit.kioskcheckin.activities;
 
 import static android.view.View.GONE;
-
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AnimationSet;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.provizit.kioskcheckin.R;
-import com.provizit.kioskcheckin.api.DataManger;
-import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.Preferences;
-import com.provizit.kioskcheckin.config.ViewController;
-import com.provizit.kioskcheckin.logins.AdminLoginActivity;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
-import com.provizit.kioskcheckin.services.CompanyDetailsModel;
-import com.provizit.kioskcheckin.services.Conversions;
-import com.provizit.kioskcheckin.utilities.CompanyData;
 import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetails;
 import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
 import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
-import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
-import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class MaterialPermitActivity extends AppCompatActivity implements View.OnClickListener {
-    
+
     ApiViewModel apiViewModel;
     ProgressDialog progress;
 
@@ -74,7 +46,10 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
 
     String comp_id = "";
     String inputValue = "";
+    String valueType = "";
+    String permitType = "";
     String id = "";
+    String ndaStatus = "";
     boolean checkInType = false;
 
     ArrayList<SupplierDetails> supplier_details;
@@ -83,6 +58,8 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
     ArrayList<MaterialDetails> material_details_final;
     MaterialDetailsAdapter materialDetailsAdapter;
 
+    long currentMillis;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +67,9 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
 
         comp_id = getIntent().getStringExtra("comp_id");
         inputValue = getIntent().getStringExtra("inputValue");
+        valueType = getIntent().getStringExtra("valueType");
+        permitType = getIntent().getStringExtra("permitType");
+        ndaStatus = getIntent().getStringExtra("ndaStatus");
 
         back_image = findViewById(R.id.back_image);
         logo = findViewById(R.id.logo);
@@ -114,6 +94,12 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     .into(logo);
         }
 
+        Calendar calendar = Calendar.getInstance();
+        long currentTimeMillis = calendar.getTimeInMillis();
+        TimeZone timeZone = calendar.getTimeZone();
+        int offsetMillis = timeZone.getOffset(calendar.getTimeInMillis());
+        currentMillis = currentTimeMillis - offsetMillis;
+
         progress = new ProgressDialog(this);
         progress.setTitle(getResources().getString(R.string.Loading));
         progress.setMessage(getResources().getString(R.string.whileloading));
@@ -123,7 +109,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         apiViewModel = new ViewModelProvider(MaterialPermitActivity.this).get(ApiViewModel.class);
 
         //Details
-        apiViewModel.getentrypermitdetails(getApplicationContext(), comp_id,"today");
+        apiViewModel.getentrypermitdetails(getApplicationContext(), comp_id);
         progress.show();
         //Visitor_id_blocklist
         apiViewModel.getentrypermitDetails_response().observe(this, model -> {
@@ -150,14 +136,12 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                             txtEnter.setText("Exit");
                         }
                     }
-
-
                     //checkIn Buttons
                     if (model.getItems().getCheckin()==(0)){
-                        btnNext.setText("CheckIn");
+                        btnNext.setText("Check-In");
                     }else if (model.getItems().getCheckin()==(0)){
                         if (model.getItems().getPurpose_return()){
-                            btnNext.setText("CheckOut");
+                            btnNext.setText("Check-Out");
                         }else {
                             btnNext.setVisibility(GONE);
                         }
@@ -165,7 +149,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                         btnNext.setVisibility(GONE);
                     }
 
-                    txtName.setText(model.getItems().getSupplier_name());
+                    txtCompany.setText(model.getItems().getSupplier_name());
 
                     supplier_details = new ArrayList<>();
                     supplier_details.addAll(model.getItems().getSupplier_details());
@@ -173,7 +157,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                         for (int i = 0; i < supplier_details.size(); i++) {
                             SupplierDetails supplierDetails = supplier_details.get(i);
                             if (supplierDetails != null && supplierDetails.getSupplier_email() != null && supplierDetails.getSupplier_email().equalsIgnoreCase(inputValue)) {
-                                txtCompany.setText(supplierDetails.getContact_person());
+                                txtName.setText(supplierDetails.getContact_person());
                                 txtVehicleType.setText(supplierDetails.getVehicle_type());
                                 txtVehicleNumber.setText(supplierDetails.getVehicle_no());
                             }
@@ -193,6 +177,12 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     recyclerview.setLayoutManager(manager);
                     recyclerview.setAdapter(materialDetailsAdapter);
 
+//                    if (currentMillis >= model.getItems().getStart()) {
+//                        Toast.makeText(getApplicationContext(),"true",Toast.LENGTH_LONG).show();
+//                    }else {
+//                        Toast.makeText(getApplicationContext(),"false",Toast.LENGTH_LONG).show();
+//                    }
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -201,11 +191,12 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
 
         //update CheckIn
         apiViewModel.materialcheckin_response().observe(this, model -> {
+            progress.dismiss();
             try {
                 if (model != null) {
                     Integer statuscode = model.getResult();
                     if (statuscode.equals(200)) {
-                        if (btnNext.getText().toString().equalsIgnoreCase("CheckIn")){
+                        if (btnNext.getText().toString().equalsIgnoreCase("Check-In")){
                             Intent intents = new Intent(getApplicationContext(), ChekInPermitStatusActivity.class);
                             intents.putExtra("status","1");
                             startActivity(intents);
@@ -306,13 +297,16 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
 
     private void updateCheckIn() {
 
+        String Emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Emp_id, "");
 
-        if (btnNext.getText().toString().equalsIgnoreCase("CheckIn")){
+        if (btnNext.getText().toString().equalsIgnoreCase("Check-In")){
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {
                 jsonObj_.put("formtype", "checkin");
                 jsonObj_.put("id", id);
+                jsonObj_.put("email", inputValue);
+                jsonObj_.put("emp_id", Emp_id);
                 JsonParser jsonParser = new JsonParser();
                 gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
                 System.out.println("gsonObject::" + gsonObject);
@@ -320,12 +314,15 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                 e.printStackTrace();
             }
             apiViewModel.materialcheckin(getApplicationContext(), gsonObject);
-        }else if (btnNext.getText().toString().equalsIgnoreCase("CheckOut")){
+            progress.show();
+        }else if (btnNext.getText().toString().equalsIgnoreCase("Check-Out")){
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {
                 jsonObj_.put("formtype", "checkout");
                 jsonObj_.put("id", id);
+                jsonObj_.put("email", inputValue);
+                jsonObj_.put("emp_id", Emp_id);
                 JsonParser jsonParser = new JsonParser();
                 gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
                 System.out.println("gsonObject::" + gsonObject);
@@ -333,6 +330,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                 e.printStackTrace();
             }
             apiViewModel.materialcheckin(getApplicationContext(), gsonObject);
+            progress.show();
         }else {
 
         }

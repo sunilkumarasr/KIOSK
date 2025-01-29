@@ -18,6 +18,7 @@ public class WorkPermitItems implements Serializable {
     private ArrayList<String> ends;
 
     private WorkTypeData worktypeData;
+    private LocationData locations_Data;
     private WorkLocationData worklocationData;
 
 
@@ -84,6 +85,14 @@ public class WorkPermitItems implements Serializable {
 
     public void setWorktypeData(WorkTypeData worktypeData) {
         this.worktypeData = worktypeData;
+    }
+
+    public LocationData getLocations_Data() {
+        return locations_Data;
+    }
+
+    public void setLocations_Data(LocationData locations_Data) {
+        this.locations_Data = locations_Data;
     }
 
     public WorkLocationData getWorklocationData() {

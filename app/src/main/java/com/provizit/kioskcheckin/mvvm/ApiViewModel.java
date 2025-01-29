@@ -425,7 +425,7 @@ public class ApiViewModel extends ViewModel {
 
 
     //Work permit Activity
-    public void getworkpermitDetails(Context context, String id, String type) {
+    public void getworkpermitDetails(Context context, String id) {
         apiRepository.getworkpermitDetails(new ApiRepository.getworkpermitDetails_ModelResponse() {
             @Override
             public void onResponse(WorkPermitModel workPermitModel) {
@@ -436,7 +436,7 @@ public class ApiViewModel extends ViewModel {
             public void onFailure(Throwable t) {
                 Log.e(TAG, "progress: " + t);
             }
-        }, context, id, type);
+        }, context, id);
 
     }
 
@@ -456,7 +456,7 @@ public class ApiViewModel extends ViewModel {
     }
 
 
-    public void getentrypermitdetails(Context context, String id, String type) {
+    public void getentrypermitdetails(Context context, String id) {
         apiRepository.getentrypermitdetails(new ApiRepository.getentrypermitdetails_ModelResponse() {
             @Override
             public void onResponse(EntryPermitModel entryPermitModel) {
@@ -467,7 +467,7 @@ public class ApiViewModel extends ViewModel {
             public void onFailure(Throwable t) {
                 Log.e(TAG, "progress: " + t);
             }
-        }, context, id,type);
+        }, context, id);
 
     }
 

@@ -40,7 +40,11 @@
         <activity
             android:name=".logins.OTPPermitActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.NDAPermitActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ChekInPermitStatusActivity"
             android:exported="false"
