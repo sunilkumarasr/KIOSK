@@ -64,7 +64,6 @@ public class NDAPermitActivity extends AppCompatActivity implements View.OnClick
     String permitType = "";
     String ndaStatus = "";
 
-
     Float meeting_status;
 
     ProgressDialog progress;

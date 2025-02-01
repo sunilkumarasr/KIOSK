@@ -65,7 +65,6 @@ public class EntryPermitItems implements Serializable {
         this.material_details = material_details;
     }
 
-
     public long getCheckin() {
         return checkin;
     }
@@ -81,4 +80,5 @@ public class EntryPermitItems implements Serializable {
     public void setCheckout(long checkout) {
         this.checkout = checkout;
     }
+    
 }

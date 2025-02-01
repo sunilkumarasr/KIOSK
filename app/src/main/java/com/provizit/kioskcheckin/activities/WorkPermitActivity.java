@@ -81,6 +81,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
     String ndaStatus = "";
 
     long currentMillis;
+    String statusCheckIn = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,9 +192,11 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                             if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue)) {
                                 txtCName.setText(contractor.getName());
                                 if (contractor.getCheckin() == (0)) {
-                                    btnNext.setText("Check-In");
+                                    btnNext.setText(getString(R.string.CheckIn));
+                                    statusCheckIn = "Check-In";
                                 } else if (contractor.getCheckin() == (1)) {
-                                    btnNext.setText("Check-Out");
+                                    btnNext.setText(getString(R.string.CheckOut));
+                                    statusCheckIn = "Check-Out";
                                 } else {
                                     btnNext.setVisibility(GONE);
                                 }
@@ -215,7 +218,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                 if (model != null) {
                     Integer statuscode = model.getResult();
                     if (statuscode.equals(200)) {
-                        if (btnNext.getText().toString().equalsIgnoreCase("Check-In")){
+                        if (statusCheckIn.equalsIgnoreCase("Check-In")){
                             Intent intents = new Intent(getApplicationContext(), ChekInPermitStatusActivity.class);
                             intents.putExtra("status","1");
                             startActivity(intents);
@@ -318,7 +321,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
 
         String Emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Emp_id, "");
 
-        if (btnNext.getText().toString().equalsIgnoreCase("Check-In")){
+        if (statusCheckIn.equalsIgnoreCase("Check-In")){
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {
@@ -334,7 +337,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             }
             apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
             progress.show();
-        }else if (btnNext.getText().toString().equalsIgnoreCase("Check-Out")){
+        }else if (statusCheckIn.equalsIgnoreCase("Check-Out")){
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {

@@ -1,9 +1,12 @@
 package com.provizit.kioskcheckin.logins;
 
+import static android.view.View.GONE;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.R;
@@ -31,9 +35,16 @@ import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.services.Conversions;
+import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
+import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
+import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.LocationData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -219,13 +230,80 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                         Conversions.hideKeyboard(OTPPermitActivity.this);
 
                         if (ndaStatus.equalsIgnoreCase("true")){
-                            Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-                            intent.putExtra("comp_id", comp_id);
-                            intent.putExtra("inputValue", qrValue);
-                            intent.putExtra("valueType", valueType);
-                            intent.putExtra("permitType", permitType);
-                            intent.putExtra("ndaStatus", ndaStatus);
-                            startActivity(intent);
+
+                            if (permitType.equalsIgnoreCase("workpermit")) {
+                                //workDetails
+                                apiViewModel.getworkpermitDetails(getApplicationContext(), comp_id);
+                                progress.show();
+                                apiViewModel.getworkpermitDetails_response().observe(OTPPermitActivity.this, model -> {
+                                    progress.dismiss();
+                                    ArrayList<ContractorsData> contractorsDataList;
+                                    contractorsDataList = new ArrayList<>();
+                                    try {
+                                        if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
+                                            contractorsDataList.addAll(model.getItems().getContractorsData());
+                                            if (!contractorsDataList.isEmpty()) {
+                                                for (int j = 0; j < contractorsDataList.size(); j++) {
+                                                    ContractorsData contractor = contractorsDataList.get(j);
+                                                    if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(qrValue)) {
+                                                        if (contractor.getCheckin() == (0)) {
+                                                            Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+                                                            intent.putExtra("comp_id", comp_id);
+                                                            intent.putExtra("inputValue", qrValue);
+                                                            intent.putExtra("valueType", valueType);
+                                                            intent.putExtra("permitType", permitType);
+                                                            intent.putExtra("ndaStatus", ndaStatus);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
+                                                            intent.putExtra("comp_id", comp_id);
+                                                            intent.putExtra("inputValue", qrValue);
+                                                            intent.putExtra("valueType", valueType);
+                                                            intent.putExtra("permitType", permitType);
+                                                            intent.putExtra("ndaStatus", ndaStatus);
+                                                            startActivity(intent);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }else {
+                                //Details
+                                apiViewModel.getentrypermitdetails(getApplicationContext(), comp_id);
+                                progress.show();
+                                //Material permit
+                                apiViewModel.getentrypermitDetails_response().observe(OTPPermitActivity.this, model -> {
+                                    progress.dismiss();
+                                    try {
+                                        if (model != null && model.getItems() != null && model.getItems().getSupplier_details() != null) {
+                                            //checkIn Buttons
+                                            if (model.getItems().getCheckin()==(0)){
+                                                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+                                                intent.putExtra("comp_id", comp_id);
+                                                intent.putExtra("inputValue", qrValue);
+                                                intent.putExtra("valueType", valueType);
+                                                intent.putExtra("permitType", permitType);
+                                                intent.putExtra("ndaStatus", ndaStatus);
+                                                startActivity(intent);
+                                            }else {
+                                                Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
+                                                intent.putExtra("comp_id", comp_id);
+                                                intent.putExtra("inputValue", qrValue);
+                                                intent.putExtra("valueType", valueType);
+                                                intent.putExtra("permitType", permitType);
+                                                intent.putExtra("ndaStatus", ndaStatus);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }
                         }else {
                             if (permitType.equalsIgnoreCase("workpermit")) {
                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);

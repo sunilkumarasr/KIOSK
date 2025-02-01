@@ -200,11 +200,15 @@
     //Material Permit
     <string name="materialPermit">تصريح المواد</string>
     <string name="CompanyName">اسم الشركة:</string>
+    <string name="SupplierName">اسم المورد:</string>
     <string name="VehicleNumber">رقم المركبة:</string>
     <string name="materialInformation">المعلومات المادية</string>
     <string name="materialName">اسم المادة</string>
     <string name="SerialName">اسم المسلسل</string>
     <string name="Quantity">كمية</string>
+    <string name="CheckIn">تحقق في</string>
+    <string name="CheckOut">الدفع</string>
+
 
     //Access denied
     <string name="number_email_belongs">هذا الرقم/البريد الإلكتروني يخص أحد موظفي هذه المؤسسة</string>

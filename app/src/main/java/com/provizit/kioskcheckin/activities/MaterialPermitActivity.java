@@ -60,6 +60,8 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
 
     long currentMillis;
 
+    String statusCheckIn = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,12 +138,15 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                             txtEnter.setText("Exit");
                         }
                     }
+
                     //checkIn Buttons
                     if (model.getItems().getCheckin()==(0)){
-                        btnNext.setText("Check-In");
-                    }else if (model.getItems().getCheckin()==(0)){
+                        btnNext.setText(getString(R.string.CheckIn));
+                        statusCheckIn = "Check-In";
+                    }else if (model.getItems().getCheckout()==(0)){
                         if (model.getItems().getPurpose_return()){
-                            btnNext.setText("Check-Out");
+                            btnNext.setText(getString(R.string.CheckOut));
+                            statusCheckIn = "Check-Out";
                         }else {
                             btnNext.setVisibility(GONE);
                         }
@@ -196,7 +201,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                 if (model != null) {
                     Integer statuscode = model.getResult();
                     if (statuscode.equals(200)) {
-                        if (btnNext.getText().toString().equalsIgnoreCase("Check-In")){
+                        if (statusCheckIn.equalsIgnoreCase("Check-In")){
                             Intent intents = new Intent(getApplicationContext(), ChekInPermitStatusActivity.class);
                             intents.putExtra("status","1");
                             startActivity(intents);
@@ -299,7 +304,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
 
         String Emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Emp_id, "");
 
-        if (btnNext.getText().toString().equalsIgnoreCase("Check-In")){
+        if (statusCheckIn.equalsIgnoreCase("Check-In")){
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {
@@ -315,7 +320,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
             }
             apiViewModel.materialcheckin(getApplicationContext(), gsonObject);
             progress.show();
-        }else if (btnNext.getText().toString().equalsIgnoreCase("Check-Out")){
+        }else if (statusCheckIn.equalsIgnoreCase("Check-Out")){
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {

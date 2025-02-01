@@ -199,11 +199,14 @@
     //Material Permit
     <string name="materialPermit">Material Permit</string>
     <string name="CompanyName">Company Name:</string>
+    <string name="SupplierName">Supplier Name:</string>
     <string name="VehicleNumber">Vehicle Number:</string>
     <string name="materialInformation">Material Information</string>
     <string name="materialName">Material Name</string>
     <string name="SerialName">Serial Name</string>
     <string name="Quantity">Quantity</string>
+    <string name="CheckIn">Check-In</string>
+    <string name="CheckOut">Check-Out</string>
 
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
