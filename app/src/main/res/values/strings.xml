@@ -197,7 +197,7 @@
     <string name="SuccessfullyCheckIn">Successfully checked-In</string>
     <string name="SuccessfullyCheckOut">Successfully checked-Out</string>
     //Material Permit
-    <string name="materialPermit">Material Permit</string>
+    <string name="materialPermit">Material Permit Details</string>
     <string name="CompanyName">Company Name:</string>
     <string name="SupplierName">Supplier Name:</string>
     <string name="VehicleNumber">Vehicle Number:</string>
@@ -207,6 +207,8 @@
     <string name="Quantity">Quantity</string>
     <string name="CheckIn">Check-In</string>
     <string name="CheckOut">Check-Out</string>
+
+    <string name="InvalidPermit">Invalid Permit</string>
 
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>

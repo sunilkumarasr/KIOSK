@@ -187,7 +187,7 @@
     <string name="Version">v</string>
 
     //workpermit
-    <string name="workPermitDetails">ورک پرمٹ کی تفصیلات</string>
+    <string name="workPermitDetails">تفاصيل تصريح العمل</string>
     <string name="WorkPermitInformation">ورک پرمٹ کی معلومات</string>
     <string name="contractor">ٹھیکیدار</string>
     <string name="Maintenance">Maintenance</string>
@@ -198,7 +198,7 @@
     <string name="SuccessfullyCheckOut">تم الخروج بنجاح</string>
 
     //Material Permit
-    <string name="materialPermit">تصريح المواد</string>
+    <string name="materialPermit">تفاصيل تصريح المواد</string>
     <string name="CompanyName">اسم الشركة:</string>
     <string name="SupplierName">اسم المورد:</string>
     <string name="VehicleNumber">رقم المركبة:</string>
@@ -206,8 +206,9 @@
     <string name="materialName">اسم المادة</string>
     <string name="SerialName">اسم المسلسل</string>
     <string name="Quantity">كمية</string>
-    <string name="CheckIn">تحقق في</string>
+    <string name="CheckIn">يدخل</string>
     <string name="CheckOut">الدفع</string>
+    <string name="InvalidPermit">تصريح غير صالح</string>
 
 
     //Access denied

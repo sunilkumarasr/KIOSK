@@ -589,7 +589,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
                         intent.putExtra("comp_id", last24Chars);
                         intent.putExtra("valueType", valueType);
-                        intent.putExtra("qrValue", qrValue);
+                        intent.putExtra("inputValue", qrValue);
                         intent.putExtra("permitType", "material");
                         startActivity(intent);
                     } else {
@@ -631,7 +631,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
                         intent.putExtra("comp_id", last24Chars);
                         intent.putExtra("valueType", valueType);
-                        intent.putExtra("qrValue", qrValue);
+                        intent.putExtra("inputValue", qrValue);
                         intent.putExtra("permitType", "workpermit");
                         startActivity(intent);
                     } else {

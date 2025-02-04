@@ -60,7 +60,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
 
     String comp_id = "";
     String valueType = "";
-    String qrValue = "";
+    String inputValue = "";
     String permitType = "";
     int generatedOTP = 0;
 
@@ -82,7 +82,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
 
         comp_id = getIntent().getStringExtra("comp_id");
         valueType = getIntent().getStringExtra("valueType");
-        qrValue = getIntent().getStringExtra("qrValue");
+        inputValue = getIntent().getStringExtra("inputValue");
         permitType = getIntent().getStringExtra("permitType");
 
 
@@ -107,7 +107,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                         .into(logo);
             }
         }
-        txtEmail.setText(qrValue);
+        txtEmail.setText(inputValue);
 
 
         if (valueType.equalsIgnoreCase("email")) {
@@ -245,11 +245,11 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                             if (!contractorsDataList.isEmpty()) {
                                                 for (int j = 0; j < contractorsDataList.size(); j++) {
                                                     ContractorsData contractor = contractorsDataList.get(j);
-                                                    if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(qrValue)) {
+                                                    if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue)) {
                                                         if (contractor.getCheckin() == (0)) {
                                                             Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
                                                             intent.putExtra("comp_id", comp_id);
-                                                            intent.putExtra("inputValue", qrValue);
+                                                            intent.putExtra("inputValue", inputValue);
                                                             intent.putExtra("valueType", valueType);
                                                             intent.putExtra("permitType", permitType);
                                                             intent.putExtra("ndaStatus", ndaStatus);
@@ -257,7 +257,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                                         } else {
                                                             Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
                                                             intent.putExtra("comp_id", comp_id);
-                                                            intent.putExtra("inputValue", qrValue);
+                                                            intent.putExtra("inputValue", inputValue);
                                                             intent.putExtra("valueType", valueType);
                                                             intent.putExtra("permitType", permitType);
                                                             intent.putExtra("ndaStatus", ndaStatus);
@@ -284,7 +284,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                             if (model.getItems().getCheckin()==(0)){
                                                 Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
                                                 intent.putExtra("comp_id", comp_id);
-                                                intent.putExtra("inputValue", qrValue);
+                                                intent.putExtra("inputValue", inputValue);
                                                 intent.putExtra("valueType", valueType);
                                                 intent.putExtra("permitType", permitType);
                                                 intent.putExtra("ndaStatus", ndaStatus);
@@ -292,7 +292,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                             }else {
                                                 Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
                                                 intent.putExtra("comp_id", comp_id);
-                                                intent.putExtra("inputValue", qrValue);
+                                                intent.putExtra("inputValue", inputValue);
                                                 intent.putExtra("valueType", valueType);
                                                 intent.putExtra("permitType", permitType);
                                                 intent.putExtra("ndaStatus", ndaStatus);
@@ -308,7 +308,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                             if (permitType.equalsIgnoreCase("workpermit")) {
                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
                                 intent.putExtra("comp_id", comp_id);
-                                intent.putExtra("inputValue", qrValue);
+                                intent.putExtra("inputValue", inputValue);
                                 intent.putExtra("valueType", valueType);
                                 intent.putExtra("permitType", permitType);
                                 intent.putExtra("ndaStatus", ndaStatus);
@@ -316,7 +316,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                             } else {
                                 Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
                                 intent.putExtra("comp_id", comp_id);
-                                intent.putExtra("inputValue", qrValue);
+                                intent.putExtra("inputValue", inputValue);
                                 intent.putExtra("valueType", valueType);
                                 intent.putExtra("permitType", permitType);
                                 intent.putExtra("ndaStatus", ndaStatus);
@@ -420,10 +420,10 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
         JSONObject jsonObj_ = new JSONObject();
         try {
             jsonObj_.put("comp_id", comp_id);
-            jsonObj_.put("email", qrValue);
+            jsonObj_.put("email", inputValue);
             jsonObj_.put("otp", generatedOTP);
             jsonObj_.put("sotp", generatedOTP);
-            jsonObj_.put("val", qrValue);
+            jsonObj_.put("val", inputValue);
             apiViewModel.otpsendemailclient(getApplicationContext(), jsonObj_);
         } catch (Exception ignored) {
 
@@ -437,7 +437,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
         JSONObject jsonObj_ = new JSONObject();
         try {
             jsonObj_.put("comp_id", comp_id);
-            jsonObj_.put("mobile", qrValue);
+            jsonObj_.put("mobile", inputValue);
             jsonObj_.put("otp", generatedOTP);
             jsonObj_.put("senderid", senderId);
             apiViewModel.verifylinkmobile(getApplicationContext(), jsonObj_);

@@ -4,54 +4,35 @@ import static android.view.View.GONE;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.provizit.kioskcheckin.R;
-import com.provizit.kioskcheckin.api.DataManger;
-import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.Preferences;
-import com.provizit.kioskcheckin.config.ViewController;
-import com.provizit.kioskcheckin.logins.AdminLoginActivity;
-import com.provizit.kioskcheckin.logins.OTPActivity;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
-import com.provizit.kioskcheckin.services.BlockedvisitorrequestsModel;
-import com.provizit.kioskcheckin.services.CompanyDetailsModel;
 import com.provizit.kioskcheckin.services.Conversions;
-import com.provizit.kioskcheckin.utilities.CompanyData;
-import com.provizit.kioskcheckin.utilities.Getdocuments;
-import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.Ends;
 import com.provizit.kioskcheckin.utilities.WorkPermit.LocationData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.Starts;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,9 +47,10 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
     ApiViewModel apiViewModel;
     ProgressDialog progress;
 
-    ImageView back_image,logo,imgContractor;
-    TextView txtCName,txtCompany,txtWorkName,txtTime,txtDate,txtLocation;
-    Button btnCancel, btnNext;
+    LinearLayout LinearDetails,line1,linearWarning;
+    ImageView back_image, logo, imgContractor;
+    TextView txtCName, txtCompany, txtWorkName, txtTime, txtDate, txtLocation;
+    Button btnCancel, btnNext, btnOk;
 
     ArrayList<String> StartsList;
     ArrayList<String> EndList;
@@ -88,6 +70,9 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_permit);
 
+        LinearDetails = findViewById(R.id.LinearDetails);
+        line1 = findViewById(R.id.line1);
+        linearWarning = findViewById(R.id.linearWarning);
         back_image = findViewById(R.id.back_image);
         logo = findViewById(R.id.logo);
         imgContractor = findViewById(R.id.imgContractor);
@@ -99,6 +84,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         txtLocation = findViewById(R.id.txtLocation);
         btnCancel = findViewById(R.id.btnCancel);
         btnNext = findViewById(R.id.btnNext);
+        btnOk = findViewById(R.id.btnOk);
 
         comp_id = getIntent().getStringExtra("comp_id");
         inputValue = getIntent().getStringExtra("inputValue");
@@ -112,8 +98,8 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         txtVersion.setText(VersionName);
         //company logo
         String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
-        if (c_Logo.equalsIgnoreCase("")){
-        }else {
+        if (c_Logo.equalsIgnoreCase("")) {
+        } else {
             Glide.with(WorkPermitActivity.this).load(c_Logo)
                     .into(logo);
         }
@@ -139,7 +125,9 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         apiViewModel.getworkpermitDetails_response().observe(this, model -> {
             progress.dismiss();
             StartsList = new ArrayList<>();
+            StartsList.clear();
             EndList = new ArrayList<>();
+            EndList.clear();
             contractorsDataList = new ArrayList<>();
             try {
                 if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
@@ -156,6 +144,33 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     }
                     //End time
                     EndList.addAll(model.getItems().getEnds());
+
+                    //date expair condition
+                    Date date = new Date();  // Get current date and time
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = sdf.format(date);
+                    try {
+                        Date dates = sdf.parse(formattedDate);
+                        long currentMillis = dates.getTime();
+                        if (!EndList.isEmpty()) {
+                            String endTimeStr = EndList.get(0);
+                            double endStamp = Double.parseDouble(endTimeStr);
+                            long endMillis = (long) (endStamp * 1000);
+                            if (currentMillis == endMillis || currentMillis < endMillis) {
+                                LinearDetails.setVisibility(View.VISIBLE);
+                                line1.setVisibility(View.VISIBLE);
+                                linearWarning.setVisibility(GONE);
+                            }else {
+                                LinearDetails.setVisibility(GONE);
+                                line1.setVisibility(GONE);
+                                linearWarning.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                     if (!EndList.isEmpty()) {
                         long startTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
                         e_time = Conversions.millitotime(startTimestamp * 1000, false);
@@ -166,6 +181,8 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     txtTime.setText(s_time + " to " + e_time);
                     txtDate.setText(stateDate + " to " + endDate);
 
+
+
                     //name
                     WorkTypeData workTypeData = model.getItems().getWorktypeData();
                     if (workTypeData != null) {
@@ -175,15 +192,9 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     WorkLocationData workLocation = model.getItems().getWorklocationData();
                     LocationData locationData = model.getItems().getLocations_Data();
                     if (workLocation != null) {
-                        txtLocation.setText(workLocation.getName()+","+locationData.getName());
+                        txtLocation.setText(workLocation.getName() + "," + locationData.getName());
                     }
 
-//                    long startMillis = Long.parseLong(StartsList.get(0));
-//                    if (currentMillis >= startMillis) {
-//                        Toast.makeText(getApplicationContext(),"true",Toast.LENGTH_LONG).show();
-//                    }else {
-//                        Toast.makeText(getApplicationContext(),"false",Toast.LENGTH_LONG).show();
-//                    }
 
                     contractorsDataList.addAll(model.getItems().getContractorsData());
                     if (!contractorsDataList.isEmpty()) {
@@ -218,13 +229,13 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                 if (model != null) {
                     Integer statuscode = model.getResult();
                     if (statuscode.equals(200)) {
-                        if (statusCheckIn.equalsIgnoreCase("Check-In")){
+                        if (statusCheckIn.equalsIgnoreCase("Check-In")) {
                             Intent intents = new Intent(getApplicationContext(), ChekInPermitStatusActivity.class);
-                            intents.putExtra("status","1");
+                            intents.putExtra("status", "1");
                             startActivity(intents);
-                        }else {
+                        } else {
                             Intent intents = new Intent(getApplicationContext(), ChekInPermitStatusActivity.class);
-                            intents.putExtra("status","2");
+                            intents.putExtra("status", "2");
                             startActivity(intents);
                         }
                     } else {
@@ -240,6 +251,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         back_image.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnNext.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
     }
 
     //disable auto click action after scann
@@ -248,11 +260,12 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        }else {
+        } else {
             disableTriggeredItems();
         }
         return super.onKeyDown(keyCode, event);
     }
+
     //usb scanner
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -271,6 +284,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         }
         return super.dispatchKeyEvent(event);
     }
+
     private void disableTriggeredItems() {
         back_image.setFocusable(false);
         back_image.setFocusableInTouchMode(false);
@@ -278,8 +292,11 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         btnCancel.setFocusableInTouchMode(false);
         btnNext.setFocusable(false);
         btnNext.setFocusableInTouchMode(false);
+        btnOk.setFocusable(false);
+        btnOk.setFocusableInTouchMode(false);
         runthred();
     }
+
     private void runthred() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -295,6 +312,8 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                 btnCancel.setFocusableInTouchMode(true);
                 btnNext.setFocusable(true);
                 btnNext.setFocusableInTouchMode(true);
+                btnOk.setFocusable(true);
+                btnOk.setFocusableInTouchMode(true);
             }
         }, 500);
     }
@@ -306,6 +325,10 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             case R.id.back_image:
                 Intent intent1 = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.btnOk:
+                Intent inten = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                startActivity(inten);
                 break;
             case R.id.btnCancel:
                 Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
@@ -321,7 +344,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
 
         String Emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Emp_id, "");
 
-        if (statusCheckIn.equalsIgnoreCase("Check-In")){
+        if (statusCheckIn.equalsIgnoreCase("Check-In")) {
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {
@@ -337,7 +360,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             }
             apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
             progress.show();
-        }else if (statusCheckIn.equalsIgnoreCase("Check-Out")){
+        } else if (statusCheckIn.equalsIgnoreCase("Check-Out")) {
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();
             try {
@@ -353,7 +376,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             }
             apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
             progress.show();
-        }else {
+        } else {
 
         }
 
