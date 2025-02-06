@@ -75,7 +75,7 @@
     <string name="your_please">سيتم إرسال بطاقة الدخول إلى البريد الإلكتروني/رسالة نصية إلى جوالك</string>
 
     <string name="host_acceptance">يرجى منكم الإنتظار لحين موافقة الموظف على طلبك وسيتم إشعاركم عبر البريدالإلكتروني أو الجوال</string>
-    <string name="your_OK">موافق</string>
+    <string name="your_OK">موافقة</string>
     <!--    visitor_pass-->
     <string name="visitor_pass">تصريح دخول الزائر</string>
     <string name="visitor_BadgeNo">رقم الشارة:</string>
@@ -201,8 +201,8 @@
     <string name="materialPermit">تفاصيل تصريح المواد</string>
     <string name="CompanyName">اسم الشركة:</string>
     <string name="SupplierName">اسم المورد:</string>
-    <string name="VehicleNumber">رقم المركبة:</string>
-    <string name="materialInformation">المعلومات المادية</string>
+    <string name="VehicleNumber">رقم لوحة السيارة:</string>
+    <string name="materialInformation">معلومات عن المواد</string>
     <string name="materialName">اسم المادة</string>
     <string name="SerialName">اسم المسلسل</string>
     <string name="Quantity">كمية</string>
