@@ -1062,7 +1062,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             } catch (Exception e) {
 
             }
-            apiViewModel.getcvisitordetails(getApplicationContext(), "comp_id", emp_id, decodedEmail, location_id);
+            apiViewModel.getcvisitordetails(getApplicationContext(),"comp_id", emp_id, decodedEmail, location_id);
 
             apiViewModel.getResponseforCVisitor().observe(this, model -> {
                 progress.dismiss();
