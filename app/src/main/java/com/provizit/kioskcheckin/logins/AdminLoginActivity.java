@@ -20,7 +20,9 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AnimationSet;
 import android.widget.Button;
@@ -190,6 +192,67 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
             }
         };
 
+    }
+
+
+    //disable auto click action after scann
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            // Barcode scanner has scanned a barcode, disable triggered items
+            return true;
+        } else {
+            disableTriggeredItems();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    //usb scanner
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_ENTER:
+                    return true;
+                case KeyEvent.KEYCODE_BACK:
+                    Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                    startActivity(intent);
+                    return true;
+                default:
+                    char keyChar = (char) event.getUnicodeChar();
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void disableTriggeredItems() {
+        btnlogin.setFocusable(false);
+        btnlogin.setFocusableInTouchMode(false);
+        loginemail.setFocusable(false);
+        loginemail.setFocusableInTouchMode(false);
+        loginpassword.setFocusable(false);
+        loginpassword.setFocusableInTouchMode(false);
+        runthred();
+    }
+
+    private void runthred() {
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+
+            btnlogin.setFocusable(true);
+            btnlogin.setFocusableInTouchMode(true);
+            loginemail.setFocusable(true);
+            loginemail.setFocusableInTouchMode(true);
+            loginpassword.setFocusable(true);
+            loginpassword.setFocusableInTouchMode(true);
+
+        }, 500);
     }
 
     @Override

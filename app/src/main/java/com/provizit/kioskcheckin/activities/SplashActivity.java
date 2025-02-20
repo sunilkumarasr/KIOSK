@@ -75,7 +75,7 @@ public class SplashActivity extends AppCompatActivity {
             SplashAnimation();
         }
         String language = Preferences.loadStringValue(getApplicationContext(),Preferences.language,"");
-        if (language.equals("ar")){
+        if (language.equalsIgnoreCase("ar")){
             Locale myLocale = new Locale("ar");
             DataManger.appLanguage = "ar";
             Resources res = getResources();
