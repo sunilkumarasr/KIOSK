@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.provizit.kioskcheckin.R;
+import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
@@ -36,10 +36,13 @@ import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class WorkPermitActivity extends AppCompatActivity implements View.OnClickListener {
@@ -138,50 +141,91 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     String s_time = "";
                     String e_time = "";
                     StartsList.addAll(model.getItems().getStarts());
+                    //End time
+                    EndList.addAll(model.getItems().getEnds());
+
+                    Calendar ca = Calendar.getInstance();
+                    ca.set(Calendar.HOUR_OF_DAY, 0);
+                    ca.set(Calendar.MINUTE, 0);
+                    ca.set(Calendar.SECOND, 0);
+                    ca.set(Calendar.MILLISECOND, 0);
+                    long todayStartTimestamp = ca.getTimeInMillis();
+                    System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
+
+                    long startMillis = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                    long endMillis = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
+                    System.out.println("startMillis: " + startMillis);
+                    System.out.println("endMillis: " + endMillis);
+
+                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
+                        System.out.println("Converted 1: " + "1");
+                        if (!StartsList.isEmpty()) {
+                            long startTimestamp = (long) (Double.parseDouble(StartsList.get(0)) + Conversions.timezone());
+                            long endTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
+                            long currentTimestamp = new Date().getTime();
+//                            if (startTimestamp==currentTimestamp || currentTimestamp > startTimestamp && currentTimestamp < endTimestamp){
+//                                System.out.println("Converted 1: " + "3");
+//                            }else {
+//                                System.out.println("Converted 1: " + "4");
+//                            }
+                            if (currentTimestamp > endTimestamp){
+                                System.out.println("Converted 1: " + "5");
+                                LinearDetails.setVisibility(GONE);
+                                line1.setVisibility(GONE);
+                                linearWarning.setVisibility(View.VISIBLE);
+                            }else {
+                                System.out.println("Converted 1: " + "6");
+                                LinearDetails.setVisibility(View.VISIBLE);
+                                line1.setVisibility(View.VISIBLE);
+                                linearWarning.setVisibility(GONE);
+                            }
+                        }
+                    }else {
+                        System.out.println("Converted 1: " + "2");
+                        LinearDetails.setVisibility(GONE);
+                        line1.setVisibility(GONE);
+                        linearWarning.setVisibility(View.VISIBLE);
+                    }
+
+
+//                    // Convert timestamp to a formatted date string
+//                    String stateDatemm = Conversions.millitodateD(startMillis);
+//                    SimpleDateFormat sdfmmm = new SimpleDateFormat("dd MMM yyyy"); // Ignore seconds
+//                    sdfmmm.setTimeZone(TimeZone.getDefault()); // Ensure using the device's timezone
+//                    String currentDatemm = sdfmmm.format(new Date()); // Get current date-time
+//
+//                    // Debugging: Print both dates
+//                    System.out.println("Converted Date: " + stateDatemm);
+//                    System.out.println("Current Date  : " + currentDatemm);
+//
+//                    if (stateDatemm.equalsIgnoreCase(currentDatemm)){
+//                        LinearDetails.setVisibility(View.VISIBLE);
+//                        line1.setVisibility(View.VISIBLE);
+//                        linearWarning.setVisibility(GONE);
+//                    }else {
+//                        LinearDetails.setVisibility(GONE);
+//                        line1.setVisibility(GONE);
+//                        linearWarning.setVisibility(View.VISIBLE);
+//                    }
+
+
                     if (!StartsList.isEmpty()) {
                         long startTimestamp = (long) (Double.parseDouble(StartsList.get(0)) + Conversions.timezone());
                         s_time = Conversions.millitotime(startTimestamp * 1000, false);
                     }
-                    //End time
-                    EndList.addAll(model.getItems().getEnds());
-
-                    //date expair condition
-                    Date date = new Date();  // Get current date and time
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String formattedDate = sdf.format(date);
-                    try {
-                        Date dates = sdf.parse(formattedDate);
-                        long currentMillis = dates.getTime();
-                        if (!EndList.isEmpty()) {
-                            String endTimeStr = EndList.get(0);
-                            double endStamp = Double.parseDouble(endTimeStr);
-                            long endMillis = (long) (endStamp * 1000);
-                            if (currentMillis == endMillis || currentMillis < endMillis) {
-                                LinearDetails.setVisibility(View.VISIBLE);
-                                line1.setVisibility(View.VISIBLE);
-                                linearWarning.setVisibility(GONE);
-                            }else {
-                                LinearDetails.setVisibility(GONE);
-                                line1.setVisibility(GONE);
-                                linearWarning.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
 
                     if (!EndList.isEmpty()) {
                         long startTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
-                        e_time = Conversions.millitotime(startTimestamp * 1000, false);
+                       // e_time = Conversions.millitotime(startTimestamp * 1000, false);
+                        // Add 1 minute (60 seconds = 60000 milliseconds) before converting
+                        e_time = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
                     }
+
                     String stateDate = Conversions.millitodateD((model.getItems().getStart() + Conversions.timezone()) * 1000);
                     String endDate = Conversions.millitodateD((model.getItems().getEnd() + Conversions.timezone()) * 1000);
 
                     txtTime.setText(s_time + " to " + e_time);
                     txtDate.setText(stateDate + " to " + endDate);
-
-
 
                     //name
                     WorkTypeData workTypeData = model.getItems().getWorktypeData();
@@ -194,7 +238,6 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     if (workLocation != null) {
                         txtLocation.setText(workLocation.getName() + "," + locationData.getName());
                     }
-
 
                     contractorsDataList.addAll(model.getItems().getContractorsData());
                     if (!contractorsDataList.isEmpty()) {

@@ -18,6 +18,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
@@ -548,6 +549,28 @@ public class ApiRepository {
         }, context, id);
     }
 
+    public void getmeetingdetails(getmeetingdetails_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getmeetingdetails(new Callback<MeetingDetailsModel>() {
+            @Override
+            public void onResponse(Call<MeetingDetailsModel> call, Response<MeetingDetailsModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MeetingDetailsModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+
+
+
     //work permit checkIn Status
     public void materialcheckin(materialcheckin_ModelResponse logresponse, Context context, JsonObject jsonObject) {
         DataManger dataManger = DataManger.getDataManager();
@@ -730,6 +753,13 @@ public class ApiRepository {
 
         void onFailure(Throwable t);
     }
+
+    public interface getmeetingdetails_ModelResponse {
+        void onResponse(MeetingDetailsModel meetingDetailsModel);
+
+        void onFailure(Throwable t);
+    }
+
 
 }
 

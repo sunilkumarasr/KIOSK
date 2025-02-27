@@ -13,11 +13,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.R;
+import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 
 public class InvitationActivity extends AppCompatActivity {
+
+    ImageView company_logo;
 
     GetCVisitorDetailsModel model;
 
@@ -30,6 +34,16 @@ public class InvitationActivity extends AppCompatActivity {
         Bundle b = intent.getExtras();
         if(b!=null) {
             model = (GetCVisitorDetailsModel) intent.getSerializableExtra("model_key");
+        }
+
+        //company logo
+        company_logo = findViewById(R.id.company_logo);
+
+        String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
+        if (c_Logo.equalsIgnoreCase("")){
+        }else {
+            Glide.with(InvitationActivity.this).load(c_Logo)
+                    .into(company_logo);
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);

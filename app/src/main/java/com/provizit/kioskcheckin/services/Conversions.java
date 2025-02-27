@@ -119,4 +119,12 @@ public class Conversions {
         return time;
     }
 
+    public static String millitodateandtime(Long millSec) {
+        locale = new Locale(DataManger.appLanguage);
+        DateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
+        Date result = new Date(millSec);
+        String time = simple.format(result) + "";
+        return time;
+    }
+
 }

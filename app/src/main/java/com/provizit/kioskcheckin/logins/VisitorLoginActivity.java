@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,6 +29,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -64,6 +66,9 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.provizit.kioskcheckin.BuildConfig;
 import com.provizit.kioskcheckin.activities.MaterialPermitActivity;
+import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
+import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
+import com.provizit.kioskcheckin.activities.WarningScreens.TimeValidationPermitActivity;
 import com.provizit.kioskcheckin.activities.WorkPermitActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
@@ -73,14 +78,25 @@ import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.utilities.CompanyData;
+import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
+import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
 import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
+import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.LocationData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -335,14 +351,16 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         String Comp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
 
                         if (language.equals("ar")) {
-                            Glide.with(VisitorLoginActivity.this).load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getA_pic().get(model.getItems().getA_pic().size() - 1))
+                            Glide.with(VisitorLoginActivity.this)
+                                    .load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getA_pic().get(model.getItems().getA_pic().size() - 1))
                                     .into(logo1);
 
                             Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.company_Logo, DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getA_pic().get(model.getItems().getA_pic().size() - 1));
 
                             Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.logoPass, model.getItems().getA_pic().get(model.getItems().getA_pic().size() - 1));
                         } else {
-                            Glide.with(VisitorLoginActivity.this).load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getPic().get(model.getItems().getPic().size() - 1))
+                            Glide.with(VisitorLoginActivity.this)
+                                    .load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getPic().get(model.getItems().getPic().size() - 1))
                                     .into(logo1);
                             Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.company_Logo, DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getPic().get(model.getItems().getPic().size() - 1));
 
@@ -537,6 +555,11 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             barResult = barResult.trim();
             String[] spre = barResult.split(" ");
             if (spre[0].trim().equalsIgnoreCase("meeting") || spre[0].trim().equalsIgnoreCase("checkin")) {
+                String input = spre[1].trim();
+                if (input.length() >= 24) {
+                    String last24Chars = input.substring(input.length() - 24);
+                    Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.meetingId, last24Chars);
+                }
                 if (spre.length == 3) {
                     String newVal = spre[2].toString().trim();
                     char first = newVal.charAt(0);
@@ -579,19 +602,60 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     } else {
                         visitor_email.setText(newVal.trim());
                         valueType = "email";
-                        qrValue = newVal.trim();
                         qrValue = newVal.trim().replaceAll("\u0000", "");
                     }
                     if (input.length() >= 24) {
                         // Get the last 24 characters from the string
                         //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                         String last24Chars = input.substring(input.length() - 24);
-                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
-                        intent.putExtra("comp_id", last24Chars);
-                        intent.putExtra("valueType", valueType);
-                        intent.putExtra("inputValue", qrValue);
-                        intent.putExtra("permitType", "material");
-                        startActivity(intent);
+
+                        //Details
+                        apiViewModel.getentrypermitdetails(getApplicationContext(), last24Chars);
+                        String finalValueType = valueType;
+                        String finalQrValue = qrValue;
+                        apiViewModel.getentrypermitDetails_response().observe(this, model -> {
+                            progress.dismiss();
+                            try {
+                                if (model != null && model.getItems() != null && model.getItems().getSupplier_details() != null) {
+
+                                    //start date
+                                    long convertedMillismm = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                                    String stateDatemm = Conversions.millitodateD(convertedMillismm);
+
+                                    //end date
+                                    long endDateMillismm = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
+                                    String endDatemm = Conversions.millitodateD(endDateMillismm);
+
+                                    SimpleDateFormat sdfmmm = new SimpleDateFormat("dd MMM yyyy"); // Ignore seconds
+                                    sdfmmm.setTimeZone(TimeZone.getDefault()); // Ensure using the device's timezone
+                                    String currentDatemm = sdfmmm.format(new Date()); // Get current date-time
+
+                                    // Debugging: Print both dates
+                                    System.out.println("Converted Date: " + stateDatemm);
+                                    System.out.println("Current Date  : " + currentDatemm);
+
+                                    String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())){
+                                        Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
+                                        startActivity(intent);
+                                    }else if (!stateDatemm.equalsIgnoreCase(currentDatemm) && !endDatemm.equalsIgnoreCase(currentDatemm)){
+                                        Intent intent = new Intent(getApplicationContext(), TimeValidationPermitActivity.class);
+                                        intent.putExtra("type", "material");
+                                        startActivity(intent);
+                                    }else {
+                                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                                        intent.putExtra("comp_id", last24Chars);
+                                        intent.putExtra("valueType", finalValueType);
+                                        intent.putExtra("inputValue", finalQrValue);
+                                        intent.putExtra("permitType", "material");
+                                        startActivity(intent);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
                     } else {
                         ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
                     }
@@ -621,19 +685,85 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     } else {
                         visitor_email.setText(newVal.trim());
                         valueType = "email";
-                        qrValue = newVal.trim();
                         qrValue = newVal.trim().replaceAll("\u0000", "");
                     }
                     if (input.length() >= 24) {
                         // Get the last 24 characters from the string
                         //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                         String last24Chars = input.substring(input.length() - 24);
-                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
-                        intent.putExtra("comp_id", last24Chars);
-                        intent.putExtra("valueType", valueType);
-                        intent.putExtra("inputValue", qrValue);
-                        intent.putExtra("permitType", "workpermit");
-                        startActivity(intent);
+
+                        //validation check
+                        apiViewModel.getworkpermitDetails(getApplicationContext(), last24Chars);
+                        String finalValueType = valueType;
+                        String finalQrValue = qrValue;
+                        apiViewModel.getworkpermitDetails_response().observe(this, model -> {
+                            progress.dismiss();
+                            try {
+                                if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
+
+
+                                    //date condition check
+                                    ArrayList<String> StartsList = new ArrayList<>();
+                                    ArrayList<String> EndList = new ArrayList<>();
+                                    StartsList.addAll(model.getItems().getStarts());
+                                    EndList.addAll(model.getItems().getEnds());
+                                    Calendar ca = Calendar.getInstance();
+                                    ca.set(Calendar.HOUR_OF_DAY, 0);
+                                    ca.set(Calendar.MINUTE, 0);
+                                    ca.set(Calendar.SECOND, 0);
+                                    ca.set(Calendar.MILLISECOND, 0);
+                                    long todayStartTimestamp = ca.getTimeInMillis();
+                                    System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
+
+                                    long startMillis = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                                    long endMillis = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
+                                    System.out.println("startMillis: " + startMillis);
+                                    System.out.println("endMillis: " + endMillis);
+
+                                    String statusCheck = "0";
+
+                                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
+                                        System.out.println("Converted 1: " + "1");
+                                        if (!EndList.isEmpty()) {
+                                            long endTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
+                                            long currentTimestamp = new Date().getTime();
+                                            if (currentTimestamp > endTimestamp){
+                                                System.out.println("Converted 1: " + "5");
+                                                statusCheck = "0";
+                                            }else {
+                                                System.out.println("Converted 1: " + "6");
+                                                statusCheck = "1";
+                                            }
+                                        }
+                                    }else {
+                                        System.out.println("Converted 1: " + "2");
+                                        statusCheck = "0";
+                                    }
+
+
+                                    String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {
+                                        Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
+                                        startActivity(intent);
+                                    }else if (statusCheck.equalsIgnoreCase("0")){
+                                        Intent intent = new Intent(getApplicationContext(), TimeValidationPermitActivity.class);
+                                        intent.putExtra("type", "workpermit");
+                                        startActivity(intent);
+                                    }else {
+                                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                                        intent.putExtra("comp_id", last24Chars);
+                                        intent.putExtra("valueType", finalValueType);
+                                        intent.putExtra("inputValue", finalQrValue);
+                                        intent.putExtra("permitType", "workpermit");
+                                        startActivity(intent);
+                                    }
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
                     } else {
                         ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
                     }
@@ -647,7 +777,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         }
 
     }
-
 
     //mobile length for country code bases logic
     private int getMaxLengthForCountryCode(String countryCode) {
@@ -954,9 +1083,24 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         }
                         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "mobile");
 
+
                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                         intent.putExtra("model_key", model);
                         startActivity(intent);
+
+
+//                        String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+//                        if (model.getItems().getLocation()!=null){
+//                           if (!location_id.equalsIgnoreCase(model.getItems().getLocation())){
+//                               Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
+//                               startActivity(intent);
+//                           }else {
+//                               Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
+//                               intent.putExtra("model_key", model);
+//                               startActivity(intent);
+//                           }
+//                       }
+
                     } else {
                         showAlertDialog();
                     }
@@ -1008,6 +1152,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 try {
 
                     if (model.getResult() == 200) {
+
                         Float visitor_status = model.getItems().getVisitorStatus();
                         if (visitor_status == 0) {
                             model.setIncomplete_data(new IncompleteData());
@@ -1020,7 +1165,17 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                         intent.putExtra("model_key", model);
                         startActivity(intent);
-//                    } else if(model.getResult() == 201) {
+
+//                        String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+//                        if (model.getItems().getLocation()!=null){
+//                            if (!location_id.equalsIgnoreCase(model.getItems().getLocation())){
+//                                Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
+//                                startActivity(intent);
+//                            }else {
+//
+//                            }
+//                        }
+
                     } else {
                         showAlertDialog();
                     }
@@ -1080,6 +1235,17 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                         intent.putExtra("model_key", model);
                         startActivity(intent);
+
+//                        String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+//                        if (model.getItems().getLocation()!=null){
+//                            if (!location_id.equalsIgnoreCase(model.getItems().getLocation())){
+//                                Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
+//                                startActivity(intent);
+//                            }else {
+//
+//                            }
+//                        }
+
                     } else {
                         showAlertDialog();
                     }

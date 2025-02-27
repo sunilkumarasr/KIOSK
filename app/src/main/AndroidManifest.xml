@@ -38,6 +38,15 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="31">
         <activity
+            android:name=".activities.WarningScreens.TimeValidationPermitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.WarningScreens.MeetingValidationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.WarningScreens.LocationValidationMeetingActivity"
+            android:exported="false" />
+        <activity
             android:name=".logins.OTPPermitActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -48,39 +57,39 @@
         <activity
             android:name=".activities.ChekInPermitStatusActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MaterialPermitActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.WorkPermitActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CamActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".logins.LogoutActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ResultUSBScannerActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.USBScannerActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Meetings.NewMeetingRequestActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Meetings.MeetingRequestDetailsActivity2"
             android:exported="false"
@@ -171,6 +180,7 @@
         <activity
             android:name=".logins.AdminLoginActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity

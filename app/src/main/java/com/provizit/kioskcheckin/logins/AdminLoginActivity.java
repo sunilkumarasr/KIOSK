@@ -61,6 +61,7 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
     RelativeLayout relativeinternet;
     RelativeLayout relativeui;
     EditText loginemail;
+    TextInputLayout txt_input_password;
     EditText loginpassword;
     Button btnlogin;
     String emailPattern;
@@ -123,6 +124,7 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
                         CompanyData items = model.getItems(); // Directly assign without reassignment
 
                         if (items.getRoleDetails().isCheckin()) {
+
                             // Save preferences
                             Preferences.saveStringValue(AdminLoginActivity.this, Preferences.Emp_id, items.getEmp_id());
                             Preferences.saveStringValue(AdminLoginActivity.this, Preferences.Comp_id, items.getComp_id());
@@ -132,7 +134,6 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
                             Preferences.saveStringValue(AdminLoginActivity.this, Preferences.senderId, items.getSenderID());
                             Preferences.saveStringValue(AdminLoginActivity.this, Preferences.subdomain, items.getSubdomain());
                             Preferences.saveStringValue(AdminLoginActivity.this, Preferences.qrUrl, "https://" + items.getSubdomain() + "/touchless/" + items.getEmpData().getLocation());
-
 
                             SharedPreferences sharedPreferences1 = AdminLoginActivity.this.getSharedPreferences("EGEMSS_DATA", MODE_PRIVATE);
                             editor1 = sharedPreferences1.edit();
@@ -194,67 +195,6 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-
-    //disable auto click action after scann
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Barcode scanner has scanned a barcode, disable triggered items
-            return true;
-        } else {
-            disableTriggeredItems();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-    //usb scanner
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_ENTER:
-                    return true;
-                case KeyEvent.KEYCODE_BACK:
-                    Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
-                    startActivity(intent);
-                    return true;
-                default:
-                    char keyChar = (char) event.getUnicodeChar();
-                    return true;
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
-    private void disableTriggeredItems() {
-        btnlogin.setFocusable(false);
-        btnlogin.setFocusableInTouchMode(false);
-        loginemail.setFocusable(false);
-        loginemail.setFocusableInTouchMode(false);
-        loginpassword.setFocusable(false);
-        loginpassword.setFocusableInTouchMode(false);
-        runthred();
-    }
-
-    private void runthred() {
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
-
-            btnlogin.setFocusable(true);
-            btnlogin.setFocusableInTouchMode(true);
-            loginemail.setFocusable(true);
-            loginemail.setFocusableInTouchMode(true);
-            loginpassword.setFocusable(true);
-            loginpassword.setFocusableInTouchMode(true);
-
-        }, 500);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -264,7 +204,7 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
                 v.startAnimation(animation1);
 
                 // Hide the keyboard
-                ViewController.hideKeyboard(AdminLoginActivity.this, loginemail);
+                ViewController.hideKeyboard(AdminLoginActivity.this, loginpassword);
 
                 // Clear previous error states
                 txtinputemail.setErrorEnabled(false);
@@ -386,12 +326,7 @@ public class AdminLoginActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        // Use the back pressed dispatcher to handle the back press event
-        getOnBackPressedDispatcher().onBackPressed();
-
-        // Show the exit popup
-        ViewController.exitPopup(AdminLoginActivity.this);
+        super.onBackPressed();
+        finishAffinity();
     }
-
-
 }

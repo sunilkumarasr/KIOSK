@@ -27,6 +27,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
@@ -475,5 +476,14 @@ public class DataManger {
         Call<EntryPermitModel> call = apiService.materialcheckin(bearer, newEncrypt, data);
         call.enqueue((Callback<EntryPermitModel>) cb);
     }
+
+    public void getmeetingdetails(Callback<MeetingDetailsModel> cb, Context context, String id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<MeetingDetailsModel> call = apiService.getmeetingdetails(bearer, newEncrypt, id);
+        call.enqueue((Callback<MeetingDetailsModel>) cb);
+    }
+
 
 }

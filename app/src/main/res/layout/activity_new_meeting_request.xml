@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:text="Urukundu"
+                        android:text="***"
                         android:textColor="@color/colorPrimary"
                         android:textSize="50sp" />
 
@@ -129,7 +129,7 @@
                                 android:layout_toEndOf="@+id/emp_img"
                                 android:maxLength="25"
                                 android:minLines="1"
-                                android:text="Nagaraju"
+                                android:text="****"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="40sp" />
 
@@ -152,7 +152,7 @@
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:layout_toEndOf="@+id/depart_icon"
                                 android:maxLength="35"
-                                android:text="IT department"
+                                android:text="**"
                                 android:textSize="25sp" />
 
                             <ImageView
@@ -174,7 +174,7 @@
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:layout_toEndOf="@+id/sujct_icon"
                                 android:maxLength="35"
-                                android:text="Business meeting"
+                                android:text="**"
                                 android:textSize="25sp" />
                         </RelativeLayout>
 
@@ -217,7 +217,7 @@
                                 android:layout_marginTop="@dimen/_7sdp"
                                 android:layout_toEndOf="@+id/time_icon"
                                 android:maxLength="25"
-                                android:text="06:00 PM to 07:00 PM"
+                                android:text="**:** PM to **:** PM"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="40sp" />
 
@@ -275,7 +275,7 @@
                                 android:layout_toEndOf="@+id/location"
                                 android:maxLength="25"
                                 android:minLines="1"
-                                android:text="STC Meeting room"
+                                android:text="********"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="40sp" />
 

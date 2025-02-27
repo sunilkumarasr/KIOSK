@@ -11,10 +11,13 @@ public class EntryPermitItems implements Serializable {
     private CommonObject _id;
     private boolean purpose_return;
     private String supplier_name;
+    private String l_id;
     private String type;
     private List<SupplierDetails> supplier_details;
     private List<MaterialDetails> material_details;
     private long checkin,checkout;
+
+    private long start,end;
 
     public CommonObject get_id() {
         return _id;
@@ -40,6 +43,17 @@ public class EntryPermitItems implements Serializable {
         this.supplier_name = supplier_name;
     }
 
+    public boolean isPurpose_return() {
+        return purpose_return;
+    }
+
+    public String getL_id() {
+        return l_id;
+    }
+
+    public void setL_id(String l_id) {
+        this.l_id = l_id;
+    }
 
     public String getType() {
         return type;
@@ -80,5 +94,21 @@ public class EntryPermitItems implements Serializable {
     public void setCheckout(long checkout) {
         this.checkout = checkout;
     }
-    
+
+
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public long getEnd() {
+        return end;
+    }
+
+    public void setEnd(long end) {
+        this.end = end;
+    }
 }

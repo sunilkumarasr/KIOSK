@@ -65,7 +65,8 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColorHint="#414F6c"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_15sdp"
+                        android:importantForAutofill="no"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -95,7 +96,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColorHint="#414F6c"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_15sdp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton

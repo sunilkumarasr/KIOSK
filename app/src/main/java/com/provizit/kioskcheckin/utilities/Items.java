@@ -12,6 +12,7 @@ public class Items implements Serializable {
     private OidModel _id;
     private UserDetails userDetails;
     private Boolean trd_access;
+    private String location;
 
     public UserDetails getUserDetails() {
         return userDetails;
@@ -127,5 +128,13 @@ public class Items implements Serializable {
 
     public void setTrd_access(Boolean trd_access) {
         this.trd_access = trd_access;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

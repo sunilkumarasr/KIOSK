@@ -304,6 +304,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                     }
                                 });
                             }
+
                         }else {
                             if (permitType.equalsIgnoreCase("workpermit")) {
                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);

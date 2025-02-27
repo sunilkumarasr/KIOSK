@@ -7,12 +7,14 @@ import androidx.core.view.ViewCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +41,8 @@ import com.provizit.kioskcheckin.activities.EnterYourDetailsActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
 import com.provizit.kioskcheckin.activities.Meetings.NewMeetingRequestActivity;
 import com.provizit.kioskcheckin.activities.NDA_FormActivity;
+import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
+import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
 import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
@@ -50,9 +54,16 @@ import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.GetNdaActiveDetailsModel;
 import com.provizit.kioskcheckin.config.Preferences;
+import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
+import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
 import com.provizit.kioskcheckin.utilities.GetvisitorrequestblocklistModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class OTPActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -126,8 +137,8 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             }
         }
 
-       Nationalitsblaclklist = new ArrayList<>();
-       Vistiror_blockIDs = new ArrayList<>();
+        Nationalitsblaclklist = new ArrayList<>();
+        Vistiror_blockIDs = new ArrayList<>();
 
         apiViewModel = new ViewModelProvider(OTPActivity.this).get(ApiViewModel.class);
 
@@ -191,6 +202,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (no1.getText().toString().length() == 1) {
@@ -198,6 +210,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                     no2.requestFocus();
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -261,136 +274,306 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                         String Nation = model.getIncomplete_data().getNation();
                         String Visitor_ID = model.getIncomplete_data().getIdnumber();
 
-                        // Check if blocking is true
-                        if (blocking.equals("true") && Nation != null) {
-                            // Check if Nation is on the blocklist
-                            if (Nationalitsblaclklist.contains(Nation.toLowerCase())) {
-                                Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
-                                startActivity(intent);
-                            } else {
-                                if (Vistiror_blockIDs.contains(Visitor_ID)) {
+                        String meetingId = Preferences.loadStringValue(getApplicationContext(), Preferences.meetingId, "");
+
+                        if (!meetingId.equalsIgnoreCase("")) {
+                            Preferences.saveStringValue(OTPActivity.this, Preferences.meetingId, "");
+                            apiViewModel.getmeetingdetails(getApplicationContext(), meetingId);
+                            apiViewModel.getMeetingDetails_response().observe(OTPActivity.this, detailmodel -> {
+                                try {
+                                    if (detailmodel != null && detailmodel.getItems() != null) {
+                                        String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+                                        if (detailmodel.getItems().getLocation() != null) {
+
+                                            //meeting date
+                                            long meetingMilli8 = (detailmodel.getItems().getDate() + Conversions.timezone()) * 1000;
+                                            String meetingdate = Conversions.millitodateD(meetingMilli8);
+
+                                            //current date
+                                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                                            String currentDate = sdf.format(new Date());
+                                            System.out.println(currentDate);
+
+                                            if (!location_id.equalsIgnoreCase(detailmodel.getItems().getLocation())) {
+                                                Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
+                                                startActivity(intent);
+                                            }else if (!meetingdate.equalsIgnoreCase(currentDate)){
+                                                Intent intent = new Intent(getApplicationContext(), MeetingValidationActivity.class);
+                                                startActivity(intent);
+                                            }else {
+                                                // Check if blocking is true
+                                                if (blocking.equals("true") && Nation != null) {
+                                                    // Check if Nation is on the blocklist
+                                                    if (Nationalitsblaclklist.contains(Nation.toLowerCase())) {
+                                                        Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
+                                                        startActivity(intent);
+                                                    } else {
+                                                        if (Vistiror_blockIDs.contains(Visitor_ID)) {
+                                                            Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            // Proceed with the normal flow if Nation is not blocked
+
+                                                            if (checkin_status == 1) {
+                                                                Float h_status = model.getTotal_counts().getHstatus();
+                                                                long c_status = model.getTotal_counts().getCheckin();
+                                                                if (h_status == 0) {
+                                                                    Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                                    intent.putExtra("model_key", model);
+                                                                    startActivity(intent);
+                                                                } else if (h_status == 1 && c_status == 0) {
+                                                                    Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                                    intent.putExtra("model_key", model);
+                                                                    startActivity(intent);
+                                                                } else if (h_status == 2 && c_status == 0) {
+                                                                    Intent intent1 = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                                    intent1.putExtra("model_key", model);
+                                                                    startActivity(intent1);
+                                                                } else {
+                                                                    Intent intent1 = new Intent(getApplicationContext(), AlreadyCheckedInActivity.class);
+                                                                    intent1.putExtra("model_key", model);
+                                                                    startActivity(intent1);
+                                                                }
+                                                            } else if (meeting_status == 1 && visitor_status == 1) {
+                                                                Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                                                intent.putExtra("model_key", model);
+                                                                startActivity(intent);
+                                                            } else if (meeting_status == 1 && visitor_status == 0) {
+                                                                Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+                                                                intent.putExtra("model_key", model);
+                                                                startActivity(intent);
+                                                            } else if (visitor_status == 0) {
+                                                                Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+                                                                intent1.putExtra("model_key", model);
+                                                                startActivity(intent1);
+                                                            } else if (visitor_status == 1) {
+                                                                Boolean nda_terms = model.getIncomplete_data().getNda_terms();
+                                                                Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
+                                                                if (Nationalitsblaclklist.contains(Nation)) {
+                                                                    Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    if (ndamodel != null && ndamodel.getResult() != null) {
+                                                                        if (nda_Data.equals("true")) {
+                                                                            if (ndamodel.getResult() == 200 && (nda_terms == null || nda_terms == false)) {
+                                                                                Intent intent1 = new Intent(getApplicationContext(), NDA_FormActivity.class);
+                                                                                intent1.putExtra("model_key", model);
+                                                                                startActivity(intent1);
+                                                                            } else {
+                                                                                Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                                                                intent1.putExtra("model_key", model);
+                                                                                startActivity(intent1);
+                                                                            }
+                                                                        } else {
+                                                                            Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                                                            intent1.putExtra("model_key", model);
+                                                                            startActivity(intent1);
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                            }
+
+
+                                                        }
+
+                                                    }
+                                                } else {
+                                                    // If blocking is not enabled, follow the normal flow
+                                                    if (checkin_status == 1) {
+                                                        Float h_status = model.getTotal_counts().getHstatus();
+                                                        long c_status = model.getTotal_counts().getCheckin();
+                                                        if (h_status == 0) {
+                                                            Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                            intent.putExtra("model_key", model);
+                                                            startActivity(intent);
+                                                        } else if (h_status == 1 && c_status == 0) {
+                                                            Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                            intent.putExtra("model_key", model);
+                                                            startActivity(intent);
+                                                        } else if (h_status == 2 && c_status == 0) {
+                                                            Intent intent1 = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                            intent1.putExtra("model_key", model);
+                                                            startActivity(intent1);
+                                                        } else {
+                                                            Intent intent1 = new Intent(getApplicationContext(), AlreadyCheckedInActivity.class);
+                                                            intent1.putExtra("model_key", model);
+                                                            startActivity(intent1);
+                                                        }
+                                                    } else if (meeting_status == 1 && visitor_status == 1) {
+                                                        Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                                        intent.putExtra("model_key", model);
+                                                        startActivity(intent);
+                                                    } else if (meeting_status == 1 && visitor_status == 0) {
+                                                        Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+                                                        intent.putExtra("model_key", model);
+                                                        startActivity(intent);
+                                                    } else if (visitor_status == 0) {
+                                                        Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+                                                        intent1.putExtra("model_key", model);
+                                                        startActivity(intent1);
+                                                    } else if (visitor_status == 1) {
+                                                        Boolean nda_terms = model.getIncomplete_data().getNda_terms();
+                                                        Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
+
+                                                        if (nda_Data.equals("true")) {
+                                                            if (ndamodel.getResult() == 200 && (nda_terms == null || nda_terms == false)) {
+                                                                Intent intent1 = new Intent(getApplicationContext(), NDA_FormActivity.class);
+                                                                intent1.putExtra("model_key", model);
+                                                                startActivity(intent1);
+                                                            } else {
+                                                                Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                                                intent1.putExtra("model_key", model);
+                                                                startActivity(intent1);
+                                                            }
+                                                        } else {
+                                                            Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                                            intent1.putExtra("model_key", model);
+                                                            startActivity(intent1);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+
+                        }else {
+                            // Check if blocking is true
+                            if (blocking.equals("true") && Nation != null) {
+                                // Check if Nation is on the blocklist
+                                if (Nationalitsblaclklist.contains(Nation.toLowerCase())) {
                                     Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    // Proceed with the normal flow if Nation is not blocked
+                                    if (Vistiror_blockIDs.contains(Visitor_ID)) {
+                                        Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        // Proceed with the normal flow if Nation is not blocked
 
-                                    if (checkin_status == 1) {
-                                        Float h_status = model.getTotal_counts().getHstatus();
-                                        long c_status = model.getTotal_counts().getCheckin();
-                                        if (h_status == 0) {
-                                            Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                        if (checkin_status == 1) {
+                                            Float h_status = model.getTotal_counts().getHstatus();
+                                            long c_status = model.getTotal_counts().getCheckin();
+                                            if (h_status == 0) {
+                                                Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                intent.putExtra("model_key", model);
+                                                startActivity(intent);
+                                            } else if (h_status == 1 && c_status == 0) {
+                                                Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                intent.putExtra("model_key", model);
+                                                startActivity(intent);
+                                            } else if (h_status == 2 && c_status == 0) {
+                                                Intent intent1 = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                                intent1.putExtra("model_key", model);
+                                                startActivity(intent1);
+                                            } else {
+                                                Intent intent1 = new Intent(getApplicationContext(), AlreadyCheckedInActivity.class);
+                                                intent1.putExtra("model_key", model);
+                                                startActivity(intent1);
+                                            }
+                                        } else if (meeting_status == 1 && visitor_status == 1) {
+                                            Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
                                             intent.putExtra("model_key", model);
                                             startActivity(intent);
-                                        } else if (h_status == 1 && c_status == 0) {
-                                            Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                        } else if (meeting_status == 1 && visitor_status == 0) {
+                                            Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
                                             intent.putExtra("model_key", model);
                                             startActivity(intent);
-                                        } else if (h_status == 2 && c_status == 0) {
-                                            Intent intent1 = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                        } else if (visitor_status == 0) {
+                                            Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
                                             intent1.putExtra("model_key", model);
                                             startActivity(intent1);
-                                        } else {
-                                            Intent intent1 = new Intent(getApplicationContext(), AlreadyCheckedInActivity.class);
-                                            intent1.putExtra("model_key", model);
-                                            startActivity(intent1);
-                                        }
-                                    } else if (meeting_status == 1 && visitor_status == 1) {
-                                        Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
-                                        intent.putExtra("model_key", model);
-                                        startActivity(intent);
-                                    } else if (meeting_status == 1 && visitor_status == 0) {
-                                        Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                        intent.putExtra("model_key", model);
-                                        startActivity(intent);
-                                    } else if (visitor_status == 0) {
-                                        Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                        intent1.putExtra("model_key", model);
-                                        startActivity(intent1);
-                                    } else if (visitor_status == 1) {
-                                        Boolean nda_terms = model.getIncomplete_data().getNda_terms();
-                                        Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
-                                        if (Nationalitsblaclklist.contains(Nation)) {
-                                            Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            if (ndamodel != null && ndamodel.getResult() != null) {
-                                                if (nda_Data.equals("true")) {
-                                                    if (ndamodel.getResult() == 200 && (nda_terms == null || nda_terms == false)) {
-                                                        Intent intent1 = new Intent(getApplicationContext(), NDA_FormActivity.class);
-                                                        intent1.putExtra("model_key", model);
-                                                        startActivity(intent1);
+                                        } else if (visitor_status == 1) {
+                                            Boolean nda_terms = model.getIncomplete_data().getNda_terms();
+                                            Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
+                                            if (Nationalitsblaclklist.contains(Nation)) {
+                                                Intent intent = new Intent(getApplicationContext(), DeclinedActivity.class);
+                                                startActivity(intent);
+                                            } else {
+                                                if (ndamodel != null && ndamodel.getResult() != null) {
+                                                    if (nda_Data.equals("true")) {
+                                                        if (ndamodel.getResult() == 200 && (nda_terms == null || nda_terms == false)) {
+                                                            Intent intent1 = new Intent(getApplicationContext(), NDA_FormActivity.class);
+                                                            intent1.putExtra("model_key", model);
+                                                            startActivity(intent1);
+                                                        } else {
+                                                            Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                                            intent1.putExtra("model_key", model);
+                                                            startActivity(intent1);
+                                                        }
                                                     } else {
                                                         Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
                                                         intent1.putExtra("model_key", model);
                                                         startActivity(intent1);
                                                     }
-                                                } else {
-                                                    Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
-                                                    intent1.putExtra("model_key", model);
-                                                    startActivity(intent1);
                                                 }
+
                                             }
 
                                         }
 
+
                                     }
 
-
                                 }
-
-                            }
-                        } else {
-                            // If blocking is not enabled, follow the normal flow
-                            if (checkin_status == 1) {
-                                Float h_status = model.getTotal_counts().getHstatus();
-                                long c_status = model.getTotal_counts().getCheckin();
-                                if (h_status == 0) {
-                                    Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
-                                    intent.putExtra("model_key", model);
-                                    startActivity(intent);
-                                } else if (h_status == 1 && c_status == 0) {
-                                    Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
-                                    intent.putExtra("model_key", model);
-                                    startActivity(intent);
-                                } else if (h_status == 2 && c_status == 0) {
-                                    Intent intent1 = new Intent(getApplicationContext(), YourRequestSentActivity.class);
-                                    intent1.putExtra("model_key", model);
-                                    startActivity(intent1);
-                                } else {
-                                    Intent intent1 = new Intent(getApplicationContext(), AlreadyCheckedInActivity.class);
-                                    intent1.putExtra("model_key", model);
-                                    startActivity(intent1);
-                                }
-                            } else if (meeting_status == 1 && visitor_status == 1) {
-                                Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
-                                intent.putExtra("model_key", model);
-                                startActivity(intent);
-                            } else if (meeting_status == 1 && visitor_status == 0) {
-                                Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                intent.putExtra("model_key", model);
-                                startActivity(intent);
-                            } else if (visitor_status == 0) {
-                                Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                intent1.putExtra("model_key", model);
-                                startActivity(intent1);
-                            } else if (visitor_status == 1) {
-                                Boolean nda_terms = model.getIncomplete_data().getNda_terms();
-                                Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
-
-                                if (nda_Data.equals("true")) {
-                                    if (ndamodel.getResult() == 200 && (nda_terms == null || nda_terms == false)) {
-                                        Intent intent1 = new Intent(getApplicationContext(), NDA_FormActivity.class);
+                            } else {
+                                // If blocking is not enabled, follow the normal flow
+                                if (checkin_status == 1) {
+                                    Float h_status = model.getTotal_counts().getHstatus();
+                                    long c_status = model.getTotal_counts().getCheckin();
+                                    if (h_status == 0) {
+                                        Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                        intent.putExtra("model_key", model);
+                                        startActivity(intent);
+                                    } else if (h_status == 1 && c_status == 0) {
+                                        Intent intent = new Intent(getApplicationContext(), YourRequestSentActivity.class);
+                                        intent.putExtra("model_key", model);
+                                        startActivity(intent);
+                                    } else if (h_status == 2 && c_status == 0) {
+                                        Intent intent1 = new Intent(getApplicationContext(), YourRequestSentActivity.class);
                                         intent1.putExtra("model_key", model);
                                         startActivity(intent1);
+                                    } else {
+                                        Intent intent1 = new Intent(getApplicationContext(), AlreadyCheckedInActivity.class);
+                                        intent1.putExtra("model_key", model);
+                                        startActivity(intent1);
+                                    }
+                                } else if (meeting_status == 1 && visitor_status == 1) {
+                                    Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                    intent.putExtra("model_key", model);
+                                    startActivity(intent);
+                                } else if (meeting_status == 1 && visitor_status == 0) {
+                                    Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+                                    intent.putExtra("model_key", model);
+                                    startActivity(intent);
+                                } else if (visitor_status == 0) {
+                                    Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+                                    intent1.putExtra("model_key", model);
+                                    startActivity(intent1);
+                                } else if (visitor_status == 1) {
+                                    Boolean nda_terms = model.getIncomplete_data().getNda_terms();
+                                    Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
+
+                                    if (nda_Data.equals("true")) {
+                                        if (ndamodel.getResult() == 200 && (nda_terms == null || nda_terms == false)) {
+                                            Intent intent1 = new Intent(getApplicationContext(), NDA_FormActivity.class);
+                                            intent1.putExtra("model_key", model);
+                                            startActivity(intent1);
+                                        } else {
+                                            Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                            intent1.putExtra("model_key", model);
+                                            startActivity(intent1);
+                                        }
                                     } else {
                                         Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
                                         intent1.putExtra("model_key", model);
                                         startActivity(intent1);
                                     }
-                                } else {
-                                    Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
-                                    intent1.putExtra("model_key", model);
-                                    startActivity(intent1);
                                 }
                             }
                         }

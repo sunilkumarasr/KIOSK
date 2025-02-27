@@ -197,7 +197,7 @@
     <string name="SuccessfullyCheckIn">Successfully checked-In</string>
     <string name="SuccessfullyCheckOut">Successfully checked-Out</string>
     //Material Permit
-    <string name="materialPermit">Material Permit Details</string>
+    <string name="materialPermitDetails">Material Permit Details</string>
     <string name="CompanyName">Company Name:</string>
     <string name="SupplierName">Supplier Name:</string>
     <string name="VehicleNumber">Vehicle Number:</string>
@@ -207,9 +207,22 @@
     <string name="Quantity">Quantity</string>
     <string name="CheckIn">Check-In</string>
     <string name="CheckOut">Check-Out</string>
-
     <string name="InvalidPermit">Invalid Permit</string>
+
+
+    //warning
+    <string name="InvalidCode">Invalid code</string>
+    <string name="PleaseCheckTheLocationOfYourMeeting">Please check the location of your meeting.</string>
+    <string name="YouCanRequestForANewMeeting">You can request for a new meeting.</string>
+    <string name="PleaseCheckTheLocation">Please check the location.</string>
+    <string name="OR_new">OR</string>
+    <string name="NewMeeting">New Meeting</string>
+    <string name="PleaseCheckTheDateOfTheWorkPermit">Please check the date of the Work permit</string>
+    <string name="PleaseCheckTheDateOfTheMaterialPermit">Please check the date of the Material permit</string>
+    <string name="PleaseCheckTheDateOfThemeeting">Please check the date of the meeting</string>
 
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
+
+
 </resources>

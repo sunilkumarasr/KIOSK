@@ -21,9 +21,9 @@
             android:src="@drawable/backimg" />
 
         <ImageView
+            android:id="@+id/company_logo"
             android:layout_width="180dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logotop" />
+            android:layout_height="60dp"/>
     </LinearLayout>
 
     <ScrollView

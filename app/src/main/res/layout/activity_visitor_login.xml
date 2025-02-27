@@ -98,7 +98,6 @@
                     app:boxCornerRadiusTopEnd="8dp"
                     app:boxCornerRadiusTopStart="8dp"
                     app:hintTextAppearance="@style/TextLabel">
-
                     <EditText
                         style="@style/bold_font"
                         android:id="@+id/password_signout"
@@ -164,8 +163,7 @@
             android:layout_below="@id/relative"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:src="@drawable/logotop" />
+            android:layout_marginBottom="@dimen/_10sdp" />
 
         <View
             android:id="@+id/view"

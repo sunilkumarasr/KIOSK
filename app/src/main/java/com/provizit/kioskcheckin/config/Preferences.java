@@ -52,6 +52,7 @@ public class Preferences {
     public final static String pic = "pic";
     public final static String blocking = "blocking";
     public final static String VersionName = "VersionName";
+    public final static String meetingId = "meetingId";
 
 
     public static void saveFloatValue(Context context, String key, float value) {

@@ -49,10 +49,10 @@
             android:src="@drawable/backimg" />
 
         <ImageView
+            android:id="@+id/company_logo"
             android:layout_width="180dp"
             android:layout_height="60dp"
-            android:paddingStart="40dp"
-            android:src="@drawable/logotop" />
+            android:paddingStart="40dp" />
     </RelativeLayout>
 
     <ScrollView

@@ -147,7 +147,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
 
         if (model != null && model.getItems() != null && model.getItems().getEmployee() != null) {
             String trdAccess = String.valueOf(model.getItems().getEmployee().getTrd_access());
-            if ("true".equalsIgnoreCase(trdAccess)) {
+            if (trdAccess.equalsIgnoreCase("true")) {
                 traning_text.setText("You have a training with");
             } else {
                 traning_text.setText("You have a meeting with");

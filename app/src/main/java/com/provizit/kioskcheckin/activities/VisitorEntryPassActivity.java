@@ -32,6 +32,8 @@ public class VisitorEntryPassActivity extends AppCompatActivity {
     LinearLayout badgeNo;
     ImageView emp_pic;
 
+    ImageView company_logo;
+
     GetCVisitorDetailsModel model;
     String badge_b = "";
     String filename = "";
@@ -48,6 +50,15 @@ public class VisitorEntryPassActivity extends AppCompatActivity {
             badge_b = b.getString("badge");
             filename = b.getString("filename");
             model = (GetCVisitorDetailsModel) intent.getSerializableExtra("model_key");
+        }
+
+        //company logo
+        company_logo = findViewById(R.id.company_logo);
+        String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
+        if (c_Logo.equalsIgnoreCase("")){
+        }else {
+            Glide.with(VisitorEntryPassActivity.this).load(c_Logo)
+                    .into(company_logo);
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);

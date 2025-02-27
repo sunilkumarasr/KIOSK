@@ -120,8 +120,8 @@
     <!--    validation-->
     <string name="Mobile_number">أدخل المحمول</string>
     <string name="Invalidmobile_number">لقد قمت بإدخال رقم الجوال الخاطئ</string>
-    <string name="Signout">خروج</string>
-    <string name="Cancel">يلغي</string>
+    <string name="Signout">تسجيل الخروج</string>
+    <string name="Cancel">إلغاء</string>
     <string name="sure_signout">أدخل كلمة المرور الخاصة بك لتسجيل الخروج.</string>
     <string name="Dear">الخدمة الذاتية للزائر</string>
     <string name="You">امسح رمز الاستجابة السريعة أعلاه بجهازك المحمول.</string>
@@ -181,15 +181,15 @@
     //exitPopup
     <string name="Exit">خروج</string>
     <string name="Areyousure">هل أنت متأكد من إغالق التطبيق؟</string>
-    <string name="Yess">نعم</string>
-    <string name="Noo">ال</string>
+    <string name="Yess">موافق</string>
+    <string name="Noo">غير موافق</string>
 
     <string name="Version">v</string>
 
     //workpermit
     <string name="workPermitDetails">تفاصيل تصريح العمل</string>
-    <string name="WorkPermitInformation">ورک پرمٹ کی معلومات</string>
-    <string name="contractor">ٹھیکیدار</string>
+    <string name="WorkPermitInformation">معلومات تصريح العمل</string>
+    <string name="contractor">مقاول</string>
     <string name="Maintenance">Maintenance</string>
     <string name="dummyTime">07 PM to 08:00PM</string>
     <string name="dummyDate">10Jan 2025 to 15 Jan 2025</string>
@@ -198,7 +198,7 @@
     <string name="SuccessfullyCheckOut">تم الخروج بنجاح</string>
 
     //Material Permit
-    <string name="materialPermit">تفاصيل تصريح المواد</string>
+    <string name="materialPermitDetails">تفاصيل تصريح المواد</string>
     <string name="CompanyName">اسم الشركة:</string>
     <string name="SupplierName">اسم المورد:</string>
     <string name="VehicleNumber">رقم لوحة السيارة:</string>
@@ -206,9 +206,20 @@
     <string name="materialName">اسم المادة</string>
     <string name="SerialName">اسم المسلسل</string>
     <string name="Quantity">كمية</string>
-    <string name="CheckIn">يدخل</string>
-    <string name="CheckOut">الدفع</string>
+    <string name="CheckIn">تسجيل دخول.</string>
+    <string name="CheckOut">تسجيل خروج</string>
     <string name="InvalidPermit">تصريح غير صالح</string>
+
+    //warning
+    <string name="InvalidCode">رمز غير صالح.</string>
+    <string name="PleaseCheckTheLocationOfYourMeeting">يرجى التحقق من موقع اجتماعك.</string>
+    <string name="YouCanRequestForANewMeeting">يمكنك طلب اجتماع جديد.</string>
+    <string name="PleaseCheckTheLocation">يرجى التحقق من الموقع.</string>
+    <string name="OR_new">أو</string>
+    <string name="NewMeeting">اجتماع جديد</string>
+    <string name="PleaseCheckTheDateOfTheWorkPermit">يرجى التحقق من تاريخ تصريح العمل</string>
+    <string name="PleaseCheckTheDateOfTheMaterialPermit">يرجى التحقق من تاريخ تصريح المواد</string>
+    <string name="PleaseCheckTheDateOfThemeeting">يرجى التحقق من تاريخ الاجتماع</string>
 
 
     //Access denied

@@ -21,6 +21,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
@@ -84,6 +85,7 @@ public class ApiViewModel extends ViewModel {
     MutableLiveData<WorkPermitModel> updateworkpermita_response = new MutableLiveData<>();
     MutableLiveData<EntryPermitModel> getentrypermitdetails_response = new MutableLiveData<>();
     MutableLiveData<EntryPermitModel> materialcheckin_response = new MutableLiveData<>();
+    MutableLiveData<MeetingDetailsModel> getMeetingDetails_response = new MutableLiveData<>();
 
     ApiRepository apiRepository;
 
@@ -483,6 +485,19 @@ public class ApiViewModel extends ViewModel {
         }, context, jsonObject);
     }
 
+    public void getmeetingdetails(Context context,  String id) {
+        apiRepository.getmeetingdetails(new ApiRepository.getmeetingdetails_ModelResponse() {
+            @Override
+            public void onResponse(MeetingDetailsModel entryPermitModel) {
+                getMeetingDetails_response.postValue(entryPermitModel);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        }, context, id);
+    }
+
+
 
 
     public LiveData<VisitorActionModel> getResponseforvisitor() {
@@ -596,6 +611,10 @@ public class ApiViewModel extends ViewModel {
         return materialcheckin_response;
     }
 
+
+    public LiveData<MeetingDetailsModel> getMeetingDetails_response(){
+        return getMeetingDetails_response;
+    }
 
 
 }

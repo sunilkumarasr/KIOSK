@@ -47,8 +47,7 @@
                         android:id="@+id/logo"
                         android:layout_width="@dimen/_180sdp"
                         android:layout_height="@dimen/_70sdp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/logotop" />
+                        android:layout_gravity="center_horizontal"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/bold_font"
@@ -296,9 +295,19 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_15sdp"
                 style="@style/regular_font"
-                android:text="@string/InvalidPermit"
+                android:text="@string/InvalidCode"
                 android:textColor="@color/red"
                 android:textSize="28sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                style="@style/regular_font"
+                android:text="@string/PleaseCheckTheDateOfTheWorkPermit"
+                android:textColor="@color/colorPrimary"
+                android:textSize="19sp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOk"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"

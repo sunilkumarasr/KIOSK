@@ -29,8 +29,7 @@
         android:layout_height="@dimen/_70sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_15sdp"
-        android:layout_below="@+id/relative"
-        android:src="@drawable/logotop" />
+        android:layout_below="@+id/relative"/>
 
 
     <RelativeLayout

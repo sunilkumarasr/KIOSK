@@ -127,20 +127,24 @@ public class SplashActivity extends AppCompatActivity {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
-//                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-//                intent.putExtra("comp_id", "679c5ed7d49f6905bdbefa99");
-//                intent.putExtra("valueType", "email");
-//                intent.putExtra("inputValue", "aj169408@gmail.com");
-//                intent.putExtra("permitType", "workpermit");
-//                intent.putExtra("ndaStatus", "true");
-//                startActivity(intent);
+//                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+                intent.putExtra("comp_id", "67bff536e4bc7c77c5c55b98");
+                intent.putExtra("valueType", "email");
+                intent.putExtra("inputValue", "aj169408@gmail.com");
+                intent.putExtra("permitType", "workpermit");
+                intent.putExtra("ndaStatus", "true");
+                startActivity(intent);
             }
         }, 3000);
     }
-//    workpermit###ftprovizitstc***67a0782ad49f6905bdbefb23###sunilkumar.ece016@gmail.com
-//    workpermit###ftprovizitstc***679c5ed7d49f6905bdbefa99###aj169408@gmail.com
-    //material###ftprovizitstc***679a2be30635066f680ac1ec###aj169408@gmail.com
+
+//    mailto:material###ftprovizitstc***67bd9a2be4bc7c77c5c55b05###aj169408@gmail.com
+//    mailto:material###ftprovizitstc***67bda6dce4bc7c77c5c55b0f###aj169408@gmail.com
+//    mailto:workpermit###ftprovizitstc***67bda73ce4bc7c77c5c55b10###aj169408@gmail.com
+//    workpermit###ftprovizitstc***67bff639e4bc7c77c5c55b9a###aj169408@gmail.com
+//    workpermit###ftprovizitstc***67bff536e4bc7c77c5c55b98###aj169408@gmail.com
+
     @Override
     protected void onResume() {
         super.onResume();

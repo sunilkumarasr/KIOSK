@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,16 +23,23 @@ import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.provizit.kioskcheckin.R;
+import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
+import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetails;
 import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
 import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class MaterialPermitActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,7 +50,9 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
     ImageView back_image,logo;
     TextView txtEnter,txtName,txtCompany,txtVehicleType,txtVehicleNumber;
     RecyclerView recyclerview;
-    Button btnCancel,btnNext;
+    Button btnCancel,btnNext,btnOk;
+
+    LinearLayout LinearDetails,line1,linearWarning;
 
     String comp_id = "";
     String inputValue = "";
@@ -83,6 +93,11 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         recyclerview = findViewById(R.id.recyclerview);
         btnCancel = findViewById(R.id.btnCancel);
         btnNext = findViewById(R.id.btnNext);
+        LinearDetails = findViewById(R.id.LinearDetails);
+        line1 = findViewById(R.id.line1);
+        linearWarning = findViewById(R.id.linearWarning);
+        btnOk = findViewById(R.id.btnOk);
+
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String VersionName = sharedPreferences.getString("VersionName", "1.0");
@@ -118,6 +133,53 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
             progress.dismiss();
             try {
                 if (model != null && model.getItems() != null && model.getItems().getSupplier_details() != null) {
+
+
+                    long convertedMillismm = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                    // Convert timestamp to a formatted date string
+                    String stateDatemm = Conversions.millitodateD(convertedMillismm);
+                    SimpleDateFormat sdfmmm = new SimpleDateFormat("dd MMM yyyy"); // Ignore seconds
+                    sdfmmm.setTimeZone(TimeZone.getDefault()); // Ensure using the device's timezone
+                    String currentDatemm = sdfmmm.format(new Date()); // Get current date-time
+
+                    // Debugging: Print both dates
+                    System.out.println("Converted Date: " + stateDatemm);
+                    System.out.println("Current Date  : " + currentDatemm);
+
+                    if (stateDatemm.equalsIgnoreCase(currentDatemm)){
+                        LinearDetails.setVisibility(View.VISIBLE);
+                        line1.setVisibility(View.VISIBLE);
+                        linearWarning.setVisibility(GONE);
+                    }else {
+                        LinearDetails.setVisibility(GONE);
+                        line1.setVisibility(GONE);
+                        linearWarning.setVisibility(View.VISIBLE);
+                    }
+
+
+//                    date expair condition
+//                    Date date = new Date();  // Get current date and time
+//                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//                    String formattedDate = sdf.format(date);
+//                    try {
+//                        Date dates = sdf.parse(formattedDate);
+//                        long currentMillis = dates.getTime();
+//                        String endTimeStr = String.valueOf(model.getItems().getStart());
+//                        double endStamp = Double.parseDouble(endTimeStr);
+//                        long endMillis = (long) (endStamp * 1000);
+//                        if (currentMillis == endMillis || currentMillis < endMillis) {
+//                            LinearDetails.setVisibility(View.VISIBLE);
+//                            line1.setVisibility(View.VISIBLE);
+//                            linearWarning.setVisibility(GONE);
+//                        }else {
+//                            LinearDetails.setVisibility(GONE);
+//                            line1.setVisibility(GONE);
+//                            linearWarning.setVisibility(View.VISIBLE);
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+
 
                     id = model.getItems().get_id().get$oid();
 
@@ -182,11 +244,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     recyclerview.setLayoutManager(manager);
                     recyclerview.setAdapter(materialDetailsAdapter);
 
-//                    if (currentMillis >= model.getItems().getStart()) {
-//                        Toast.makeText(getApplicationContext(),"true",Toast.LENGTH_LONG).show();
-//                    }else {
-//                        Toast.makeText(getApplicationContext(),"false",Toast.LENGTH_LONG).show();
-//                    }
+
 
                 }
             } catch (Exception e) {
@@ -222,6 +280,7 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         back_image.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnNext.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
     }
 
     //disable auto click action after scann
@@ -260,6 +319,8 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         btnCancel.setFocusableInTouchMode(false);
         btnNext.setFocusable(false);
         btnNext.setFocusableInTouchMode(false);
+        btnOk.setFocusable(false);
+        btnOk.setFocusableInTouchMode(false);
         runthred();
     }
 
@@ -278,6 +339,8 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                 btnCancel.setFocusableInTouchMode(true);
                 btnNext.setFocusable(true);
                 btnNext.setFocusableInTouchMode(true);
+                btnOk.setFocusable(true);
+                btnOk.setFocusableInTouchMode(true);
             }
         }, 500);
     }
@@ -296,6 +359,10 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.btnNext:
                 updateCheckIn();
+                break;
+            case R.id.btnOk:
+                Intent intent2 = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                startActivity(intent2);
                 break;
         }
     }

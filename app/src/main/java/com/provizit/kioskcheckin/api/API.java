@@ -14,6 +14,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
@@ -120,7 +121,6 @@ public interface API {
     @GET("workpermits/getworkpermitDetails")
     Call<WorkPermitModel> getworkpermitDetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id);
 
-
     @POST("workpermits/updateworkpermita")
     Call<WorkPermitModel> updateworkpermita(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
 
@@ -129,6 +129,10 @@ public interface API {
 
     @POST("entry/materialcheckin")
     Call<EntryPermitModel> materialcheckin(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
+
+    @GET("meeting/getmeetingdetails")
+    Call<MeetingDetailsModel> getmeetingdetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id);
+
 
 }
 

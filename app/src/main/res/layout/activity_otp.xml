@@ -55,8 +55,7 @@
                     android:id="@+id/logo"
                     android:layout_width="@dimen/_180sdp"
                     android:layout_height="@dimen/_70sdp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/logotop" />
+                    android:layout_gravity="center_horizontal" />
 
                 <TextView
                     android:id="@+id/email"

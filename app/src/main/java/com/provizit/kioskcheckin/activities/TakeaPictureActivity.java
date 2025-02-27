@@ -14,13 +14,17 @@ import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
 import com.provizit.kioskcheckin.R;
+import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 
 public class TakeaPictureActivity extends AppCompatActivity {
     private static final String TAG = "TakeaPictureActivity";
+
+    ImageView company_logo;
     ContentValues values;
     Uri imageUri;
     Button takesnap;
@@ -35,6 +39,14 @@ public class TakeaPictureActivity extends AppCompatActivity {
         Intent intent = getIntent();
         model = (GetCVisitorDetailsModel) intent.getSerializableExtra("model_key");
 
+        //company logo
+        company_logo = findViewById(R.id.company_logo);
+        String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
+        if (c_Logo.equalsIgnoreCase("")){
+        }else {
+            Glide.with(TakeaPictureActivity.this).load(c_Logo)
+                    .into(company_logo);
+        }
 
         takesnap=findViewById(R.id.takesnap);
         takesnap.setOnClickListener(view -> {

@@ -29,8 +29,7 @@
                 android:layout_height="@dimen/_70sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="55dp"
-                android:layout_marginBottom="50dp"
-                android:src="@drawable/logotop" />
+                android:layout_marginBottom="50dp"/>
 
             <TextView
                 style="@style/regular_font"
