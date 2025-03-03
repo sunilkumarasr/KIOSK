@@ -506,19 +506,19 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     visitor_email.setFocusableInTouchMode(false);
                     // Reset usbScannedData if needed for the next scan
                     usbScannedData = "";
-                    if (use_mobile.isChecked()) {
-                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
-                            email_method();
-                        } else {
-                            DataManger.internetpopup(VisitorLoginActivity.this);
-                        }
-                    } else {
-                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
-                            mobile_method();
-                        } else {
-                            DataManger.internetpopup(VisitorLoginActivity.this);
-                        }
-                    }
+//                    if (use_mobile.isChecked()) {
+//                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
+//                            email_method();
+//                        } else {
+//                            DataManger.internetpopup(VisitorLoginActivity.this);
+//                        }
+//                    } else {
+//                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
+//                            mobile_method();
+//                        } else {
+//                            DataManger.internetpopup(VisitorLoginActivity.this);
+//                        }
+//                    }
                     return true;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
@@ -701,12 +701,12 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                             try {
                                 if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
 
-
                                     //date condition check
                                     ArrayList<String> StartsList = new ArrayList<>();
                                     ArrayList<String> EndList = new ArrayList<>();
                                     StartsList.addAll(model.getItems().getStarts());
                                     EndList.addAll(model.getItems().getEnds());
+
                                     Calendar ca = Calendar.getInstance();
                                     ca.set(Calendar.HOUR_OF_DAY, 0);
                                     ca.set(Calendar.MINUTE, 0);
@@ -720,26 +720,41 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     System.out.println("startMillis: " + startMillis);
                                     System.out.println("endMillis: " + endMillis);
 
-                                    String statusCheck = "0";
+                                    // Get the current timestamp
+                                    long currents = System.currentTimeMillis();
+                                    // Convert to readable date/time
+                                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
+                                    sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
+                                    String formattedTime = sdf.format(new Date(currents));
 
+                                    Date cdate = sdf.parse(formattedTime);
+                                    long Ctimestamp = cdate.getTime();
+
+                                    String endTime = "";
+                                    if (!EndList.isEmpty()) {
+                                        long startTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
+                                        // Add 1 minute (60 seconds = 60000 milliseconds) before converting
+                                        endTime = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
+                                    }
+                                    Date Edate = sdf.parse(endTime);
+                                    long Etimestamp = Edate.getTime();
+
+                                    String statusCheck = "0";
                                     if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
                                         System.out.println("Converted 1: " + "1");
-                                        if (!EndList.isEmpty()) {
-                                            long endTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
-                                            long currentTimestamp = new Date().getTime();
-                                            if (currentTimestamp > endTimestamp){
+                                        if (!StartsList.isEmpty()) {
+                                            if (Ctimestamp < Etimestamp){
                                                 System.out.println("Converted 1: " + "5");
-                                                statusCheck = "0";
+                                                statusCheck = "1";
                                             }else {
                                                 System.out.println("Converted 1: " + "6");
-                                                statusCheck = "1";
+                                                statusCheck = "0";
                                             }
                                         }
                                     }else {
                                         System.out.println("Converted 1: " + "2");
                                         statusCheck = "0";
                                     }
-
 
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
                                     if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {

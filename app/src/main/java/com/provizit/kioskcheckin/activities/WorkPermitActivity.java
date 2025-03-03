@@ -157,27 +157,38 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     System.out.println("startMillis: " + startMillis);
                     System.out.println("endMillis: " + endMillis);
 
+                    // Get the current timestamp
+                    long currents = System.currentTimeMillis();
+                    // Convert to readable date/time
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
+                    sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
+                    String formattedTime = sdf.format(new Date(currents));
+
+                    Date cdate = sdf.parse(formattedTime);
+                    long Ctimestamp = cdate.getTime();
+
+                    String endTime = "";
+                    if (!EndList.isEmpty()) {
+                        long startTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
+                        // Add 1 minute (60 seconds = 60000 milliseconds) before converting
+                        endTime = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
+                    }
+                    Date Edate = sdf.parse(endTime);
+                    long Etimestamp = Edate.getTime();
+
                     if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
                         System.out.println("Converted 1: " + "1");
                         if (!StartsList.isEmpty()) {
-                            long startTimestamp = (long) (Double.parseDouble(StartsList.get(0)) + Conversions.timezone());
-                            long endTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
-                            long currentTimestamp = new Date().getTime();
-//                            if (startTimestamp==currentTimestamp || currentTimestamp > startTimestamp && currentTimestamp < endTimestamp){
-//                                System.out.println("Converted 1: " + "3");
-//                            }else {
-//                                System.out.println("Converted 1: " + "4");
-//                            }
-                            if (currentTimestamp > endTimestamp){
+                            if (Ctimestamp < Etimestamp){
                                 System.out.println("Converted 1: " + "5");
-                                LinearDetails.setVisibility(GONE);
-                                line1.setVisibility(GONE);
-                                linearWarning.setVisibility(View.VISIBLE);
-                            }else {
-                                System.out.println("Converted 1: " + "6");
                                 LinearDetails.setVisibility(View.VISIBLE);
                                 line1.setVisibility(View.VISIBLE);
                                 linearWarning.setVisibility(GONE);
+                            }else {
+                                System.out.println("Converted 1: " + "6");
+                                LinearDetails.setVisibility(GONE);
+                                line1.setVisibility(GONE);
+                                linearWarning.setVisibility(View.VISIBLE);
                             }
                         }
                     }else {

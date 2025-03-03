@@ -157,30 +157,6 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     }
 
 
-//                    date expair condition
-//                    Date date = new Date();  // Get current date and time
-//                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//                    String formattedDate = sdf.format(date);
-//                    try {
-//                        Date dates = sdf.parse(formattedDate);
-//                        long currentMillis = dates.getTime();
-//                        String endTimeStr = String.valueOf(model.getItems().getStart());
-//                        double endStamp = Double.parseDouble(endTimeStr);
-//                        long endMillis = (long) (endStamp * 1000);
-//                        if (currentMillis == endMillis || currentMillis < endMillis) {
-//                            LinearDetails.setVisibility(View.VISIBLE);
-//                            line1.setVisibility(View.VISIBLE);
-//                            linearWarning.setVisibility(GONE);
-//                        }else {
-//                            LinearDetails.setVisibility(GONE);
-//                            line1.setVisibility(GONE);
-//                            linearWarning.setVisibility(View.VISIBLE);
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-
-
                     id = model.getItems().get_id().get$oid();
 
                     if (model.getItems().getType().equalsIgnoreCase("1")){

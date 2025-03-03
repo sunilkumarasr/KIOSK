@@ -129,10 +129,10 @@ public class SplashActivity extends AppCompatActivity {
             } else {
 //                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
                 Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-                intent.putExtra("comp_id", "67bff536e4bc7c77c5c55b98");
+                intent.putExtra("comp_id", "67bd9a2be4bc7c77c5c55b05");
                 intent.putExtra("valueType", "email");
                 intent.putExtra("inputValue", "aj169408@gmail.com");
-                intent.putExtra("permitType", "workpermit");
+                intent.putExtra("permitType", "material");
                 intent.putExtra("ndaStatus", "true");
                 startActivity(intent);
             }
@@ -144,6 +144,8 @@ public class SplashActivity extends AppCompatActivity {
 //    mailto:workpermit###ftprovizitstc***67bda73ce4bc7c77c5c55b10###aj169408@gmail.com
 //    workpermit###ftprovizitstc***67bff639e4bc7c77c5c55b9a###aj169408@gmail.com
 //    workpermit###ftprovizitstc***67bff536e4bc7c77c5c55b98###aj169408@gmail.com
+//    mailto:workpermit###ftprovizitstc***67c156abe4bc7c77c5c55bf2###aj169408@gmail.com
+//    workpermit###ftprovizitstc***67c18d22e4bc7c77c5c55bf4###aj169408@gmail.com
 
     @Override
     protected void onResume() {
