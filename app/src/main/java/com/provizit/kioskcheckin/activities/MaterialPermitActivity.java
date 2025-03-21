@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -134,19 +135,22 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
             try {
                 if (model != null && model.getItems() != null && model.getItems().getSupplier_details() != null) {
 
+                    //date status check
+                    Calendar ca = Calendar.getInstance();
+                    ca.set(Calendar.HOUR_OF_DAY, 0);
+                    ca.set(Calendar.MINUTE, 0);
+                    ca.set(Calendar.SECOND, 0);
+                    ca.set(Calendar.MILLISECOND, 0);
+                    long todayStartTimestamp = ca.getTimeInMillis();
+                    System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
 
-                    long convertedMillismm = (model.getItems().getStart() + Conversions.timezone()) * 1000;
-                    // Convert timestamp to a formatted date string
-                    String stateDatemm = Conversions.millitodateD(convertedMillismm);
-                    SimpleDateFormat sdfmmm = new SimpleDateFormat("dd MMM yyyy"); // Ignore seconds
-                    sdfmmm.setTimeZone(TimeZone.getDefault()); // Ensure using the device's timezone
-                    String currentDatemm = sdfmmm.format(new Date()); // Get current date-time
+                    long startMillis = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                    long endMillis = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
+                    System.out.println("startMillis: " + startMillis);
+                    System.out.println("endMillis: " + endMillis);
 
-                    // Debugging: Print both dates
-                    System.out.println("Converted Date: " + stateDatemm);
-                    System.out.println("Current Date  : " + currentDatemm);
 
-                    if (stateDatemm.equalsIgnoreCase(currentDatemm)){
+                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
                         LinearDetails.setVisibility(View.VISIBLE);
                         line1.setVisibility(View.VISIBLE);
                         linearWarning.setVisibility(GONE);
@@ -155,7 +159,6 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                         line1.setVisibility(GONE);
                         linearWarning.setVisibility(View.VISIBLE);
                     }
-
 
                     id = model.getItems().get_id().get$oid();
 
@@ -220,7 +223,13 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     recyclerview.setLayoutManager(manager);
                     recyclerview.setAdapter(materialDetailsAdapter);
 
-
+                    //meeting cancel
+                    Log.e("status_",model.getItems().getStatus());
+                    if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                        txtEnter.setBackgroundColor(Color.parseColor("#8B0000"));
+                        txtEnter.setText("The Material Permit has been Cancelled");
+                        line1.setVisibility(GONE);
+                    }
 
                 }
             } catch (Exception e) {

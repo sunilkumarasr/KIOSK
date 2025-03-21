@@ -147,11 +147,21 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
 
         if (model != null && model.getItems() != null && model.getItems().getEmployee() != null) {
             String trdAccess = String.valueOf(model.getItems().getEmployee().getTrd_access());
+
             if (trdAccess.equalsIgnoreCase("true")) {
                 traning_text.setText("You have a training with");
-            } else {
+            }else if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
                 traning_text.setText("You have a meeting with");
+            }else {
+                traning_text.setText("You have a training with");
             }
+
+//            if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
+//                traning_text.setText("You have a meeting with");
+//            }else {
+//                traning_text.setText("You have a training with");
+//            }
+
         } else {
             traning_text.setText("Employee or meeting details are missing");
         }

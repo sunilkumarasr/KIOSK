@@ -73,10 +73,23 @@
                         android:padding="@dimen/_25sdp"
                         android:background="@drawable/round_white_trasnperent">
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:visibility="gone"
+                            android:id="@+id/txtEnter"
+                            style="@style/regular_font"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14sdp"
+                            android:background="@color/red"
+                            android:elevation="@dimen/_2sdp"/>
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/round_white"
                             android:padding="@dimen/_15sdp"
                             android:orientation="horizontal">

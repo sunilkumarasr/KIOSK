@@ -127,14 +127,14 @@ public class SplashActivity extends AppCompatActivity {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-//                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
-                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-                intent.putExtra("comp_id", "67bd9a2be4bc7c77c5c55b05");
-                intent.putExtra("valueType", "email");
-                intent.putExtra("inputValue", "aj169408@gmail.com");
-                intent.putExtra("permitType", "material");
-                intent.putExtra("ndaStatus", "true");
-                startActivity(intent);
+                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+//                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+//                intent.putExtra("comp_id", "67c949b99aa7e824a9bf602a");
+//                intent.putExtra("valueType", "email");
+//                intent.putExtra("inputValue", "aj169408@gmail.com");
+//                intent.putExtra("permitType", "material");
+//                intent.putExtra("ndaStatus", "true");
+//                startActivity(intent);
             }
         }, 3000);
     }
@@ -145,7 +145,9 @@ public class SplashActivity extends AppCompatActivity {
 //    workpermit###ftprovizitstc***67bff639e4bc7c77c5c55b9a###aj169408@gmail.com
 //    workpermit###ftprovizitstc***67bff536e4bc7c77c5c55b98###aj169408@gmail.com
 //    mailto:workpermit###ftprovizitstc***67c156abe4bc7c77c5c55bf2###aj169408@gmail.com
-//    workpermit###ftprovizitstc***67c18d22e4bc7c77c5c55bf4###aj169408@gmail.com
+//    workpermit###ftprovizitstc***67c6d4b89aa7e824a9bf5ff0###aj169408@gmail.com
+//    material###ftprovizitstc***67c6d2e89aa7e824a9bf5fef###aj169408@gmail.com
+//    mailto:material###ftprovizitstc***67c949b99aa7e824a9bf602a###aj169408@gmail.com
 
     @Override
     protected void onResume() {

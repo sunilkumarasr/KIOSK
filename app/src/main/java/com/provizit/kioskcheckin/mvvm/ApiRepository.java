@@ -257,6 +257,7 @@ public class ApiRepository {
             @Override
             public void onFailure(Call<GetNdaActiveDetailsModel> call, Throwable t) {
                 logresponse.onFailure(new Throwable(t));
+
             }
         }, context, id, type);
     }

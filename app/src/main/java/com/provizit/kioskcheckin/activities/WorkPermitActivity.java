@@ -2,12 +2,16 @@ package com.provizit.kioskcheckin.activities;
 
 import static android.view.View.GONE;
 
+import static com.provizit.kioskcheckin.services.Conversions.convertArabicToEnglish;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +56,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
 
     LinearLayout LinearDetails,line1,linearWarning;
     ImageView back_image, logo, imgContractor;
-    TextView txtCName, txtCompany, txtWorkName, txtTime, txtDate, txtLocation;
+    TextView txtEnter,txtCName, txtCompany, txtWorkName, txtTime, txtDate, txtLocation;
     Button btnCancel, btnNext, btnOk;
 
     ArrayList<String> StartsList;
@@ -79,6 +83,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         back_image = findViewById(R.id.back_image);
         logo = findViewById(R.id.logo);
         imgContractor = findViewById(R.id.imgContractor);
+        txtEnter = findViewById(R.id.txtEnter);
         txtCName = findViewById(R.id.txtCName);
         txtCompany = findViewById(R.id.txtCompany);
         txtWorkName = findViewById(R.id.txtWorkName);
@@ -160,7 +165,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                     // Get the current timestamp
                     long currents = System.currentTimeMillis();
                     // Convert to readable date/time
-                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
                     sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
                     String formattedTime = sdf.format(new Date(currents));
 
@@ -173,6 +178,9 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                         // Add 1 minute (60 seconds = 60000 milliseconds) before converting
                         endTime = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
                     }
+                    endTime = convertArabicToEnglish(endTime);
+                    endTime = endTime.replace("ص", "AM").replace("م", "PM");
+
                     Date Edate = sdf.parse(endTime);
                     long Etimestamp = Edate.getTime();
 
@@ -197,28 +205,6 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                         line1.setVisibility(GONE);
                         linearWarning.setVisibility(View.VISIBLE);
                     }
-
-
-//                    // Convert timestamp to a formatted date string
-//                    String stateDatemm = Conversions.millitodateD(startMillis);
-//                    SimpleDateFormat sdfmmm = new SimpleDateFormat("dd MMM yyyy"); // Ignore seconds
-//                    sdfmmm.setTimeZone(TimeZone.getDefault()); // Ensure using the device's timezone
-//                    String currentDatemm = sdfmmm.format(new Date()); // Get current date-time
-//
-//                    // Debugging: Print both dates
-//                    System.out.println("Converted Date: " + stateDatemm);
-//                    System.out.println("Current Date  : " + currentDatemm);
-//
-//                    if (stateDatemm.equalsIgnoreCase(currentDatemm)){
-//                        LinearDetails.setVisibility(View.VISIBLE);
-//                        line1.setVisibility(View.VISIBLE);
-//                        linearWarning.setVisibility(GONE);
-//                    }else {
-//                        LinearDetails.setVisibility(GONE);
-//                        line1.setVisibility(GONE);
-//                        linearWarning.setVisibility(View.VISIBLE);
-//                    }
-
 
                     if (!StartsList.isEmpty()) {
                         long startTimestamp = (long) (Double.parseDouble(StartsList.get(0)) + Conversions.timezone());
@@ -269,6 +255,13 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
 
+                    //meeting cancel
+                    Log.e("status_",model.getItems().getStatus());
+                    if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                        txtEnter.setBackgroundColor(Color.parseColor("#8B0000"));
+                        txtEnter.setText("The Work Permit has been Cancelled");
+                        line1.setVisibility(GONE);
+                    }
 
                 }
             } catch (Exception e) {

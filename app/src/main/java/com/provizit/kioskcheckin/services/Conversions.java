@@ -63,7 +63,7 @@ public class Conversions {
         DateFormat simple = new SimpleDateFormat("hh:mm aa", locale);
 
         if (is24hours) {
-            simple = new SimpleDateFormat("HH:mm");
+            simple = new SimpleDateFormat("HH:mm", locale);
         }
         Date result = new Date(millSec);
         String time = simple.format(result) + "";
@@ -125,6 +125,20 @@ public class Conversions {
         Date result = new Date(millSec);
         String time = simple.format(result) + "";
         return time;
+    }
+
+    // Function to convert Arabic numerals to English numerals
+    public static String convertArabicToEnglish(String input) {
+        return input.replace("٠", "0")
+                .replace("١", "1")
+                .replace("٢", "2")
+                .replace("٣", "3")
+                .replace("٤", "4")
+                .replace("٥", "5")
+                .replace("٦", "6")
+                .replace("٧", "7")
+                .replace("٨", "8")
+                .replace("٩", "9");
     }
 
 }

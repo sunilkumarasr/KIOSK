@@ -220,6 +220,8 @@
     <string name="PleaseCheckTheDateOfTheWorkPermit">يرجى التحقق من تاريخ تصريح العمل</string>
     <string name="PleaseCheckTheDateOfTheMaterialPermit">يرجى التحقق من تاريخ تصريح المواد</string>
     <string name="PleaseCheckTheDateOfThemeeting">يرجى التحقق من تاريخ الاجتماع</string>
+    <string name="TheWorkPermitHasBeenCancelled">تم إلغاء تصريح العمل</string>
+    <string name="TheMaterialPermitHasBeenCancelled">تم إلغاء تصريح المواد</string>
 
 
     //Access denied

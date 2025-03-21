@@ -2,7 +2,7 @@ package com.provizit.kioskcheckin.logins;
 
 import static android.view.View.GONE;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.provizit.kioskcheckin.logins.AdminLoginActivity.isEmailValid;
+import static com.provizit.kioskcheckin.services.Conversions.convertArabicToEnglish;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
@@ -14,7 +14,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -34,7 +33,6 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -65,11 +63,8 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.provizit.kioskcheckin.BuildConfig;
-import com.provizit.kioskcheckin.activities.MaterialPermitActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
-import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
-import com.provizit.kioskcheckin.activities.WarningScreens.TimeValidationPermitActivity;
-import com.provizit.kioskcheckin.activities.WorkPermitActivity;
+import com.provizit.kioskcheckin.activities.WarningScreens.InValidPermitActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.config.ViewController;
@@ -78,21 +73,15 @@ import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.utilities.CompanyData;
-import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
-import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
 import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
-import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.LocationData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
-import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -137,6 +126,10 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     boolean spaceValstatus = false;
     int spaceVal = 0;
 
+
+    //current date and time stamp
+    long todayStartTimestamp = 0;
+    long Ctimestamp = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,6 +217,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         };
         registoreNetWorkBroadcast();
 
+        currentDate();
 
         visitor_mobile.addTextChangedListener(new TextWatcher() {
             @Override
@@ -487,7 +481,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
     //usb scanner
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -543,7 +536,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         }
         return super.dispatchKeyEvent(event);
     }
-
 
     private void handleBarcodeScan(String barResult) {
 
@@ -618,29 +610,41 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                             try {
                                 if (model != null && model.getItems() != null && model.getItems().getSupplier_details() != null) {
 
-                                    //start date
-                                    long convertedMillismm = (model.getItems().getStart() + Conversions.timezone()) * 1000;
-                                    String stateDatemm = Conversions.millitodateD(convertedMillismm);
+                                    //date status check
+                                    String dateStatus = "0";
+                                    Calendar ca = Calendar.getInstance();
+                                    ca.set(Calendar.HOUR_OF_DAY, 0);
+                                    ca.set(Calendar.MINUTE, 0);
+                                    ca.set(Calendar.SECOND, 0);
+                                    ca.set(Calendar.MILLISECOND, 0);
+                                    long todayStartTimestamp = ca.getTimeInMillis();
+                                    System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
 
-                                    //end date
-                                    long endDateMillismm = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
-                                    String endDatemm = Conversions.millitodateD(endDateMillismm);
+                                    long startMillis = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                                    long endMillis = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
+                                    System.out.println("startMillis: " + startMillis);
+                                    System.out.println("endMillis: " + endMillis);
 
-                                    SimpleDateFormat sdfmmm = new SimpleDateFormat("dd MMM yyyy"); // Ignore seconds
-                                    sdfmmm.setTimeZone(TimeZone.getDefault()); // Ensure using the device's timezone
-                                    String currentDatemm = sdfmmm.format(new Date()); // Get current date-time
+                                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
+                                        dateStatus = "1";
+                                    }else {
+                                        dateStatus = "0";
+                                    }
 
-                                    // Debugging: Print both dates
-                                    System.out.println("Converted Date: " + stateDatemm);
-                                    System.out.println("Current Date  : " + currentDatemm);
 
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
                                     if (!location_id.equalsIgnoreCase(model.getItems().getL_id())){
                                         Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
                                         startActivity(intent);
-                                    }else if (!stateDatemm.equalsIgnoreCase(currentDatemm) && !endDatemm.equalsIgnoreCase(currentDatemm)){
-                                        Intent intent = new Intent(getApplicationContext(), TimeValidationPermitActivity.class);
+                                    } else if (dateStatus.equalsIgnoreCase("0")) {
+                                        Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
                                         intent.putExtra("type", "material");
+                                        intent.putExtra("message", getResources().getString(R.string.PleaseCheckTheDateOfTheMaterialPermit));
+                                        startActivity(intent);
+                                    }else if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                                        //cancel meeting
+                                        Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
+                                        intent.putExtra("message", getResources().getString(R.string.TheMaterialPermitHasBeenCancelled));
                                         startActivity(intent);
                                     }else {
                                         Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
@@ -655,7 +659,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                 e.printStackTrace();
                             }
                         });
-
                     } else {
                         ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
                     }
@@ -701,10 +704,14 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                             try {
                                 if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
 
+
                                     //date condition check
+                                    String dateStatus = "0";
                                     ArrayList<String> StartsList = new ArrayList<>();
                                     ArrayList<String> EndList = new ArrayList<>();
+                                    //Start time
                                     StartsList.addAll(model.getItems().getStarts());
+                                    //End time
                                     EndList.addAll(model.getItems().getEnds());
 
                                     Calendar ca = Calendar.getInstance();
@@ -723,7 +730,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     // Get the current timestamp
                                     long currents = System.currentTimeMillis();
                                     // Convert to readable date/time
-                                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
+                                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
                                     sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
                                     String formattedTime = sdf.format(new Date(currents));
 
@@ -736,33 +743,41 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         // Add 1 minute (60 seconds = 60000 milliseconds) before converting
                                         endTime = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
                                     }
+                                    endTime = convertArabicToEnglish(endTime);
+                                    endTime = endTime.replace("ص", "AM").replace("م", "PM");
+
                                     Date Edate = sdf.parse(endTime);
                                     long Etimestamp = Edate.getTime();
 
-                                    String statusCheck = "0";
                                     if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
                                         System.out.println("Converted 1: " + "1");
                                         if (!StartsList.isEmpty()) {
                                             if (Ctimestamp < Etimestamp){
                                                 System.out.println("Converted 1: " + "5");
-                                                statusCheck = "1";
+                                                dateStatus = "1";
                                             }else {
                                                 System.out.println("Converted 1: " + "6");
-                                                statusCheck = "0";
+                                                dateStatus = "0";
                                             }
                                         }
                                     }else {
                                         System.out.println("Converted 1: " + "2");
-                                        statusCheck = "0";
+                                        dateStatus = "0";
                                     }
 
+
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
-                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {
+                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())){
                                         Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
                                         startActivity(intent);
-                                    }else if (statusCheck.equalsIgnoreCase("0")){
-                                        Intent intent = new Intent(getApplicationContext(), TimeValidationPermitActivity.class);
-                                        intent.putExtra("type", "workpermit");
+                                    }else if (dateStatus.equalsIgnoreCase("0")){
+                                        Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
+                                        intent.putExtra("message", getResources().getString(R.string.PleaseCheckTheDateOfTheWorkPermit));
+                                        startActivity(intent);
+                                    }else if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                                        //cancel meeting
+                                        Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
+                                        intent.putExtra("message", getResources().getString(R.string.TheWorkPermitHasBeenCancelled));
                                         startActivity(intent);
                                     }else {
                                         Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
@@ -789,6 +804,32 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             }else {
                 ViewController.worngingPopup(VisitorLoginActivity.this, "Try Again");
             }
+        }
+
+    }
+
+    private void currentDate() {
+        try {
+        //current date and time
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.HOUR_OF_DAY, 0);
+        ca.set(Calendar.MINUTE, 0);
+        ca.set(Calendar.SECOND, 0);
+        ca.set(Calendar.MILLISECOND, 0);
+        todayStartTimestamp = ca.getTimeInMillis();
+        System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
+
+        // Get the current timestamp
+        long currents = System.currentTimeMillis();
+        // Convert to readable date/time
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
+        sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
+        String formattedTime = sdf.format(new Date(currents));
+
+        Date cdate = sdf.parse(formattedTime);
+        Ctimestamp = cdate.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
     }
@@ -1165,7 +1206,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             apiViewModel.getResponseforCVisitor().observe(this, model -> {
                 progress.dismiss();
                 try {
-
                     if (model.getResult() == 200) {
 
                         Float visitor_status = model.getItems().getVisitorStatus();

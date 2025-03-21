@@ -8,20 +8,18 @@
     android:orientation="vertical"
     tools:context=".activities.Meetings.NewMeetingRequestActivity">
 
-
     <LinearLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp">
-
         <ImageView
             android:id="@+id/back_image"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="25dp"
             android:src="@drawable/backimg" />
     </LinearLayout>
 

@@ -13,6 +13,7 @@ public class EntryPermitItems implements Serializable {
     private String supplier_name;
     private String l_id;
     private String type;
+    private String status;
     private List<SupplierDetails> supplier_details;
     private List<MaterialDetails> material_details;
     private long checkin,checkout;
@@ -61,6 +62,14 @@ public class EntryPermitItems implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<SupplierDetails> getSupplier_details() {

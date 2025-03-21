@@ -12,6 +12,7 @@ public class WorkPermitItems implements Serializable {
     private CommonObject _id;
     private String companyName;
     private String l_id;
+    private String status;
     private long start,end;
 
     private List<ContractorsData> contractorsData;
@@ -45,6 +46,14 @@ public class WorkPermitItems implements Serializable {
 
     public void setL_id(String l_id) {
         this.l_id = l_id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public long getStart() {

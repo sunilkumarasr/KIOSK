@@ -13,6 +13,7 @@ public class Items implements Serializable {
     private UserDetails userDetails;
     private Boolean trd_access;
     private String location;
+    private String train_meet;
 
     public UserDetails getUserDetails() {
         return userDetails;
@@ -136,5 +137,13 @@ public class Items implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getTrain_meet() {
+        return train_meet;
+    }
+
+    public void setTrain_meet(String train_meet) {
+        this.train_meet = train_meet;
     }
 }

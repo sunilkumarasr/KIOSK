@@ -220,6 +220,8 @@
     <string name="PleaseCheckTheDateOfTheWorkPermit">Please check the date of the Work permit</string>
     <string name="PleaseCheckTheDateOfTheMaterialPermit">Please check the date of the Material permit</string>
     <string name="PleaseCheckTheDateOfThemeeting">Please check the date of the meeting</string>
+    <string name="TheWorkPermitHasBeenCancelled">The work permit has been cancelled</string>
+    <string name="TheMaterialPermitHasBeenCancelled">The Material permit has been cancelled</string>
 
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>

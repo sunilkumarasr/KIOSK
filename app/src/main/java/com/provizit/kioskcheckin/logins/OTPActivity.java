@@ -61,6 +61,7 @@ import com.provizit.kioskcheckin.utilities.GetvisitorrequestblocklistModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -183,6 +184,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             please_email.setText(getResources().getString(R.string.otp_pls_mobile));
         }
 
+
+        apiViewModel.getndafdetials(getApplicationContext(), "id", "active");
+        apiViewModel.getResponseforNdaActiveDetails().observe(this, model1 -> ndamodel = model1);
+
+
         no2.setEnabled(false);
         no3.setEnabled(false);
         no4.setEnabled(false);
@@ -290,7 +296,8 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                             String meetingdate = Conversions.millitodateD(meetingMilli8);
 
                                             //current date
-                                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                                            Locale locale = new Locale(DataManger.appLanguage);
+                                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", locale);
                                             String currentDate = sdf.format(new Date());
                                             System.out.println(currentDate);
 
@@ -511,15 +518,20 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                         intent1.putExtra("model_key", model);
                                                         startActivity(intent1);
                                                     }
+                                                }else {
+                                                    Log.e("asdf","123");
+                                                    Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                                                    intent1.putExtra("model_key", model);
+                                                    startActivity(intent1);
                                                 }
 
                                             }
-
+                                        }else {
+                                            Log.e("asdf","123");
                                         }
 
 
                                     }
-
                                 }
                             } else {
                                 // If blocking is not enabled, follow the normal flow
@@ -577,6 +589,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                 }
                             }
                         }
+
                     } else {
                         no1.setText("");
                         no2.setText("");
@@ -604,8 +617,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             }
         });
 
-        apiViewModel.getndafdetials(getApplicationContext(), "id", "active");
-        apiViewModel.getResponseforNdaActiveDetails().observe(this, model1 -> ndamodel = model1);
 //        // Blocklist visitor
 //        apiViewModel.getResponsecblacklistdetails().observe(this, new Observer<Blocklist_Model>() {
 //            @Override
