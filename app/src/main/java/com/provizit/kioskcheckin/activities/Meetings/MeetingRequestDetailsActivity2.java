@@ -20,7 +20,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -54,7 +53,6 @@ import com.provizit.kioskcheckin.utilities.Vehicles;
 import com.provizit.kioskcheckin.utilities.VisitorFormDetailsOtherArray;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -305,7 +303,7 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
                     Intent intent;
                     float meeting_status = model.getItems().getMeetingStatus();
                     if (meeting_status == 1) {
-                        intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                        intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                     }else{
                         intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
                     }

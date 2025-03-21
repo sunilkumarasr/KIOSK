@@ -50,11 +50,9 @@ import com.provizit.kioskcheckin.utilities.Vehicles;
 import com.provizit.kioskcheckin.utilities.VisitorFormDetailsOtherArray;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewMeetingRequestActivity extends AppCompatActivity implements View.OnClickListener {
+public class MeetingDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     GetCVisitorDetailsModel model;
     String pic_Data = "false";
     String tvisitor = "false";
@@ -130,7 +128,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
         visitor_name = findViewById(R.id.visitor_name);
         subject = findViewById(R.id.subject);
 
-        apiViewModel = new ViewModelProvider(NewMeetingRequestActivity.this).get(ApiViewModel.class);
+        apiViewModel = new ViewModelProvider(MeetingDetailsActivity.this).get(ApiViewModel.class);
 
         apiViewModel.getndafdetials(getApplicationContext(), "id", "active");
 
@@ -184,7 +182,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
             if (model.getItems().getEmployee().getPic().get(model.getItems().getEmployee().getPic().size() - 1).equalsIgnoreCase("") || model.getItems().getEmployee().getPic().get(model.getItems().getEmployee().getPic().size() - 1) == null) {
                 emp_img.setImageResource(R.drawable.ic_user_white);
             } else {
-                Glide.with(NewMeetingRequestActivity.this).load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getEmployee().getPic().get(model.getItems().getEmployee().getPic().size() - 1)).into(emp_img);
+                Glide.with(MeetingDetailsActivity.this).load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getEmployee().getPic().get(model.getItems().getEmployee().getPic().size() - 1)).into(emp_img);
             }
         } else {
             emp_img.setImageResource(R.drawable.ic_user_white);
@@ -194,7 +192,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
         String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
         if (c_Logo.equalsIgnoreCase("")) {
         } else {
-            Glide.with(NewMeetingRequestActivity.this).load(c_Logo)
+            Glide.with(MeetingDetailsActivity.this).load(c_Logo)
                     .into(company_logo);
         }
         // Check if the layout direction is right-to-left
@@ -219,7 +217,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
                     Intent intent;
                     float meeting_status = model.getItems().getMeetingStatus();
                     if (meeting_status == 1) {
-                        intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                        intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                     } else {
                         intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
                     }
@@ -352,7 +350,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     if (Build.VERSION.SDK_INT >= 29) {
-                        try (ParcelFileDescriptor pfd = NewMeetingRequestActivity.this.getContentResolver().openFileDescriptor(fileUri, "r")) {
+                        try (ParcelFileDescriptor pfd = MeetingDetailsActivity.this.getContentResolver().openFileDescriptor(fileUri, "r")) {
                             if (pfd != null) {
                                 String path = getRealPathFromURI(fileUri);
                                 bitmap = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
@@ -383,7 +381,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
                         JsonParser jsonParser = new JsonParser();
                         gsonObject = (JsonObject) jsonParser.parse(jsonObj_1.toString());
                         qrindex(gsonObject);
-                        progressDialog = new ProgressDialog(NewMeetingRequestActivity.this);
+                        progressDialog = new ProgressDialog(MeetingDetailsActivity.this);
                         progressDialog.setCancelable(false);
                         progressDialog.setMessage("Loading...");
                         progressDialog.show();
@@ -536,7 +534,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
             if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
                 actioncheckinout(jsonObj_);
             } else {
-                DataManger.internetpopup(NewMeetingRequestActivity.this);
+                DataManger.internetpopup(MeetingDetailsActivity.this);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error processing vehicles: ", e);  // Proper logging
@@ -582,7 +580,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
             public void onFailure(Call<String> call, Throwable t) {
                 progressDialog.dismiss();
             }
-        }, NewMeetingRequestActivity.this, gsonObject);
+        }, MeetingDetailsActivity.this, gsonObject);
     }
 
     private void actioncheckinout(JSONObject jsonObj_) {
@@ -605,7 +603,7 @@ public class NewMeetingRequestActivity extends AppCompatActivity implements View
             public void onFailure(Call<VisitorActionModel> call, Throwable t) {
 
             }
-        }, NewMeetingRequestActivity.this, jsonObj_);
+        }, MeetingDetailsActivity.this, jsonObj_);
     }
 
     public String getRealPathFromURI(Uri contentUri) {

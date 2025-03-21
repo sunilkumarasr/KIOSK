@@ -79,11 +79,9 @@ import com.provizit.kioskcheckin.utilities.Vehicles;
 import com.provizit.kioskcheckin.utilities.VisitorFormDetailsOtherArray;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -588,7 +586,7 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
                     float meeting_status = model.getItems().getMeetingStatus();
                     Intent intent;
                     if (meeting_status == 1) {
-                        intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                        intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                     } else {
                         intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                     }
@@ -770,7 +768,7 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
                 float meeting_status = model.getItems().getMeetingStatus();
                 Intent intent;
                 if (meeting_status == 1) {
-                    intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                    intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                 } else {
                     intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                 }

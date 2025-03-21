@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_img"
     android:orientation="vertical"
-    tools:context=".activities.Meetings.NewMeetingRequestActivity">
+    tools:context=".activities.Meetings.MeetingDetailsActivity">
 
     <LinearLayout
         android:id="@+id/relative"

@@ -7,16 +7,13 @@ import androidx.core.view.ViewCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -35,11 +32,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.activities.AlreadyCheckedInActivity;
-import com.provizit.kioskcheckin.activities.CheckinFirstActivity;
 import com.provizit.kioskcheckin.activities.DeclinedActivity;
 import com.provizit.kioskcheckin.activities.EnterYourDetailsActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
-import com.provizit.kioskcheckin.activities.Meetings.NewMeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
 import com.provizit.kioskcheckin.activities.NDA_FormActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
@@ -54,17 +50,12 @@ import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.GetNdaActiveDetailsModel;
 import com.provizit.kioskcheckin.config.Preferences;
-import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
-import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
 import com.provizit.kioskcheckin.utilities.GetvisitorrequestblocklistModel;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class OTPActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -342,7 +333,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                                     startActivity(intent1);
                                                                 }
                                                             } else if (meeting_status == 1 && visitor_status == 1) {
-                                                                Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                                                Intent intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                                                                 intent.putExtra("model_key", model);
                                                                 startActivity(intent);
                                                             } else if (meeting_status == 1 && visitor_status == 0) {
@@ -409,7 +400,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                             startActivity(intent1);
                                                         }
                                                     } else if (meeting_status == 1 && visitor_status == 1) {
-                                                        Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                                        Intent intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                                                         intent.putExtra("model_key", model);
                                                         startActivity(intent);
                                                     } else if (meeting_status == 1 && visitor_status == 0) {
@@ -484,7 +475,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                 startActivity(intent1);
                                             }
                                         } else if (meeting_status == 1 && visitor_status == 1) {
-                                            Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                            Intent intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                                             intent.putExtra("model_key", model);
                                             startActivity(intent);
                                         } else if (meeting_status == 1 && visitor_status == 0) {
@@ -556,7 +547,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                         startActivity(intent1);
                                     }
                                 } else if (meeting_status == 1 && visitor_status == 1) {
-                                    Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                                     intent.putExtra("model_key", model);
                                     startActivity(intent);
                                 } else if (meeting_status == 1 && visitor_status == 0) {

@@ -87,7 +87,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.Meetings.NewMeetingRequestActivity"
+            android:name=".activities.Meetings.MeetingDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

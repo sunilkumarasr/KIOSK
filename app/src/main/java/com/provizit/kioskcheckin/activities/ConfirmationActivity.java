@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
-import com.provizit.kioskcheckin.activities.Meetings.NewMeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
@@ -214,7 +214,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                             startActivity(intent);
                         }
                     } else if (meeting_status == 1) {
-                        Intent intent = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                         intent.putExtra(MODEL_KEY, model);
                         startActivity(intent);
                     } else {

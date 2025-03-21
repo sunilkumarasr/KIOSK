@@ -31,7 +31,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
-import com.provizit.kioskcheckin.activities.Meetings.NewMeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
@@ -169,7 +169,7 @@ public class NDA_FormActivity extends AppCompatActivity implements View.OnClickL
             try {
                 Intent intent1;
                 if(meeting_status==1){
-                    intent1 = new Intent(getApplicationContext(), NewMeetingRequestActivity.class);
+                    intent1 = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
 
                 }else {
                     intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
