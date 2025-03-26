@@ -113,7 +113,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         Intent intent = getIntent();
         model = (GetCVisitorDetailsModel) intent.getSerializableExtra("model_key");
 
-
         //shared Preferences
         nda_Data = Preferences.loadStringValue(getApplicationContext(), Preferences.nda_Data, "");
         email_mobile_type = Preferences.loadStringValue(getApplicationContext(), Preferences.email_mobile_type, "");
@@ -297,6 +296,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                 startActivity(intent);
                                             }else if (!meetingdate.equalsIgnoreCase(currentDate)){
                                                 Intent intent = new Intent(getApplicationContext(), MeetingValidationActivity.class);
+                                                intent.putExtra("message", getResources().getString(R.string.PleaseCheckTheDateOfThemeeting));
+                                                startActivity(intent);
+                                            }else if (detailmodel.getItems().getStatus().equalsIgnoreCase("1.0")){
+                                                Intent intent = new Intent(getApplicationContext(), MeetingValidationActivity.class);
+                                                intent.putExtra("message", getResources().getString(R.string.TheMeetingHasBeenCancelled));
                                                 startActivity(intent);
                                             }else {
                                                 // Check if blocking is true
@@ -311,7 +315,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                             startActivity(intent);
                                                         } else {
                                                             // Proceed with the normal flow if Nation is not blocked
-
                                                             if (checkin_status == 1) {
                                                                 Float h_status = model.getTotal_counts().getHstatus();
                                                                 long c_status = model.getTotal_counts().getCheckin();

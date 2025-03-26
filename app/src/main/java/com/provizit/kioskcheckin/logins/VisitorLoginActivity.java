@@ -138,6 +138,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
         inits();
 
+
         emailPattern = "[a-zA-Z0-9._-]+@[a-z-]+\\.+[a-z]+";
 
         progress = new ProgressDialog(this);

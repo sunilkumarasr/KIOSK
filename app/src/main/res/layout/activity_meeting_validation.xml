@@ -44,7 +44,6 @@
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/_13sdp" />
 
-
             <LinearLayout
                 android:id="@+id/line1"
                 android:layout_width="match_parent"

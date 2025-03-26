@@ -147,11 +147,11 @@ public class MeetingDetailsActivity extends AppCompatActivity implements View.On
             String trdAccess = String.valueOf(model.getItems().getEmployee().getTrd_access());
 
             if (trdAccess.equalsIgnoreCase("true")) {
-                traning_text.setText("You have a training with");
+                traning_text.setText(getResources().getString(R.string.YouHaveATrainingWith));
             }else if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
-                traning_text.setText("You have a meeting with");
+                traning_text.setText(getResources().getString(R.string.YouHaveAMeetingWith));
             }else {
-                traning_text.setText("You have a training with");
+                traning_text.setText(getResources().getString(R.string.YouHaveATrainingWith));
             }
 
 //            if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
@@ -161,7 +161,7 @@ public class MeetingDetailsActivity extends AppCompatActivity implements View.On
 //            }
 
         } else {
-            traning_text.setText("Employee or meeting details are missing");
+            traning_text.setText(getResources().getString(R.string.EmployeeOrMeetingDetailsAreMissing));
         }
         Where.setText(model.getItems().getMeetingrooms().getName());
         pointer.setText(model.getItems().getMeetingrooms().getPointer());
@@ -244,7 +244,6 @@ public class MeetingDetailsActivity extends AppCompatActivity implements View.On
         } else {
             disableTriggeredItems();
         }
-
 
         return super.onKeyDown(keyCode, event);
     }

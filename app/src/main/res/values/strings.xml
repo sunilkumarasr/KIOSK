@@ -222,6 +222,14 @@
     <string name="PleaseCheckTheDateOfThemeeting">Please check the date of the meeting</string>
     <string name="TheWorkPermitHasBeenCancelled">The work permit has been cancelled</string>
     <string name="TheMaterialPermitHasBeenCancelled">The Material permit has been cancelled</string>
+    <string name="TheMeetingHasBeenCancelled">The Meeting has been cancelled</string>
+
+    //meeting details
+    <string name="YouHaveATrainingWith">You have a training with</string>
+    <string name="YouHaveAMeetingWith">You have a meeting with</string>
+    <string name="EmployeeOrMeetingDetailsAreMissing">Employee or meeting details are missing</string>
+
+
 
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>

@@ -197,6 +197,7 @@
     <string name="SuccessfullyCheckIn">تم تسجيل الدخول بنجاح</string>
     <string name="SuccessfullyCheckOut">تم الخروج بنجاح</string>
 
+
     //Material Permit
     <string name="materialPermitDetails">تفاصيل تصريح المواد</string>
     <string name="CompanyName">اسم الشركة:</string>
@@ -210,6 +211,7 @@
     <string name="CheckOut">تسجيل خروج</string>
     <string name="InvalidPermit">تصريح غير صالح</string>
 
+
     //warning
     <string name="InvalidCode">رمز غير صالح.</string>
     <string name="PleaseCheckTheLocationOfYourMeeting">يرجى التحقق من موقع اجتماعك.</string>
@@ -222,6 +224,13 @@
     <string name="PleaseCheckTheDateOfThemeeting">يرجى التحقق من تاريخ الاجتماع</string>
     <string name="TheWorkPermitHasBeenCancelled">تم إلغاء تصريح العمل</string>
     <string name="TheMaterialPermitHasBeenCancelled">تم إلغاء تصريح المواد</string>
+    <string name="TheMeetingHasBeenCancelled">The Meeting has been cancelled</string>
+
+
+    //meeting details
+    <string name="YouHaveATrainingWith">لديك تدريب مع</string>
+    <string name="YouHaveAMeetingWith">لديك اجتماع مع</string>
+    <string name="EmployeeOrMeetingDetailsAreMissing">تفاصيل الموظف أو الاجتماع مفقودة</string>
 
 
     //Access denied
