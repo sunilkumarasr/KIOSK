@@ -39,7 +39,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +52,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -130,6 +133,12 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     //current date and time stamp
     long todayStartTimestamp = 0;
     long Ctimestamp = 0;
+
+    //floating
+    private FloatingActionButton fabMain, fabOption1, fabOption2;
+    private boolean isFabOpen = false;
+    private Animation fabOpenAnim, fabCloseAnim, rotateForwardAnim, rotateBackwardAnim;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -460,6 +469,27 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         });
 
 
+        //floating
+        // Initialize FABs
+        fabMain = findViewById(R.id.fab_main);
+        fabOption1 = findViewById(R.id.fab_option1);
+        fabOption2 = findViewById(R.id.fab_option2);
+
+        // Load animations
+        fabOpenAnim = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fabCloseAnim = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+        rotateForwardAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
+        rotateBackwardAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
+
+        // Main FAB click listener
+        fabMain.setOnClickListener(v -> toggleFab());
+
+        // Option FAB click listeners
+        fabOption1.setOnClickListener(v -> Toast.makeText(this, "Option 1 Clicked", Toast.LENGTH_SHORT).show());
+        fabOption2.setOnClickListener(v -> Toast.makeText(this, "Option 2 Clicked", Toast.LENGTH_SHORT).show());
+
+
+
         linear_Switch_selection.setOnClickListener(this);
         text_visitorselfservice.setOnClickListener(this);
         btn_cancle.setOnClickListener(this);
@@ -469,6 +499,25 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         text_english.setOnClickListener(this);
         cardview_barcode.setOnClickListener(this);
     }
+
+    private void toggleFab() {
+        if (isFabOpen) {
+            fabMain.startAnimation(rotateBackwardAnim);
+            fabOption1.startAnimation(fabCloseAnim);
+            fabOption2.startAnimation(fabCloseAnim);
+            fabOption1.setVisibility(View.GONE);
+            fabOption2.setVisibility(View.GONE);
+            isFabOpen = false;
+        } else {
+            fabMain.startAnimation(rotateForwardAnim);
+            fabOption1.startAnimation(fabOpenAnim);
+            fabOption2.startAnimation(fabOpenAnim);
+            fabOption1.setVisibility(View.VISIBLE);
+            fabOption2.setVisibility(View.VISIBLE);
+            isFabOpen = true;
+        }
+    }
+
 
     // Method to remove non-numeric characters from the Editable text
     private void removeNonNumericCharacters(Editable editable) {

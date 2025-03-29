@@ -516,5 +516,49 @@
         android:textColor="@color/gray"
         android:textSize="12sp" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+            <!-- Secondary Floating Action Buttons -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_option1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:layout_alignParentEnd="true"
+                android:layout_above="@+id/fab_main"
+                android:visibility="gone"
+                android:layout_marginEnd="16dp"
+                app:backgroundTint="@color/purple_500" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_option2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_above="@+id/fab_option1"
+                android:visibility="gone"
+                android:layout_marginEnd="16dp"
+                app:backgroundTint="@color/teal_700" />
+
+            <!-- Main Floating Action Button -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginEnd="16dp"
+                app:srcCompat="@android:drawable/ic_input_add"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:backgroundTint="@color/black" />
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
