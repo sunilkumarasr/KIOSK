@@ -3,7 +3,6 @@ package com.provizit.kioskcheckin.logins;
 import static android.view.View.GONE;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.provizit.kioskcheckin.services.Conversions.convertArabicToEnglish;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -28,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,9 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,9 +45,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -78,10 +71,8 @@ import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.utilities.CompanyData;
 import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,7 +82,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import android.text.InputFilter;
 import android.widget.Toast;
 
@@ -134,10 +124,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     long todayStartTimestamp = 0;
     long Ctimestamp = 0;
 
-    //floating
-    private FloatingActionButton fabMain, fabOption1, fabOption2;
-    private boolean isFabOpen = false;
-    private Animation fabOpenAnim, fabCloseAnim, rotateForwardAnim, rotateBackwardAnim;
 
 
     @Override
@@ -469,26 +455,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         });
 
 
-        //floating
-        // Initialize FABs
-        fabMain = findViewById(R.id.fab_main);
-        fabOption1 = findViewById(R.id.fab_option1);
-        fabOption2 = findViewById(R.id.fab_option2);
-
-        // Load animations
-        fabOpenAnim = AnimationUtils.loadAnimation(this, R.anim.fab_open);
-        fabCloseAnim = AnimationUtils.loadAnimation(this, R.anim.fab_close);
-        rotateForwardAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
-        rotateBackwardAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
-
-        // Main FAB click listener
-        fabMain.setOnClickListener(v -> toggleFab());
-
-        // Option FAB click listeners
-        fabOption1.setOnClickListener(v -> Toast.makeText(this, "Option 1 Clicked", Toast.LENGTH_SHORT).show());
-        fabOption2.setOnClickListener(v -> Toast.makeText(this, "Option 2 Clicked", Toast.LENGTH_SHORT).show());
-
-
 
         linear_Switch_selection.setOnClickListener(this);
         text_visitorselfservice.setOnClickListener(this);
@@ -498,24 +464,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         cardview_usb.setOnClickListener(this);
         text_english.setOnClickListener(this);
         cardview_barcode.setOnClickListener(this);
-    }
-
-    private void toggleFab() {
-        if (isFabOpen) {
-            fabMain.startAnimation(rotateBackwardAnim);
-            fabOption1.startAnimation(fabCloseAnim);
-            fabOption2.startAnimation(fabCloseAnim);
-            fabOption1.setVisibility(View.GONE);
-            fabOption2.setVisibility(View.GONE);
-            isFabOpen = false;
-        } else {
-            fabMain.startAnimation(rotateForwardAnim);
-            fabOption1.startAnimation(fabOpenAnim);
-            fabOption2.startAnimation(fabOpenAnim);
-            fabOption1.setVisibility(View.VISIBLE);
-            fabOption2.setVisibility(View.VISIBLE);
-            isFabOpen = true;
-        }
     }
 
 
