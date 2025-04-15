@@ -30,6 +30,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -122,9 +123,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
     //current date and time stamp
     long todayStartTimestamp = 0;
-    long Ctimestamp = 0;
-
-
+    long cTimeStamp = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -733,7 +732,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     String formattedTime = sdf.format(new Date(currents));
 
                                     Date cdate = sdf.parse(formattedTime);
-                                    long Ctimestamp = cdate.getTime();
+                                    long cTimeStamp = cdate.getTime();
 
                                     String endTime = "";
                                     if (!EndList.isEmpty()) {
@@ -750,7 +749,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
                                         System.out.println("Converted 1: " + "1");
                                         if (!StartsList.isEmpty()) {
-                                            if (Ctimestamp < Etimestamp){
+                                            if (cTimeStamp < Etimestamp){
                                                 System.out.println("Converted 1: " + "5");
                                                 dateStatus = "1";
                                             }else {
@@ -825,7 +824,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         String formattedTime = sdf.format(new Date(currents));
 
         Date cdate = sdf.parse(formattedTime);
-        Ctimestamp = cdate.getTime();
+            cTimeStamp = cdate.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }

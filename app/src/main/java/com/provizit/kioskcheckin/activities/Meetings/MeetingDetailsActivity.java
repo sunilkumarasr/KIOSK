@@ -146,25 +146,28 @@ public class MeetingDetailsActivity extends AppCompatActivity implements View.On
         if (model != null && model.getItems() != null && model.getItems().getEmployee() != null) {
             String trdAccess = String.valueOf(model.getItems().getEmployee().getTrd_access());
 
-            if (trdAccess.equalsIgnoreCase("true")) {
-                traning_text.setText(getResources().getString(R.string.YouHaveATrainingWith));
-            }else if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
+//            if (trdAccess.equalsIgnoreCase("true")) {
+//                traning_text.setText(getResources().getString(R.string.YouHaveATrainingWith));
+//            }else if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
+//                traning_text.setText(getResources().getString(R.string.YouHaveAMeetingWith));
+//            }else {
+//                traning_text.setText(getResources().getString(R.string.YouHaveATrainingWith));
+//            }
+
+            if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
                 traning_text.setText(getResources().getString(R.string.YouHaveAMeetingWith));
             }else {
                 traning_text.setText(getResources().getString(R.string.YouHaveATrainingWith));
             }
 
-//            if(model.getItems().getTrain_meet().equalsIgnoreCase("meeting")){
-//                traning_text.setText("You have a meeting with");
-//            }else {
-//                traning_text.setText("You have a training with");
-//            }
-
         } else {
             traning_text.setText(getResources().getString(R.string.EmployeeOrMeetingDetailsAreMissing));
         }
         Where.setText(model.getItems().getMeetingrooms().getName());
-        pointer.setText(model.getItems().getMeetingrooms().getPointer());
+        if (!model.getItems().getMeetingrooms().getPointer().equalsIgnoreCase("") || model.getItems().getMeetingrooms().getPointer() != null ){
+            pointer.setVisibility(View.VISIBLE);
+            pointer.setText(model.getItems().getMeetingrooms().getPointer());
+        }
         DateTimeFormatter dtf = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             dtf = DateTimeFormatter.ofPattern("EE dd MMMM yyyy");
