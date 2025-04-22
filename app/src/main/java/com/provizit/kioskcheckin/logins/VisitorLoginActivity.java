@@ -3,6 +3,7 @@ package com.provizit.kioskcheckin.logins;
 import static android.view.View.GONE;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.provizit.kioskcheckin.services.Conversions.convertArabicToEnglish;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -29,6 +31,8 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Spanned;
@@ -46,6 +50,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.i18n.phonenumbers.NumberParseException;
@@ -72,8 +77,10 @@ import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.utilities.CompanyData;
 import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,6 +90,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import android.text.InputFilter;
 import android.widget.Toast;
 
@@ -99,7 +107,8 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     EditText visitor_email, visitor_mobile, password_signout;
     String emailPattern, emp_id, location_id;
     TextView text_english;
-    LinearLayout linaer_logout;
+    ImageView clearEmail, clearMobile;
+    LinearLayout linaer_logout, linearEmail;
     ImageView img_qr, img_menu, logo, logo1;
     LinearLayout linear_Switch_selection;
     String status_check = "0";
@@ -160,6 +169,9 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 //        visitor_mobile.requestFocus();
         visitor_email = findViewById(R.id.visitor_email);
         text_english = findViewById(R.id.text_english);
+        clearEmail = findViewById(R.id.clearEmail);
+        clearMobile = findViewById(R.id.clearMobile);
+        linearEmail = findViewById(R.id.linearEmail);
 //        visitor_mobile.setInputType(InputType.TYPE_CLASS_NUMBER);
         linear_Switch_selection = findViewById(R.id.linear_Switch_selection);
         txt_input_type = findViewById(R.id.txt_input_type);
@@ -248,7 +260,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             } catch (WriterException e) {
                 // Handle the exception with proper logging
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "WriterException caught: " + e.getMessage(),e);
+                    Log.d(TAG, "WriterException caught: " + e.getMessage(), e);
                 } else {
                     Log.e(TAG, "Error generating QR code.", e);
                 }
@@ -431,15 +443,15 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 use_mobile.setChecked(true);
                 txt_input_type.setText(getResources().getString(R.string.visitor_Usemobile));
                 linear_mobile.setVisibility(View.GONE);
-                EmailInput.setVisibility(View.VISIBLE);
-//                visitor_email.requestFocus();
+                linearEmail.setVisibility(View.VISIBLE);
+                visitor_email.requestFocus();
             } else {
                 status_check = "0";
                 use_mobile.setChecked(false);
                 txt_input_type.setText(getResources().getString(R.string.visitor_Useemail));
                 linear_mobile.setVisibility(View.VISIBLE);
-                EmailInput.setVisibility(View.GONE);
-//                visitor_mobile.requestFocus();
+                linearEmail.setVisibility(View.GONE);
+                visitor_mobile.requestFocus();
             }
         });
 
@@ -453,6 +465,38 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             visitor_mobile.getText().clear();
         });
 
+        clearMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int length = visitor_mobile.getText().length();
+
+                if (length > 0) {
+                    visitor_mobile.requestFocus();
+                    visitor_mobile.setSelection(length); // Cursor at the end
+
+                    // Simulate a single backspace (delete last character)
+                    visitor_mobile.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                    visitor_mobile.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+                }
+            }
+        });
+
+
+        clearEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int length = visitor_email.getText().length();
+
+                if (length > 0) {
+                    visitor_email.requestFocus();
+                    visitor_email.setSelection(length); // Cursor at the end
+
+                    // Simulate a single backspace (delete last character)
+                    visitor_email.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                    visitor_email.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+                }
+            }
+        });
 
 
         linear_Switch_selection.setOnClickListener(this);
@@ -481,10 +525,37 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     //usb scanner
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        visitor_mobile.clearFocus();
+//        visitor_mobile.clearFocus();
 
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DEL:
+                    if(status_check.equalsIgnoreCase("0")){
+                        int cursorPosition = visitor_mobile.getSelectionStart();
+                        String text = visitor_mobile.getText().toString();
+
+                        if (!text.isEmpty() && cursorPosition > 0) {
+                            // Delete the character before the cursor
+                            String newText = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
+                            visitor_mobile.setText(newText);
+
+                            // Move cursor to correct position
+                            visitor_mobile.setSelection(cursorPosition - 1);
+                        }
+                    }else{
+                        int cursorPosition = visitor_email.getSelectionStart();
+                        String text = visitor_email.getText().toString();
+
+                        if (!text.isEmpty() && cursorPosition > 0) {
+                            // Delete the character before the cursor
+                            String newText = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
+                            visitor_email.setText(newText);
+
+                            // Move cursor to correct position
+                            visitor_email.setSelection(cursorPosition - 1);
+                        }
+                    }
+                    return true;
                 case KeyEvent.KEYCODE_BACK:
                     ViewController.exitPopup(VisitorLoginActivity.this);
                     return true;
@@ -492,8 +563,8 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     handleBarcodeScan(usbScannedData);
 //                    visitor_mobile.setFocusable(false);
 //                    visitor_mobile.setFocusableInTouchMode(false);
-                    visitor_email.setFocusable(false);
-                    visitor_email.setFocusableInTouchMode(false);
+//                    visitor_email.setFocusable(false);
+//                    visitor_email.setFocusableInTouchMode(false);
                     // Reset usbScannedData if needed for the next scan
                     usbScannedData = "";
 //                    if (use_mobile.isChecked()) {
@@ -568,8 +639,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 } else {
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
-            }
-            else if (spre[0].trim().equalsIgnoreCase("material")){
+            } else if (spre[0].trim().equalsIgnoreCase("material")) {
                 String input = spre[1].trim();
                 if (spre.length == 3) {
 
@@ -622,15 +692,15 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     System.out.println("startMillis: " + startMillis);
                                     System.out.println("endMillis: " + endMillis);
 
-                                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
+                                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis) {
                                         dateStatus = "1";
-                                    }else {
+                                    } else {
                                         dateStatus = "0";
                                     }
 
 
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
-                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())){
+                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {
                                         Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
                                         startActivity(intent);
                                     } else if (dateStatus.equalsIgnoreCase("0")) {
@@ -638,12 +708,12 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         intent.putExtra("type", "material");
                                         intent.putExtra("message", getResources().getString(R.string.PleaseCheckTheDateOfTheMaterialPermit));
                                         startActivity(intent);
-                                    }else if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                                    } else if (model.getItems().getStatus().equalsIgnoreCase("2.0")) {
                                         //cancel meeting
                                         Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
                                         intent.putExtra("message", getResources().getString(R.string.TheMaterialPermitHasBeenCancelled));
                                         startActivity(intent);
-                                    }else {
+                                    } else {
                                         Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
                                         intent.putExtra("comp_id", last24Chars);
                                         intent.putExtra("valueType", finalValueType);
@@ -663,8 +733,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
 
-            }
-            else if (spre[0].trim().equalsIgnoreCase("workpermit")){
+            } else if (spre[0].trim().equalsIgnoreCase("workpermit")) {
                 String input = spre[1].trim();
                 if (spre.length == 3) {
                     String valueType = "";
@@ -746,37 +815,37 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     Date Edate = sdf.parse(endTime);
                                     long Etimestamp = Edate.getTime();
 
-                                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
+                                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis) {
                                         System.out.println("Converted 1: " + "1");
                                         if (!StartsList.isEmpty()) {
-                                            if (cTimeStamp < Etimestamp){
+                                            if (cTimeStamp < Etimestamp) {
                                                 System.out.println("Converted 1: " + "5");
                                                 dateStatus = "1";
-                                            }else {
+                                            } else {
                                                 System.out.println("Converted 1: " + "6");
                                                 dateStatus = "0";
                                             }
                                         }
-                                    }else {
+                                    } else {
                                         System.out.println("Converted 1: " + "2");
                                         dateStatus = "0";
                                     }
 
 
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
-                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())){
+                                    if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {
                                         Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
                                         startActivity(intent);
-                                    }else if (dateStatus.equalsIgnoreCase("0")){
+                                    } else if (dateStatus.equalsIgnoreCase("0")) {
                                         Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
                                         intent.putExtra("message", getResources().getString(R.string.PleaseCheckTheDateOfTheWorkPermit));
                                         startActivity(intent);
-                                    }else if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                                    } else if (model.getItems().getStatus().equalsIgnoreCase("2.0")) {
                                         //cancel meeting
                                         Intent intent = new Intent(getApplicationContext(), InValidPermitActivity.class);
                                         intent.putExtra("message", getResources().getString(R.string.TheWorkPermitHasBeenCancelled));
                                         startActivity(intent);
-                                    }else {
+                                    } else {
                                         Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
                                         intent.putExtra("comp_id", last24Chars);
                                         intent.putExtra("valueType", finalValueType);
@@ -798,32 +867,40 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
 
-            }else {
+            } else {
+                delayedReload();
                 ViewController.worngingPopup(VisitorLoginActivity.this, "Try Again");
             }
         }
 
     }
+    public void delayedReload() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }, 1500); // 2-second delay
+    }
 
     private void currentDate() {
         try {
-        //current date and time
-        Calendar ca = Calendar.getInstance();
-        ca.set(Calendar.HOUR_OF_DAY, 0);
-        ca.set(Calendar.MINUTE, 0);
-        ca.set(Calendar.SECOND, 0);
-        ca.set(Calendar.MILLISECOND, 0);
-        todayStartTimestamp = ca.getTimeInMillis();
-        System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
+            //current date and time
+            Calendar ca = Calendar.getInstance();
+            ca.set(Calendar.HOUR_OF_DAY, 0);
+            ca.set(Calendar.MINUTE, 0);
+            ca.set(Calendar.SECOND, 0);
+            ca.set(Calendar.MILLISECOND, 0);
+            todayStartTimestamp = ca.getTimeInMillis();
+            System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
 
-        // Get the current timestamp
-        long currents = System.currentTimeMillis();
-        // Convert to readable date/time
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
-        sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
-        String formattedTime = sdf.format(new Date(currents));
+            // Get the current timestamp
+            long currents = System.currentTimeMillis();
+            // Convert to readable date/time
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); // 12-hour format with AM/PM
+            sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
+            String formattedTime = sdf.format(new Date(currents));
 
-        Date cdate = sdf.parse(formattedTime);
+            Date cdate = sdf.parse(formattedTime);
             cTimeStamp = cdate.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1055,7 +1132,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
                     Log.d("Material Value", material); // Log or use material value
 
-                    Toast.makeText(getApplicationContext(),"Result: "+material,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Result: " + material, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -1269,7 +1346,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             } catch (Exception e) {
 
             }
-            apiViewModel.getcvisitordetails(getApplicationContext(),"comp_id", emp_id, decodedEmail, location_id);
+            apiViewModel.getcvisitordetails(getApplicationContext(), "comp_id", emp_id, decodedEmail, location_id);
 
             apiViewModel.getResponseforCVisitor().observe(this, model -> {
                 progress.dismiss();

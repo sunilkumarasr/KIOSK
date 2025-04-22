@@ -82,15 +82,16 @@
                     app:boxCornerRadiusTopStart="10dp"
                     app:boxStrokeColor="#414F6c"
                     app:boxStrokeWidth="2dp"
-                    app:hintTextAppearance="@style/TextLabel">
+                    app:hintTextAppearance="@style/TextLabel"
+                    app:endIconMode="password_toggle"
+                    app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                    app:startIconTint="#414F6c">
 
                     <EditText
                         android:id="@+id/login_password"
                         style="@style/medium_font"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
-                        android:drawableLeft="@drawable/ic_baseline_lock_24"
-                        android:drawablePadding="10dp"
                         android:hint="@string/Login_Password"
                         android:inputType="textPassword"
                         android:padding="10dp"
