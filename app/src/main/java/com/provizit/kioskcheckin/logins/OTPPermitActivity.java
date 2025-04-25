@@ -306,6 +306,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                             }
 
                         }else {
+
                             if (permitType.equalsIgnoreCase("workpermit")) {
                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
                                 intent.putExtra("comp_id", comp_id);
@@ -323,6 +324,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                 intent.putExtra("ndaStatus", ndaStatus);
                                 startActivity(intent);
                             }
+
                         }
 
                     } else {
@@ -362,9 +364,14 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
             startActivity(intent);
             return true;
-        } else {
-            disableTriggeredItems();
         }
+
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
+
         return super.onKeyDown(keyCode, event);
     }
 

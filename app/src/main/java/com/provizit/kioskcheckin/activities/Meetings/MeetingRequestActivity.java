@@ -565,12 +565,14 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
         purpose_search.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        } else {
-            disableTriggeredItems();
         }
 
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
 
         return super.onKeyDown(keyCode, event);
     }
@@ -593,9 +595,14 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
                     intent.putExtra("model_key", model);
                     startActivity(intent);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
-                    return true;
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

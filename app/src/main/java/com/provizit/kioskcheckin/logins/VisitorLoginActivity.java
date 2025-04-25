@@ -77,6 +77,7 @@ import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.utilities.CompanyData;
 import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
+import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -698,6 +699,9 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         dateStatus = "0";
                                     }
 
+                                    //checkout chek
+                                    ArrayList<ContractorsData> contractorsDataList;
+                                    contractorsDataList = new ArrayList<>();
 
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
                                     if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {
@@ -829,6 +833,23 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                     } else {
                                         System.out.println("Converted 1: " + "2");
                                         dateStatus = "0";
+                                    }
+
+                                    ArrayList<ContractorsData> contractorsDataList = new ArrayList<>();
+                                    contractorsDataList.addAll(model.getItems().getContractorsData());
+                                    if (!contractorsDataList.isEmpty()) {
+                                        for (int i = 0; i < contractorsDataList.size(); i++) {
+                                            ContractorsData contractor = contractorsDataList.get(i);
+                                            if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(finalQrValue)) {
+                                                if (contractor.getCheckin() == (0)) {
+
+                                                } else if (contractor.getCheckin() == (1)) {
+
+                                                } else {
+
+                                                }
+                                            }
+                                        }
                                     }
 
 

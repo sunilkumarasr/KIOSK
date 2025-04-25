@@ -140,12 +140,14 @@ public class AlreadyCheckedInActivity extends AppCompatActivity implements View.
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        } else {
-            disableTriggeredItems();
         }
 
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
 
         return super.onKeyDown(keyCode, event);
     }
@@ -161,8 +163,14 @@ public class AlreadyCheckedInActivity extends AppCompatActivity implements View.
                     Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                     startActivity(intent);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
-                    return true;
+                    char keyChar = (char) event.getUnicodeChar();
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

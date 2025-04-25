@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
@@ -66,9 +67,12 @@ public class InvitationDetailsActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        }else {
         }
 
+
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
 
         return super.onKeyDown(keyCode, event);
     }
@@ -85,9 +89,14 @@ public class InvitationDetailsActivity extends AppCompatActivity {
                     inten.putExtra("model_key",model);
                     startActivity(inten);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
-                    return true;
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

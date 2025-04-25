@@ -127,18 +127,18 @@ public class SplashActivity extends AppCompatActivity {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
-//                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-//                intent.putExtra("comp_id", "67c949b99aa7e824a9bf602a");
-//                intent.putExtra("valueType", "email");
-//                intent.putExtra("inputValue", "aj169408@gmail.com");
-//                intent.putExtra("permitType", "material");
-//                intent.putExtra("ndaStatus", "true");
-//                startActivity(intent);
+//                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+                intent.putExtra("comp_id", "680b5f5390c70a68ed2a6e6d");
+                intent.putExtra("valueType", "email");
+                intent.putExtra("inputValue", "aj16940.8@gmail.com");
+                intent.putExtra("permitType", "workpermit");
+                intent.putExtra("ndaStatus", "true");
+                startActivity(intent);
             }
         }, 3000);
     }
-
+//    workpermit###ftprovizitstc***680b2e0490c70a68ed2a6e66###aj169408@gmail.com
 //    mailto:material###ftprovizitstc***67bd9a2be4bc7c77c5c55b05###aj169408@gmail.com
 //    mailto:material###ftprovizitstc***67bda6dce4bc7c77c5c55b0f###aj169408@gmail.com
 //    mailto:workpermit###ftprovizitstc***67bda73ce4bc7c77c5c55b10###aj169408@gmail.com

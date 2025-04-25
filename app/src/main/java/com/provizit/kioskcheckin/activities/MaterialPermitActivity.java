@@ -274,9 +274,13 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        }else {
-            disableTriggeredItems();
         }
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
+
         return super.onKeyDown(keyCode, event);
     }
     //usb scanner
@@ -290,9 +294,14 @@ public class MaterialPermitActivity extends AppCompatActivity implements View.On
                     Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                     startActivity(intent);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
-                    return true;
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

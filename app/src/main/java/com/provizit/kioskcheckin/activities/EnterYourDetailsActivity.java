@@ -154,6 +154,9 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
     String vistiorbloclist;
     String blocking = "false";
 
+    boolean nationalityStatus = false;
+    boolean nationalityActive = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -628,27 +631,16 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
         Id_number.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        } else {
-            disableTriggeredItems();
         }
 
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
 
         return super.onKeyDown(keyCode, event);
-    }
-
-    private static String extractCountryCode(String numberStr) {
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        String newcountryCode = "+966";
-        try {
-            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(numberStr, "");
-            newcountryCode = "+" + numberProto.getCountryCode();
-            //This prints "Country code: 91"
-        } catch (NumberParseException e) {
-            System.err.println("NumberParseException was thrown: " + e.toString());
-        }
-        return newcountryCode;
     }
 
     //usb scanner
@@ -662,12 +654,31 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
                     Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                     startActivity(intent);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
-                    return true;
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+
+    private static String extractCountryCode(String numberStr) {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        String newcountryCode = "+966";
+        try {
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(numberStr, "");
+            newcountryCode = "+" + numberProto.getCountryCode();
+            //This prints "Country code: 91"
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return newcountryCode;
     }
 
     private void disableTriggeredItems() {
@@ -851,16 +862,17 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
                 } else if (!mobile.getText().toString().trim().matches(regexStr)) {
                     mobile.requestFocus();
                     mobile.setError("Enter valid mobile");
-                } else if (document_search.getText().length() == 0) {
+                }
+                else if (document_search.getText().length() == 0 && nationalityActive) {
                     document_search.requestFocus();
                     document_search.setError("Please select ID type");
-                } else if (nationality.equals("")) {
+                } else if (nationality.equals("") && nationalityActive) {
                     nationality_search.requestFocus();
                     nationality_search.setError("Please select nationality");
-                } else if (!nationalitys.contains(nationality_search.getText().toString())) {
+                } else if (!nationalitys.contains(nationality_search.getText().toString()) && nationalityActive) {
                     nationality_search.requestFocus();
                     nationality_search.setError("Please select nationality");
-                } else if (Id_number.getText().length() == 0) {
+                } else if (Id_number.getText().length() == 0 && nationalityActive) {
                     Id_number.requestFocus();
                     Id_number.setError("Please enter ID number");
                 } else if (e_pname.getText().length() == 0) {
@@ -879,7 +891,6 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
                             }
                         }
                     }
-
 
                     if (allFieldsValid) {
                         if (P_policy.equalsIgnoreCase("true")) {
@@ -1040,13 +1051,20 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<VisitorformDetailsModel> call, Response<VisitorformDetailsModel> response) {
                 final VisitorformDetailsModel model = response.body();
-
-
                 try {
                     if (model.getItem() != null) {
                         for (int i = 0; i < model.getItem().getOther().size(); i++) {
+
+                            if (model.getItem().getOther().get(i).getModel().equalsIgnoreCase("nation")){
+                                nationalityStatus =  model.getItem().getOther().get(i).getStatus();
+                                nationalityActive =  model.getItem().getOther().get(i).getActive();
+                                if (nationalityStatus){
+                                    document_search.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+
                             if (model.getItem().getOther().get(i).getStatus()) {
-                                document_search.setVisibility(View.VISIBLE);
                                 VisitorFormDetailsOtherArray other = new VisitorFormDetailsOtherArray();
                                 other.setLabel(model.getItem().getOther().get(i).getLabel());
                                 other.setModel(model.getItem().getOther().get(i).getModel());

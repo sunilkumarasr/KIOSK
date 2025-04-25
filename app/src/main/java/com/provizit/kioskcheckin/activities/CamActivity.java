@@ -82,10 +82,12 @@ public class CamActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        }else {
-            disableTriggeredItems();
+        }
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
         }
 
+        disableTriggeredItems();
 
         return super.onKeyDown(keyCode, event);
     }
@@ -102,8 +104,14 @@ public class CamActivity extends AppCompatActivity {
                     intent1.putExtra(MODEL_KEY, model);
                     startActivity(intent1);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
-                    return true;
+                    char keyChar = (char) event.getUnicodeChar();
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

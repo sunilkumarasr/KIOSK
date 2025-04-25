@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -343,11 +344,14 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
-            // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        } else {
-            disableTriggeredItems();
         }
+
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
 
         return super.onKeyDown(keyCode, event);
     }
@@ -360,7 +364,6 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
                 case KeyEvent.KEYCODE_ENTER:
                     return true;
                 case KeyEvent.KEYCODE_BACK:
-
                    String emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.email_id, "");
                    String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
                    String val_email =  model.getIncomplete_data().getEmail();
@@ -375,9 +378,14 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
                     progressDialog.setMessage("Loading...");
                     progressDialog.show();
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
-                    return true;
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

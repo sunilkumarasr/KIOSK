@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AnimationSet;
@@ -72,9 +73,13 @@ public class DeclinedActivity extends AppCompatActivity implements View.OnClickL
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             // Barcode scanner has scanned a barcode, disable triggered items
             return true;
-        }else {
-            disableTriggeredItems();
         }
+
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
+
+        disableTriggeredItems();
 
 
         return super.onKeyDown(keyCode, event);
@@ -91,9 +96,14 @@ public class DeclinedActivity extends AppCompatActivity implements View.OnClickL
                     Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                     startActivity(intent);
                     return true;
+                case KeyEvent.KEYCODE_DEL:
+                    Log.d("KeyEvent", "DEL in dispatchKeyEvent");
+                    break;
                 default:
                     char keyChar = (char) event.getUnicodeChar();
-                    return true;
+                    if (Character.isLetterOrDigit(keyChar)) {
+                        return true;
+                    }
             }
         }
         return super.dispatchKeyEvent(event);

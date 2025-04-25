@@ -41,6 +41,7 @@ import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMee
 import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
 import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
+import com.provizit.kioskcheckin.config.ViewController;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.services.BlockedvisitorrequestsModel;
@@ -186,6 +187,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         no2.setInputType(InputType.TYPE_CLASS_NUMBER);
         no3.setInputType(InputType.TYPE_CLASS_NUMBER);
         no4.setInputType(InputType.TYPE_CLASS_NUMBER);
+
 
         no1.requestFocus();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -702,15 +704,30 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         }
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // Barcode scanner has scanned a barcode, disable triggered items
+            Preferences.saveStringValue(OTPActivity.this, Preferences.meetingId, "");
             Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
             intent.putExtra("model_key", model);
             startActivity(intent);
             return true;
-        } else {
-            disableTriggeredItems();
         }
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            // Handle delete key manually if needed
+            Log.d("KeyEvent", "Delete key pressed");
+            // your custom logic
+            return true; // or false depending on whether you want to consume it
+        }
+        disableTriggeredItems();
         return super.onKeyDown(keyCode, event);
     }
+
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+//            Log.d("KEY_EVENT", "Backspace detected globally");
+//        }
+//        return super.dispatchKeyEvent(event);
+//    }
+
 
     private void disableTriggeredItems() {
         back_image.setFocusable(false);
@@ -754,6 +771,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_image:
+                Preferences.saveStringValue(OTPActivity.this, Preferences.meetingId, "");
                 Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                 intent.putExtra("model_key", model);
                 startActivity(intent);
@@ -764,6 +782,12 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     protected void registoreNetWorkBroadcast() {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Preferences.saveStringValue(OTPActivity.this, Preferences.meetingId, "");
     }
 
 }
