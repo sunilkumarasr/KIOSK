@@ -30,6 +30,7 @@ import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
+import com.provizit.kioskcheckin.services.QrCodeStatusModel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
 import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
@@ -313,6 +314,16 @@ public class DataManger {
         call.enqueue((Callback<VisitorActionModel>) cb);
     }
 
+    public void getqrcodeStatus(Callback<QrCodeStatusModel> cb, Context context, String l_id, String type, String mid, String val, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<QrCodeStatusModel> call = apiService.getqrcodeStatus(bearer, newEncrypt, l_id, type, mid, val, comp_id);
+        call.enqueue((Callback<QrCodeStatusModel>) cb);
+    }
+
+
+
     public void otpsendemailclient(Callback<VisitorActionModel> cb, Context context, JSONObject init_data) {
         API apiService = retrofit2.create(API.class);
         String newEncrypt = encrypt(context, false);
@@ -331,6 +342,9 @@ public class DataManger {
         Call<VisitorActionModel> call = apiService.otpsendemailclient(bearer, newEncrypt, data);
         call.enqueue((Callback<VisitorActionModel>) cb);
     }
+
+
+
 
     public void verifylinkmobile(Callback<VisitorActionModel> cb, Context context, JSONObject init_data) {
         API apiService = retrofit2.create(API.class);

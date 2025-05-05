@@ -625,10 +625,10 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
     //disable auto click action after scann
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        e_pname.setInputType(InputType.TYPE_CLASS_NUMBER);
-        mobile.setInputType(InputType.TYPE_CLASS_NUMBER);
-        email.setInputType(InputType.TYPE_CLASS_NUMBER);
-        Id_number.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        e_pname.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        mobile.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        email.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        Id_number.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             return true;

@@ -424,7 +424,6 @@
                         android:singleLine="true"
                         android:textSize="@dimen/_11sdp" />
 
-
                     <EditText
                         android:id="@+id/otherpurpose"
                         style="@style/medium_font"
@@ -433,7 +432,7 @@
                         android:layout_marginBottom="15dp"
                         android:hint="@string/Meeting_p_visit"
                         android:textSize="@dimen/_11sdp"
-                         />
+                        android:inputType="textEmailSubject"/>
                 </LinearLayout>
 
                 <LinearLayout

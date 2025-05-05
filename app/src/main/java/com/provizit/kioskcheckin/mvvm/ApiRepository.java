@@ -21,6 +21,7 @@ import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
+import com.provizit.kioskcheckin.services.QrCodeStatusModel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
 import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
@@ -54,6 +55,26 @@ public class ApiRepository {
                 logresponse.onFailure(new Throwable(t));
             }
         }, context, jsonObject);
+    }
+
+    public void getqrcodeStatus(QrCodeStatusResponse logresponse, Context context, String l_id, String type, String mid, String val, String comp_id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getqrcodeStatus(new Callback<QrCodeStatusModel>() {
+            @Override
+            public void onResponse(Call<QrCodeStatusModel> call, Response<QrCodeStatusModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QrCodeStatusModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, l_id, type, mid, val, comp_id);
     }
 
     public void otpsendemailclient(OtpsendemailResponse logresponse, Context context, JSONObject jsonObject) {
@@ -595,6 +616,12 @@ public class ApiRepository {
 
     public interface VisitorActionResponse {
         void onResponse(VisitorActionModel visitorActionModel);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface QrCodeStatusResponse {
+        void onResponse(QrCodeStatusModel qrCodeStatusModel);
 
         void onFailure(Throwable t);
     }

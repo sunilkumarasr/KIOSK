@@ -21,7 +21,7 @@
             android:textSize="@dimen/_12sdp"
             android:hint="@string/enter_EnterName"
             android:textColorHint="#707070"
-            android:inputType="none"
+            android:inputType="textEmailSubject"
             style="@style/medium_font"/>
     </LinearLayout>
 

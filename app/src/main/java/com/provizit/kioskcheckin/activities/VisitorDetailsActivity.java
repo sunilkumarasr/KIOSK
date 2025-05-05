@@ -118,8 +118,6 @@ public class VisitorDetailsActivity extends AppCompatActivity {
 
         });
 
-
-
     }
 
     protected void registoreNetWorkBroadcast() {

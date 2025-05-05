@@ -53,6 +53,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -65,6 +67,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.provizit.kioskcheckin.BuildConfig;
+import com.provizit.kioskcheckin.activities.ChekInPermitStatusActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.InValidPermitActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
@@ -141,7 +144,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_visitor_login);
 
         inits();
-
 
         emailPattern = "[a-zA-Z0-9._-]+@[a-z-]+\\.+[a-z]+";
 
@@ -615,7 +617,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         if (!barResult.equalsIgnoreCase("")) {
             barResult = barResult.trim();
             String[] spre = barResult.split(" ");
-            if (spre[0].trim().equalsIgnoreCase("meeting") || spre[0].trim().equalsIgnoreCase("checkin")) {
+            if (spre[0].trim().equalsIgnoreCase("meeting")){
                 String input = spre[1].trim();
                 if (input.length() >= 24) {
                     String last24Chars = input.substring(input.length() - 24);
@@ -637,6 +639,75 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         visitor_email.setText(newVal.trim());
                         email_decode_method(newVal.trim());
                     }
+                } else {
+                    ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
+                }
+            } else if (spre[0].trim().equalsIgnoreCase("checkin")) {
+                String input = spre[1].trim();
+                String last24Chars = "";
+                String valueType = "";
+                if (input.length() >= 24) {
+                    last24Chars = input.substring(input.length() - 24);
+                }
+                if (spre.length == 3) {
+
+                    String newVal = spre[2].toString().trim();
+                    char first = newVal.charAt(0);
+                    String str = String.valueOf(first);
+                    if (str.equalsIgnoreCase("+")) {
+                        valueType = "mobile";
+                    } else {
+                        valueType = "email";
+                    }
+
+                    String locationId = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+                    String compId = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
+                    apiViewModel.getqrcodeStatus(getApplicationContext(), locationId, "checkin", last24Chars, newVal, compId);
+                    apiViewModel.getQrcodeStatus_response().observe(this, model -> {
+                        try {
+                            if (model.getResult() == 200) {
+                                if (model.getItems().getCheckin() != (0) && model.getItems().getCheckout() == (0)) {
+                                    //checkout
+                                    JsonObject gsonObject = new JsonObject();
+                                    JSONObject jsonObj_ = new JSONObject();
+                                    try {
+                                        jsonObj_.put("formtype", "checkout");
+                                        jsonObj_.put("email", newVal);
+                                        jsonObj_.put("id", model.getItems().get_id().get$oid());
+                                        jsonObj_.put("emp_id", model.getItems().getEmp_id());
+                                        JsonParser jsonParser = new JsonParser();
+                                        gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
+                                        System.out.println("gsonObject::" + gsonObject);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
+                                    //updateCheckIn
+                                    apiViewModel.updateworkpermitaDetails_response().observe(this, modelupdate -> {
+                                        try {
+                                            if (modelupdate != null) {
+                                                Integer statuscode = modelupdate.getResult();
+                                                if (statuscode.equals(200)) {
+                                                    Intent intents = new Intent(getApplicationContext(), ChekInPermitStatusActivity.class);
+                                                    intents.putExtra("status", "2");
+                                                    startActivity(intents);
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Try again", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                }else {
+                                    ViewController.worngingPopup(VisitorLoginActivity.this, "Invalid QR code");
+                                }
+                            }
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
                 } else {
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }

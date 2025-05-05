@@ -16,6 +16,7 @@ public class WorkPermitItems implements Serializable {
     private long start,end;
 
     private List<ContractorsData> contractorsData;
+    private List<SubContractorsData> subcontractorsData;
     private ArrayList<String> starts;
     private ArrayList<String> ends;
 
@@ -80,6 +81,13 @@ public class WorkPermitItems implements Serializable {
         this.contractorsData = contractorsData;
     }
 
+    public List<SubContractorsData> getSubcontractorsData() {
+        return subcontractorsData;
+    }
+
+    public void setSubcontractorsData(List<SubContractorsData> subcontractorsData) {
+        this.subcontractorsData = subcontractorsData;
+    }
 
     public ArrayList<String> getStarts() {
         return starts;

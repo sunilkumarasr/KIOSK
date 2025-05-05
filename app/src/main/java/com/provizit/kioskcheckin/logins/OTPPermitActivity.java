@@ -39,6 +39,7 @@ import com.provizit.kioskcheckin.utilities.EntryPermit.MaterialDetailsAdapter;
 import com.provizit.kioskcheckin.utilities.EntryPermit.SupplierDetails;
 import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.LocationData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.SubContractorsData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 
@@ -262,6 +263,36 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                                             intent.putExtra("permitType", permitType);
                                                             intent.putExtra("ndaStatus", ndaStatus);
                                                             startActivity(intent);
+                                                        }
+                                                    }else {
+                                                        ArrayList<SubContractorsData> subcontractorsDataList;
+                                                        subcontractorsDataList = new ArrayList<>();
+                                                        if (model != null && model.getItems() != null && model.getItems().getSubcontractorsData() != null) {
+                                                            subcontractorsDataList.addAll(model.getItems().getSubcontractorsData());
+                                                            if (!subcontractorsDataList.isEmpty()) {
+                                                                for (int k = 0; k < subcontractorsDataList.size(); k++) {
+                                                                    SubContractorsData sublist = subcontractorsDataList.get(k);
+                                                                    if (sublist != null && sublist.getEmail() != null && sublist.getEmail().equalsIgnoreCase(inputValue)){
+                                                                        if (sublist.getCheckin() == (0)) {
+                                                                            Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+                                                                            intent.putExtra("comp_id", comp_id);
+                                                                            intent.putExtra("inputValue", inputValue);
+                                                                            intent.putExtra("valueType", valueType);
+                                                                            intent.putExtra("permitType", permitType);
+                                                                            intent.putExtra("ndaStatus", ndaStatus);
+                                                                            startActivity(intent);
+                                                                        } else {
+                                                                            Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
+                                                                            intent.putExtra("comp_id", comp_id);
+                                                                            intent.putExtra("inputValue", inputValue);
+                                                                            intent.putExtra("valueType", valueType);
+                                                                            intent.putExtra("permitType", permitType);
+                                                                            intent.putExtra("ndaStatus", ndaStatus);
+                                                                            startActivity(intent);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }

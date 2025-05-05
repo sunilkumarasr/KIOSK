@@ -559,10 +559,10 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        editTextEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
-        otherpurpose.setInputType(InputType.TYPE_CLASS_NUMBER);
-        dept_search.setInputType(InputType.TYPE_CLASS_NUMBER);
-        visitor_search.setInputType(InputType.TYPE_CLASS_NUMBER);
-        purpose_search.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        otherpurpose.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        dept_search.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        visitor_search.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        purpose_search.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             return true;

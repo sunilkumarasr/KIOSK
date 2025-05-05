@@ -24,6 +24,7 @@ import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
+import com.provizit.kioskcheckin.services.QrCodeStatusModel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
 import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
@@ -38,6 +39,7 @@ public class ApiViewModel extends ViewModel {
 
     MutableLiveData<VisitorActionModel> verifylinkmobile_response = new MutableLiveData<>();
 
+    MutableLiveData<QrCodeStatusModel> getqrcodeStatus_response = new MutableLiveData<>();
     MutableLiveData<VisitorActionModel> otpsendemailclient_response = new MutableLiveData<>();
 
     MutableLiveData<Model> checkinuserloginresponse = new MutableLiveData<>();
@@ -156,6 +158,19 @@ public class ApiViewModel extends ViewModel {
         }, context, comp_id, emp_id, id, l_id);
 
     }
+    //VisitorLoginActivity
+    public void getqrcodeStatus(Context context, String l_id, String type, String mid, String val, String comp_id) {
+        apiRepository.getqrcodeStatus(new ApiRepository.QrCodeStatusResponse() {
+            @Override
+            public void onResponse(QrCodeStatusModel qrCodeStatusModel) {
+                getqrcodeStatus_response.postValue(qrCodeStatusModel);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, context, l_id, type, mid, val, comp_id);
+    }
 
     //VisitorLoginActivity
     public void otpsendemailclient(Context context, JSONObject jsonObject) {
@@ -164,7 +179,6 @@ public class ApiViewModel extends ViewModel {
             public void onResponse(VisitorActionModel visitorActionModel) {
                 otpsendemailclient_response.postValue(visitorActionModel);
             }
-
             @Override
             public void onFailure(Throwable t) {
 
@@ -506,6 +520,10 @@ public class ApiViewModel extends ViewModel {
 
     public LiveData<VisitorActionModel> getResponseforotpsendemail() {
         return otpsendemailclient_response;
+    }
+
+    public LiveData<QrCodeStatusModel> getQrcodeStatus_response() {
+        return getqrcodeStatus_response;
     }
 
     //Login Response

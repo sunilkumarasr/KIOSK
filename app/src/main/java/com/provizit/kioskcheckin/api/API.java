@@ -17,6 +17,7 @@ import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
+import com.provizit.kioskcheckin.services.QrCodeStatusModel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
 import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
@@ -49,6 +50,11 @@ public interface API {
 
     @POST("setup/otpsendemailclient")
     Call<VisitorActionModel> otpsendemailclient(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
+
+
+    @GET("setup/getqrcodeStatus")
+    Call<QrCodeStatusModel> getqrcodeStatus(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("l_id") String l_id, @Query("type") String type, @Query("mid") String mid, @Query("val") String val, @Query("comp_id") String comp_id);
+
 
     @POST("useractions/verifylinkmobile")
     Call<VisitorActionModel> verifylinkmobile(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);

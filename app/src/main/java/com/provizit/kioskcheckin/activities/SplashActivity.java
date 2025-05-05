@@ -127,14 +127,14 @@ public class SplashActivity extends AppCompatActivity {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-//                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
-                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-                intent.putExtra("comp_id", "680b5f5390c70a68ed2a6e6d");
-                intent.putExtra("valueType", "email");
-                intent.putExtra("inputValue", "aj16940.8@gmail.com");
-                intent.putExtra("permitType", "workpermit");
-                intent.putExtra("ndaStatus", "true");
-                startActivity(intent);
+                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+//                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
+//                intent.putExtra("comp_id", "6810a810068b1114eb361f5d");
+//                intent.putExtra("valueType", "email");
+//                intent.putExtra("inputValue", "aj169408@gmail.com");
+//                intent.putExtra("permitType", "workpermit");
+//                intent.putExtra("ndaStatus", "true");
+//                startActivity(intent);
             }
         }, 3000);
     }
