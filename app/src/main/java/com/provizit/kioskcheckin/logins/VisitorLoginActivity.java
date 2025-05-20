@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -34,7 +35,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -67,20 +67,36 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.provizit.kioskcheckin.BuildConfig;
+import com.provizit.kioskcheckin.activities.AlreadyCheckedInActivity;
 import com.provizit.kioskcheckin.activities.ChekInPermitStatusActivity;
+import com.provizit.kioskcheckin.activities.DeclinedActivity;
+import com.provizit.kioskcheckin.activities.EnterYourDetailsActivity;
+import com.provizit.kioskcheckin.activities.MaterialPermitActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.NDAPermitActivity;
+import com.provizit.kioskcheckin.activities.NDA_FormActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.InValidPermitActivity;
+import com.provizit.kioskcheckin.activities.WorkPermitActivity;
+import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.config.ViewController;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.R;
+import com.provizit.kioskcheckin.services.BlockedvisitorrequestsModel;
+import com.provizit.kioskcheckin.services.Blocklist_Model;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.api.DataManger;
+import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
+import com.provizit.kioskcheckin.services.GetNdaActiveDetailsModel;
 import com.provizit.kioskcheckin.utilities.CompanyData;
+import com.provizit.kioskcheckin.utilities.GetvisitorrequestblocklistModel;
 import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.SubContractorsData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,6 +106,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -133,10 +150,23 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
     boolean spaceValstatus = false;
     int spaceVal = 0;
 
-
     //current date and time stamp
     long todayStartTimestamp = 0;
     long cTimeStamp = 0;
+
+    //without otp
+    String nda_Data = "false";
+    GetNdaActiveDetailsModel ndamodel;
+    ArrayList<String> Nationalitsblaclklist;
+    String supertype = "";
+    String type = "";
+    String Nationblacklist = "";
+    ArrayList<GetvisitorrequestblocklistModel> visitorblocklist;
+    String getvisitorblocklistID = "";
+    String vistiorbloclist;
+    ArrayList<String> Vistiror_blockIDs;
+    String blocking = "false";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +238,71 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.badge_Data, "false");
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.pic_Data, "false");
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.accept_Data, "false");
+
+        //without otp
+        nda_Data = Preferences.loadStringValue(getApplicationContext(), Preferences.nda_Data, "");
+        blocking = Preferences.loadStringValue(getApplicationContext(), Preferences.blocking, "");
+        apiViewModel.getndafdetials(getApplicationContext(), "id", "active");
+        apiViewModel.getResponseforNdaActiveDetails().observe(this, model1 -> ndamodel = model1);
+        Nationalitsblaclklist = new ArrayList<>();
+        Vistiror_blockIDs = new ArrayList<>();
+        String Comp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
+        //Visitor Blocklist
+        apiViewModel.getcblacklistdetails(getApplicationContext(), Comp_id);
+        //Vistior ID_block
+        apiViewModel.getblockedvisitorrequests(getApplicationContext(), Comp_id, "");
+        // Blocklist visitor
+        apiViewModel.getResponsecblacklistdetails().observe(this, new Observer<Blocklist_Model>() {
+            @Override
+            public void onChanged(Blocklist_Model model) {
+                try {
+                    // Check if the blocklist is not null and clear the cached blocklist
+                    if (Nationalitsblaclklist != null) {
+                        Nationalitsblaclklist.clear(); // Clear the cached blocklist
+                    } else {
+                        // Initialize it if it's null
+                        Nationalitsblaclklist = new ArrayList<>();
+                    }
+
+                    // Update blocklist with new data from the API
+                    Nationalitsblaclklist.addAll(model.getItem().getCountries());
+
+                    supertype = model.getItem().getSupertype();
+                    type = model.getItem().getType();
+
+                    for (int i = 0; i < Nationalitsblaclklist.size(); i++) {
+                        Nationblacklist = Nationalitsblaclklist.get(i);
+                    }
+
+                    // Log the updated blocklist for debugging purposes
+                    Log.d("Blocklist", "Updated Blocklist: " + Nationalitsblaclklist);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        apiViewModel.getResponsevisitorblocklistdetails().observe(this, new Observer<BlockedvisitorrequestsModel>() {
+            @Override
+            public void onChanged(BlockedvisitorrequestsModel model) {
+                try {
+                    if (model != null) {
+                        visitorblocklist = model.getItems();
+                        for (int i = 0; i < visitorblocklist.size(); i++) {
+                            getvisitorblocklistID = visitorblocklist.get(i).getIdnumber();
+                            Vistiror_blockIDs.add(getvisitorblocklistID);
+                        }
+
+                        for (int i = 0; i < Vistiror_blockIDs.size(); i++) {
+                            vistiorbloclist = Vistiror_blockIDs.get(i);
+                        }
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
 
 
         //internet connection
@@ -352,8 +447,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 if (model.getItems().getPic() != null) {
                     if (model.getItems().getPic() != null && model.getItems().getPic().size() != 0) {
                         //preferences
-                        String Comp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
-
                         if (language.equals("ar")) {
                             Glide.with(VisitorLoginActivity.this)
                                     .load(DataManger.IMAGE_URL + "/uploads/" + Comp_id + "/" + model.getItems().getA_pic().get(model.getItems().getA_pic().size() - 1))
@@ -572,13 +665,13 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     usbScannedData = "";
 //                    if (use_mobile.isChecked()) {
 //                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
-//                            email_method();
+//                            emailMethod();
 //                        } else {
 //                            DataManger.internetpopup(VisitorLoginActivity.this);
 //                        }
 //                    } else {
 //                        if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
-//                            mobile_method();
+//                            mobileMethod();
 //                        } else {
 //                            DataManger.internetpopup(VisitorLoginActivity.this);
 //                        }
@@ -634,10 +727,10 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         ccp.setDefaultCountryUsingPhoneCode(Integer.parseInt(countrycode));
                         ccp.setCountryForNameCode(countrycode);
                         visitor_mobile.setText(newStr);
-                        mobile_method();
+                        ScanneMobileMethod();
                     } else {
                         visitor_email.setText(newVal.trim());
-                        email_decode_method(newVal.trim());
+                        ScanneEmailMethod(newVal.trim());
                     }
                 } else {
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
@@ -789,12 +882,36 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         intent.putExtra("message", getResources().getString(R.string.TheMaterialPermitHasBeenCancelled));
                                         startActivity(intent);
                                     } else {
-                                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
-                                        intent.putExtra("comp_id", last24Chars);
-                                        intent.putExtra("valueType", finalValueType);
-                                        intent.putExtra("inputValue", finalQrValue);
-                                        intent.putExtra("permitType", "material");
-                                        startActivity(intent);
+
+                                        //checkout status check whitOut OTP
+                                        String compId = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
+                                        apiViewModel.getqrcodeStatus(getApplicationContext(), location_id, "material", last24Chars, newVal, compId);
+                                        apiViewModel.getQrcodeStatus_response().observe(this, QRmodel -> {
+                                            try {
+                                                if (QRmodel.getResult() == 200) {
+                                                    if (QRmodel.getItems().getCheckin() != (0) && QRmodel.getItems().getCheckout() == (0)) {
+                                                        //checkOut whitOut OTP
+                                                        Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
+                                                        intent.putExtra("comp_id", last24Chars);
+                                                        intent.putExtra("inputValue", finalQrValue);
+                                                        intent.putExtra("valueType", finalValueType);
+                                                        intent.putExtra("permitType", "material");
+                                                        intent.putExtra("ndaStatus", "false");
+                                                        startActivity(intent);
+                                                    }else {
+                                                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                                                        intent.putExtra("comp_id", last24Chars);
+                                                        intent.putExtra("valueType", finalValueType);
+                                                        intent.putExtra("inputValue", finalQrValue);
+                                                        intent.putExtra("permitType", "material");
+                                                        startActivity(intent);
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        });
+
                                     }
                                 }
                             } catch (Exception e) {
@@ -809,6 +926,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 }
 
             } else if (spre[0].trim().equalsIgnoreCase("workpermit")) {
+
                 String input = spre[1].trim();
                 if (spre.length == 3) {
                     String valueType = "";
@@ -844,10 +962,8 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                             progress.dismiss();
                             try {
                                 if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
-
-
                                     //date condition check
-                                    String dateStatus = "0";
+                                    String dateStatus;
                                     ArrayList<String> StartsList = new ArrayList<>();
                                     ArrayList<String> EndList = new ArrayList<>();
                                     //Start time
@@ -900,6 +1016,8 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                 System.out.println("Converted 1: " + "6");
                                                 dateStatus = "0";
                                             }
+                                        } else {
+                                            dateStatus = "0";
                                         }
                                     } else {
                                         System.out.println("Converted 1: " + "2");
@@ -923,7 +1041,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         }
                                     }
 
-
                                     String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
                                     if (!location_id.equalsIgnoreCase(model.getItems().getL_id())) {
                                         Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
@@ -938,12 +1055,36 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         intent.putExtra("message", getResources().getString(R.string.TheWorkPermitHasBeenCancelled));
                                         startActivity(intent);
                                     } else {
-                                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
-                                        intent.putExtra("comp_id", last24Chars);
-                                        intent.putExtra("valueType", finalValueType);
-                                        intent.putExtra("inputValue", finalQrValue);
-                                        intent.putExtra("permitType", "workpermit");
-                                        startActivity(intent);
+
+                                        //checkout status check whitOut OTP
+                                        String compId = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
+                                        apiViewModel.getqrcodeStatus(getApplicationContext(), location_id, "workpermit", last24Chars, newVal, compId);
+                                        apiViewModel.getQrcodeStatus_response().observe(this, QRmodel -> {
+                                            try {
+                                                if (QRmodel.getResult() == 200) {
+                                                    if (QRmodel.getItems().getCheckin() != (0) && QRmodel.getItems().getCheckout() == (0)) {
+                                                        //checkOut whitOut OTP
+                                                        Intent intent = new Intent(getApplicationContext(), MaterialPermitActivity.class);
+                                                        intent.putExtra("comp_id", last24Chars);
+                                                        intent.putExtra("inputValue", finalQrValue);
+                                                        intent.putExtra("valueType", finalValueType);
+                                                        intent.putExtra("permitType", "workpermit");
+                                                        intent.putExtra("ndaStatus", "false");
+                                                        startActivity(intent);
+                                                    }else {
+                                                        Intent intent = new Intent(getApplicationContext(), OTPPermitActivity.class);
+                                                        intent.putExtra("comp_id", last24Chars);
+                                                        intent.putExtra("valueType", finalValueType);
+                                                        intent.putExtra("inputValue", finalQrValue);
+                                                        intent.putExtra("permitType", "workpermit");
+                                                        startActivity(intent);
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        });
+
                                     }
 
                                 }
@@ -1104,13 +1245,13 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                 ViewController.hideKeyboard(VisitorLoginActivity.this, visitor_email);
                 if (use_mobile.isChecked()) {
                     if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
-                        email_method();
+                        emailMethod();
                     } else {
                         DataManger.internetpopup(VisitorLoginActivity.this);
                     }
                 } else {
                     if (InterNetConnectivityCheck.isOnline(getApplicationContext())) {
-                        mobile_method();
+                        mobileMethod();
                     } else {
                         DataManger.internetpopup(VisitorLoginActivity.this);
                     }
@@ -1190,10 +1331,10 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 //                if (str.equalsIgnoreCase("+")) {
 //                    String newStr = newVal.substring(4);
 //                    visitor_mobile.setText(newStr);
-//                    mobile_method();
+//                    mobileMethod();
 //                } else {
 //                    visitor_email.setText(newVal.trim());
-//                    email_method();
+//                    emailMethod();
 //                }
 //            }
 
@@ -1215,11 +1356,11 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         // It's a mobile number, handle accordingly
                         String newStr = emailOrPhone.substring(4);  // Remove the first 4 characters of the mobile number
                         visitor_mobile.setText(newStr);  // Update visitor's mobile field
-                        mobile_method();  // Call method for mobile number handling
+                        mobileMethod();  // Call method for mobile number handling
                     } else {
                         // It's an email address, handle accordingly
                         visitor_email.setText(emailOrPhone.trim());  // Update visitor's email field
-                        email_method();  // Call method for email handling
+                        emailMethod();  // Call method for email handling
                     }
 
                     Log.d("Material Value", material); // Log or use material value
@@ -1245,7 +1386,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         startActivity(refresh);
     }
 
-    private void mobile_method() {
+    private void mobileMethod() {
 
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.country_Code, ccp.getSelectedCountryCode());
 
@@ -1305,23 +1446,9 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         }
                         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "mobile");
 
-
                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                         intent.putExtra("model_key", model);
                         startActivity(intent);
-
-
-//                        String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
-//                        if (model.getItems().getLocation()!=null){
-//                           if (!location_id.equalsIgnoreCase(model.getItems().getLocation())){
-//                               Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
-//                               startActivity(intent);
-//                           }else {
-//                               Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
-//                               intent.putExtra("model_key", model);
-//                               startActivity(intent);
-//                           }
-//                       }
 
                     } else {
                         showAlertDialog();
@@ -1335,7 +1462,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void email_method() {
+    private void emailMethod() {
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.country_Code, ccp.getSelectedCountryCode());
 
         new android.os.Handler().postDelayed(
@@ -1420,7 +1547,86 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         return newcountryCode;
     }
 
-    private void email_decode_method(String decodeResult) {
+    private void ScanneMobileMethod() {
+
+        Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.country_Code, ccp.getSelectedCountryCode());
+
+        String regexStr = "^[0-9]*$";
+        int minLength;
+        int maxLength;
+
+        if (ccp.getSelectedCountryCode().length() == 2) { // India
+            minLength = 10;
+            maxLength = 10;
+        } else {
+            minLength = 9; // Default minLength for other countries
+            maxLength = 13; // Default maxLength for other countries
+        }
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        visitor_mobile.setError(null);
+                    }
+                }, 5000);
+
+        if (visitor_mobile.getText().length() == 0) {
+//            visitor_mobile.requestFocus();
+            visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
+        } else if (visitor_mobile.length() < minLength || visitor_mobile.length() > maxLength) {
+//            visitor_mobile.requestFocus();
+            visitor_mobile.setError(getResources().getString(R.string.Invalidmobile_number));
+        } else if (!visitor_mobile.getText().toString().trim().matches(regexStr)) {
+//            visitor_mobile.requestFocus();
+            visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
+        } else if (visitor_mobile.getText().toString().trim().matches(regexStr)) {
+            progress.show();
+            int otp = Conversions.getNDigitRandomNumber(4);
+            Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.otp, otp + "");
+            String senderId = Preferences.loadStringValue(getApplicationContext(), Preferences.senderId, "");
+            JSONObject jsonObj_ = new JSONObject();
+            try {
+                String newMobile = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
+                jsonObj_.put("mobile", newMobile);
+                jsonObj_.put("otp", otp);
+                jsonObj_.put("senderid", senderId);
+            } catch (Exception ignored) {
+
+            }
+            apiViewModel.verifylinkmobile(getApplicationContext(), jsonObj_);
+            apiViewModel.getcvisitordetails(getApplicationContext(), "comp_id", emp_id, ccp.getSelectedCountryCode() + visitor_mobile.getText().toString(), location_id);
+            apiViewModel.getResponseforCVisitor().observe(this, model -> {
+                progress.dismiss();
+                try {
+                    if (model.getResult() == 200) {
+                        Float visitor_status = model.getItems().getVisitorStatus();
+                        if (visitor_status == 0) {
+                            model.setIncomplete_data(new IncompleteData());
+                            model.getIncomplete_data().setEmail("");
+                            model.getIncomplete_data().setMobile("+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString());
+                        }
+                        Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "mobile");
+
+                        String locationId = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
+                        String compId = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
+                        // apiViewModel.getqrcodeStatus(getApplicationContext(), locationId, "checkin", last24Chars, "mobile", compId);
+
+//                        Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
+//                        intent.putExtra("model_key", model);
+//                        startActivity(intent);
+
+                    } else {
+                        showAlertDialog();
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            });
+
+        }
+    }
+    private void ScanneEmailMethod(String decodeResult) {
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.country_Code, ccp.getSelectedCountryCode());
 
         //exaple%00@gmail.com remove %00
@@ -1456,16 +1662,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                         intent.putExtra("model_key", model);
                         startActivity(intent);
-
-//                        String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
-//                        if (model.getItems().getLocation()!=null){
-//                            if (!location_id.equalsIgnoreCase(model.getItems().getLocation())){
-//                                Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
-//                                startActivity(intent);
-//                            }else {
-//
-//                            }
-//                        }
 
                     } else {
                         showAlertDialog();

@@ -160,7 +160,6 @@ public class ApiRepository {
         }, context, comp_id, emp_id, id, l_id);
     }
 // EnterYourDetailsActivity
-
     public void getnationality(NationalityResponse logresponse, Context context, String doc_id) {
         DataManger dataManger = DataManger.getDataManager();
         dataManger.getnationality(new Callback<GetnationalityModel>() {

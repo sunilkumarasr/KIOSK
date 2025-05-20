@@ -229,6 +229,18 @@ public class DataManger {
         call.enqueue((Callback<GetCVisitorDetailsModel>) cb);
 
     }
+    public void getqrcodeStatus(Callback<GetCVisitorDetailsModel> cb, Context context, String comp_id, String emp_id, String id, String l_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Long date = (new mycalendardata(0).getTimeMilli());
+        Long datetime = date + (24 * 60 * 60);
+        Call<GetCVisitorDetailsModel> call = apiService.getcvisitordetails(bearer, newEncrypt, comp_id, emp_id, id, l_id, date, datetime);
+        call.enqueue((Callback<GetCVisitorDetailsModel>) cb);
+
+    }
+
+
 
 
     public void getdocuments(Callback<GetdocumentsModel> cb, Context context) {
@@ -321,7 +333,6 @@ public class DataManger {
         Call<QrCodeStatusModel> call = apiService.getqrcodeStatus(bearer, newEncrypt, l_id, type, mid, val, comp_id);
         call.enqueue((Callback<QrCodeStatusModel>) cb);
     }
-
 
 
     public void otpsendemailclient(Callback<VisitorActionModel> cb, Context context, JSONObject init_data) {
