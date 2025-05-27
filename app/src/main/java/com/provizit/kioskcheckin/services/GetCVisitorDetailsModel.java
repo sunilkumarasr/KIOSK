@@ -7,9 +7,12 @@ import com.provizit.kioskcheckin.utilities.Items;
 import com.provizit.kioskcheckin.utilities.TotalCounts;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class GetCVisitorDetailsModel implements Serializable {
     private Integer result;
+    private Integer result_type;
+    private ArrayList<WorkPResult> result_data;
     private TotalCounts total_counts;
     private IncompleteData incomplete_data;
     private Items items;
@@ -44,5 +47,21 @@ public class GetCVisitorDetailsModel implements Serializable {
 
     public void setItems(Items items) {
         this.items = items;
+    }
+
+    public Integer getResult_type() {
+        return result_type;
+    }
+
+    public void setResult_type(Integer result_type) {
+        this.result_type = result_type;
+    }
+
+    public ArrayList<WorkPResult> getResult_data() {
+        return result_data;
+    }
+
+    public void setResult_data(ArrayList<WorkPResult> result_data) {
+        this.result_data = result_data;
     }
 }

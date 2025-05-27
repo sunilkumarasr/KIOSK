@@ -6,7 +6,16 @@ import java.io.Serializable;
 
 public class ContractorsData implements Serializable {
 
-    private String name,email;
+    private String name,email, mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     private long checkin,checkout;
 
 

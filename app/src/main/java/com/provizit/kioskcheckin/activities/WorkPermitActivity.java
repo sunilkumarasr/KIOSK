@@ -34,6 +34,7 @@ import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.LocationData;
+import com.provizit.kioskcheckin.utilities.WorkPermit.SubContractorsData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkLocationData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkTypeData;
 
@@ -62,6 +63,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
     ArrayList<String> StartsList;
     ArrayList<String> EndList;
     ArrayList<ContractorsData> contractorsDataList;
+    ArrayList<SubContractorsData> subcontractorsDataList;
     String comp_id = "";
     String inputValue = "";
     String valueType = "";
@@ -137,6 +139,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
             EndList = new ArrayList<>();
             EndList.clear();
             contractorsDataList = new ArrayList<>();
+            subcontractorsDataList = new ArrayList<>();
             try {
                 if (model != null && model.getItems() != null && model.getItems().getContractorsData() != null) {
 
@@ -242,6 +245,156 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                             ContractorsData contractor = contractorsDataList.get(i);
                             if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue)) {
                                 txtCName.setText(contractor.getName());
+                                if (contractor.getCheckin() == (0)) {
+                                    btnNext.setText(getString(R.string.CheckIn));
+                                    statusCheckIn = "Check-In";
+                                } else if (contractor.getCheckin() == (1)) {
+                                    btnNext.setText(getString(R.string.CheckOut));
+                                    statusCheckIn = "Check-Out";
+                                } else {
+                                    btnNext.setVisibility(GONE);
+                                }
+                            }else if (contractor != null && contractor.getMobile() != null && contractor.getMobile().equalsIgnoreCase(inputValue)) {
+                                txtCName.setText(contractor.getName());
+                                inputValue = contractor.getEmail();
+                                if (contractor.getCheckin() == (0)) {
+                                    btnNext.setText(getString(R.string.CheckIn));
+                                    statusCheckIn = "Check-In";
+                                } else if (contractor.getCheckin() == (1)) {
+                                    btnNext.setText(getString(R.string.CheckOut));
+                                    statusCheckIn = "Check-Out";
+                                } else {
+                                    btnNext.setVisibility(GONE);
+                                }
+                            }
+                        }
+                    }
+
+                    //meeting cancel
+                    Log.e("status_",model.getItems().getStatus());
+                    if (model.getItems().getStatus().equalsIgnoreCase("2.0")){
+                        txtEnter.setBackgroundColor(Color.parseColor("#8B0000"));
+                        txtEnter.setText("The Work Permit has been Cancelled");
+                        line1.setVisibility(GONE);
+                    }
+
+                }
+                if (model != null && model.getItems() != null && model.getItems().getSubcontractorsData() != null) {
+
+                    txtCompany.setText(model.getItems().getCompanyName());
+                    id = model.getItems().get_id().get$oid();
+                    //Start time
+                    String s_time = "";
+                    String e_time = "";
+                    StartsList.addAll(model.getItems().getStarts());
+                    //End time
+                    EndList.addAll(model.getItems().getEnds());
+
+                    Calendar ca = Calendar.getInstance();
+                    ca.set(Calendar.HOUR_OF_DAY, 0);
+                    ca.set(Calendar.MINUTE, 0);
+                    ca.set(Calendar.SECOND, 0);
+                    ca.set(Calendar.MILLISECOND, 0);
+                    long todayStartTimestamp = ca.getTimeInMillis();
+                    System.out.println("Today's Start Timestamp: " + todayStartTimestamp);
+
+                    long startMillis = (model.getItems().getStart() + Conversions.timezone()) * 1000;
+                    long endMillis = (model.getItems().getEnd() + Conversions.timezone()) * 1000;
+                    System.out.println("startMillis: " + startMillis);
+                    System.out.println("endMillis: " + endMillis);
+
+                    // Get the current timestamp
+                    long currents = System.currentTimeMillis();
+                    // Convert to readable date/time
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
+                    sdf.setTimeZone(TimeZone.getDefault()); // Set to device's timezone
+                    String formattedTime = sdf.format(new Date(currents));
+
+                    Date cdate = sdf.parse(formattedTime);
+                    long Ctimestamp = cdate.getTime();
+
+                    String endTime = "";
+                    if (!EndList.isEmpty()) {
+                        long startTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
+                        // Add 1 minute (60 seconds = 60000 milliseconds) before converting
+                        endTime = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
+                    }
+                    endTime = convertArabicToEnglish(endTime);
+                    endTime = endTime.replace("ص", "AM").replace("م", "PM");
+
+                    Date Edate = sdf.parse(endTime);
+                    long Etimestamp = Edate.getTime();
+
+                    if (todayStartTimestamp == startMillis || todayStartTimestamp > startMillis && todayStartTimestamp < endMillis ){
+                        System.out.println("Converted 1: " + "1");
+                        if (!StartsList.isEmpty()) {
+                            if (Ctimestamp < Etimestamp){
+                                System.out.println("Converted 1: " + "5");
+                                LinearDetails.setVisibility(View.VISIBLE);
+                                line1.setVisibility(View.VISIBLE);
+                                linearWarning.setVisibility(GONE);
+                            }else {
+                                System.out.println("Converted 1: " + "6");
+                                LinearDetails.setVisibility(GONE);
+                                line1.setVisibility(GONE);
+                                linearWarning.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }else {
+                        System.out.println("Converted 1: " + "2");
+                        LinearDetails.setVisibility(GONE);
+                        line1.setVisibility(GONE);
+                        linearWarning.setVisibility(View.VISIBLE);
+                    }
+
+                    if (!StartsList.isEmpty()) {
+                        long startTimestamp = (long) (Double.parseDouble(StartsList.get(0)) + Conversions.timezone());
+                        s_time = Conversions.millitotime(startTimestamp * 1000, false);
+                    }
+
+                    if (!EndList.isEmpty()) {
+                        long startTimestamp = (long) (Double.parseDouble(EndList.get(0)) + Conversions.timezone());
+                        // e_time = Conversions.millitotime(startTimestamp * 1000, false);
+                        // Add 1 minute (60 seconds = 60000 milliseconds) before converting
+                        e_time = Conversions.millitotime((startTimestamp * 1000) + 60000, false);
+                    }
+
+                    String stateDate = Conversions.millitodateD((model.getItems().getStart() + Conversions.timezone()) * 1000);
+                    String endDate = Conversions.millitodateD((model.getItems().getEnd() + Conversions.timezone()) * 1000);
+
+                    txtTime.setText(s_time + " to " + e_time);
+                    txtDate.setText(stateDate + " to " + endDate);
+
+                    //name
+                    WorkTypeData workTypeData = model.getItems().getWorktypeData();
+                    if (workTypeData != null) {
+                        txtWorkName.setText(workTypeData.getName());
+                    }
+                    //location
+                    WorkLocationData workLocation = model.getItems().getWorklocationData();
+                    LocationData locationData = model.getItems().getLocations_Data();
+                    if (workLocation != null) {
+                        txtLocation.setText(workLocation.getName() + "," + locationData.getName());
+                    }
+
+                    subcontractorsDataList.addAll(model.getItems().getSubcontractorsData());
+                    if (!subcontractorsDataList.isEmpty()) {
+                        for (int i = 0; i < subcontractorsDataList.size(); i++) {
+                            SubContractorsData contractor = subcontractorsDataList.get(i);
+                            if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue)) {
+                                txtCName.setText(contractor.getName());
+                                if (contractor.getCheckin() == (0)) {
+                                    btnNext.setText(getString(R.string.CheckIn));
+                                    statusCheckIn = "Check-In";
+                                } else if (contractor.getCheckin() == (1)) {
+                                    btnNext.setText(getString(R.string.CheckOut));
+                                    statusCheckIn = "Check-Out";
+                                } else {
+                                    btnNext.setVisibility(GONE);
+                                }
+                            }else if (contractor != null && contractor.getMobile() != null && contractor.getMobile().equalsIgnoreCase(inputValue)) {
+                                txtCName.setText(contractor.getName());
+                                inputValue = contractor.getEmail();
                                 if (contractor.getCheckin() == (0)) {
                                     btnNext.setText(getString(R.string.CheckIn));
                                     statusCheckIn = "Check-In";

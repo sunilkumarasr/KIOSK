@@ -42,6 +42,8 @@ import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -223,9 +225,9 @@ public class DataManger {
         API apiService = retrofit2.create(API.class);
         String newEncrypt = encrypt(context, false);
         String bearer = BEARER_PREFIX + newEncrypt;
-        Long date = (new mycalendardata(0).getTimeMilli());
-        Long datetime = date + (24 * 60 * 60);
-        Call<GetCVisitorDetailsModel> call = apiService.getcvisitordetails(bearer, newEncrypt, comp_id, emp_id, id, l_id, date, datetime);
+        Long millis = System.currentTimeMillis()/1000;
+        Long datetime = millis + (24 * 60 * 60);
+        Call<GetCVisitorDetailsModel> call = apiService.getcvisitordetails(bearer, newEncrypt, comp_id, emp_id, id, l_id, millis, datetime);
         call.enqueue((Callback<GetCVisitorDetailsModel>) cb);
 
     }
