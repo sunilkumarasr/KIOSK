@@ -1058,7 +1058,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                         if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(finalQrValue)) {
                                                             if (contractor.getCheckin() != 0 && contractor.getCheckout() == 0) {
                                                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
-                                                                intent.putExtra("comp_id", last24Chars);
+                                                                intent.putExtra("_id", last24Chars);
                                                                 intent.putExtra("inputValue", finalQrValue);
                                                                 intent.putExtra("valueType", finalValueType);
                                                                 intent.putExtra("permitType", "workpermit");
@@ -1081,8 +1081,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                             }
                                                         }
 
-
-
                                                     }
                                                 }
                                             }
@@ -1097,7 +1095,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                         if (sublist != null && sublist.getEmail() != null && sublist.getEmail().equalsIgnoreCase(finalQrValue)) {
                                                             if (sublist.getCheckin() != 0 && sublist.getCheckout() == 0) {
                                                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
-                                                                intent.putExtra("comp_id", last24Chars);
+                                                                intent.putExtra("_id", last24Chars);
                                                                 intent.putExtra("inputValue", finalQrValue);
                                                                 intent.putExtra("valueType", finalValueType);
                                                                 intent.putExtra("permitType", "workpermit");

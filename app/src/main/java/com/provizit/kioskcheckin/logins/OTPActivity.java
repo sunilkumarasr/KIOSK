@@ -40,7 +40,6 @@ import com.provizit.kioskcheckin.activities.NDAPermitActivity;
 import com.provizit.kioskcheckin.activities.NDA_FormActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
-import com.provizit.kioskcheckin.activities.WorkPermitActivity;
 import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.ViewController;

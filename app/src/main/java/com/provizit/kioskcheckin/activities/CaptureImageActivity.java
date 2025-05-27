@@ -83,11 +83,9 @@ public class CaptureImageActivity extends AppCompatActivity implements View.OnCl
                 tvisitor = iin.getStringExtra("tvisitor");
                 model = (GetCVisitorDetailsModel) iin.getSerializableExtra(MODEL_KEY);
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
 
         //shared Preferences
         accept_Data = Preferences.loadStringValue(getApplicationContext(), Preferences.accept_Data, "");

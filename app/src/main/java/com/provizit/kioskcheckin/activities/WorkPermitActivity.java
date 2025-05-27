@@ -64,7 +64,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
     ArrayList<String> EndList;
     ArrayList<ContractorsData> contractorsDataList;
     ArrayList<SubContractorsData> subcontractorsDataList;
-    String comp_id = "";
+    String _id = "";
     String inputValue = "";
     String valueType = "";
     String permitType = "";
@@ -96,7 +96,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         btnNext = findViewById(R.id.btnNext);
         btnOk = findViewById(R.id.btnOk);
 
-        comp_id = getIntent().getStringExtra("comp_id");
+        _id = getIntent().getStringExtra("_id");
         inputValue = getIntent().getStringExtra("inputValue");
         valueType = getIntent().getStringExtra("valueType");
         permitType = getIntent().getStringExtra("permitType");
@@ -130,7 +130,7 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
 
 
         //workDetails
-        apiViewModel.getworkpermitDetails(getApplicationContext(), comp_id);
+        apiViewModel.getworkpermitDetails(getApplicationContext(), _id);
         progress.show();
         apiViewModel.getworkpermitDetails_response().observe(this, model -> {
             progress.dismiss();
@@ -555,21 +555,29 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
         String Emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Emp_id, "");
 
         if (statusCheckIn.equalsIgnoreCase("Check-In")) {
-            JsonObject gsonObject = new JsonObject();
-            JSONObject jsonObj_ = new JSONObject();
-            try {
-                jsonObj_.put("formtype", "checkin");
-                jsonObj_.put("email", inputValue);
-                jsonObj_.put("id", id);
-                jsonObj_.put("emp_id", Emp_id);
-                JsonParser jsonParser = new JsonParser();
-                gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
-                System.out.println("gsonObject::" + gsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
-            progress.show();
+
+            Intent intent = new Intent(getApplicationContext(), PermitCaptureImageActivity.class);
+            intent.putExtra("email", inputValue);
+            intent.putExtra("id", id);
+            intent.putExtra("emp_id", Emp_id);
+            startActivity(intent);
+
+//            JsonObject gsonObject = new JsonObject();
+//            JSONObject jsonObj_ = new JSONObject();
+//            try {
+//                jsonObj_.put("formtype", "checkin");
+//                jsonObj_.put("email", inputValue);
+//                jsonObj_.put("id", id);
+//                jsonObj_.put("emp_id", Emp_id);
+//                JsonParser jsonParser = new JsonParser();
+//                gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
+//                System.out.println("gsonObject::" + gsonObject);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
+//            progress.show();
+
         } else if (statusCheckIn.equalsIgnoreCase("Check-Out")) {
             JsonObject gsonObject = new JsonObject();
             JSONObject jsonObj_ = new JSONObject();

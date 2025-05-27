@@ -238,7 +238,7 @@ public class NDAPermitActivity extends AppCompatActivity implements View.OnClick
 
                     if (permitType.equalsIgnoreCase("workpermit")) {
                         Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
-                        intent.putExtra("comp_id", comp_id);
+                        intent.putExtra("_id", comp_id);
                         intent.putExtra("inputValue", inputValue);
                         intent.putExtra("valueType", valueType);
                         intent.putExtra("permitType", permitType);

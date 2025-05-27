@@ -230,7 +230,6 @@
     <string name="EmployeeOrMeetingDetailsAreMissing">Employee or meeting details are missing</string>
 
 
-
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
 
