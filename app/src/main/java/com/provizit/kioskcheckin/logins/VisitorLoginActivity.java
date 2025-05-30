@@ -946,14 +946,14 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     char first = newVal.charAt(0);
                     String str = String.valueOf(first);
                     if (str.equalsIgnoreCase("+")) {
+                        valueType = "mobile";
                         countrycode = extractCountryCode(newVal);
                         String newStr = newVal.substring(countrycode.length());
                         countrycode = countrycode.substring(1);
                         ccp.setDefaultCountryUsingPhoneCode(Integer.parseInt(countrycode));
                         ccp.setCountryForNameCode(countrycode);
                         visitor_mobile.setText(newStr);
-                        valueType = "mobile";
-                        qrValue = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
+                        qrValue =  "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
                     } else {
                         visitor_email.setText(newVal.trim());
                         valueType = "email";
@@ -1055,7 +1055,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                     for (int j = 0; j < contractorsDataList.size(); j++) {
                                                         //Contractor
                                                         ContractorsData contractor = contractorsDataList.get(j);
-                                                        if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(finalQrValue)) {
+                                                        if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(finalQrValue) || contractor != null && contractor.getMobile() != null && contractor.getMobile().equalsIgnoreCase(finalQrValue)) {
                                                             if (contractor.getCheckin() != 0 && contractor.getCheckout() == 0) {
                                                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
                                                                 intent.putExtra("_id", last24Chars);
@@ -1092,7 +1092,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                 if (!subcontractorsDataList.isEmpty()) {
                                                     for (int k = 0; k < subcontractorsDataList.size(); k++) {
                                                         SubContractorsData sublist = subcontractorsDataList.get(k);
-                                                        if (sublist != null && sublist.getEmail() != null && sublist.getEmail().equalsIgnoreCase(finalQrValue)) {
+                                                        if (sublist != null && sublist.getEmail() != null && sublist.getEmail().equalsIgnoreCase(finalQrValue)  || sublist != null && sublist.getMobile() != null && sublist.getMobile().equalsIgnoreCase(finalQrValue)) {
                                                             if (sublist.getCheckin() != 0 && sublist.getCheckout() == 0) {
                                                                 Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
                                                                 intent.putExtra("_id", last24Chars);

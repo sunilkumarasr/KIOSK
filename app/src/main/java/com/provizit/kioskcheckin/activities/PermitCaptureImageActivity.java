@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -257,6 +259,7 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
         }
     };
 
+
     Camera.PictureCallback mPictutureCallBack = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -278,26 +281,17 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
                         filename = Conversions.datemillirandstring() + ".jpeg";
 
                         String Comp_id = Preferences.loadStringValue(PermitCaptureImageActivity.this, Preferences.Comp_id, "");
-
                         Log.e("Comp_id_",Comp_id);
-
-                        //capture
-                        JsonObject gsonObject = new JsonObject();
-                        JSONObject jsonObj_ = new JSONObject();
-                        try {
-                            jsonObj_.put("cid", Comp_id);
-                            jsonObj_.put("key", filename);
-                            jsonObj_.put("img", encodedString);
-                            JsonParser jsonParser = new JsonParser();
-                            gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
-                            qrindex(gsonObject, filename);
-                            progressDialog = new ProgressDialog(PermitCaptureImageActivity.this);
-                            progressDialog.setCancelable(false);
-                            progressDialog.setMessage("Loading...");
-                            progressDialog.show();
-                        }catch (Exception e) {
-                            Log.e(TAG, "Error processing vehicles: ", e);  // Proper logging
-                        }
+                        //call in background
+                        startQrUpload(
+                                PermitCaptureImageActivity.this,
+                                Comp_id,
+                                filename,
+                                encodedString,
+                                email,
+                                id,
+                                emp_id
+                        );
 
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -308,52 +302,57 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
         }
     };
 
-    private void qrindex(JsonObject gsonObject, String filename) {
-        DataManger dataManager = DataManger.getDataManager();
-        dataManager.qrindex(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String model = response.body();
-                try {
-                    if (model != null) {
-                        String statuscode = model;
-                        String successcode = "200", failurecode = "401", not_verified = "404";
-                        if (statuscode.equals(failurecode)) {
-                            progressDialog.dismiss();
-                        } else if (statuscode.equals(not_verified)) {
-                            progressDialog.dismiss();
-                        } else if (statuscode.equals(successcode)) {
-                            JsonObject gsonObject = new JsonObject();
-                            JSONObject jsonObj_ = new JSONObject();
-                            try {
-                                JSONArray picArray = new JSONArray();
-                                picArray.put(filename); // Add image name
+    public void startQrUpload(Context context, String cid, String filename, String encodedImage,
+                              String email, String id, String emp_id) {
+        try {
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cid", cid);
+            jsonObj.put("key", filename);
+            jsonObj.put("img", encodedImage);
+            JsonObject gsonObject = JsonParser.parseString(jsonObj.toString()).getAsJsonObject();
+            DataManger.getDataManager().qrindex(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    String code = response.body();
+                    if ("200".equals(code)) {
+                        try {
+                            JSONObject checkinJson = new JSONObject();
+                            JSONArray picArray = new JSONArray();
+                            picArray.put(filename);
 
-                                jsonObj_.put("formtype", "checkin");
-                                jsonObj_.put("email", email);
-                                jsonObj_.put("id", id);
-                                jsonObj_.put("emp_id", emp_id);
-                                jsonObj_.put("live_pic", picArray);
-                                JsonParser jsonParser = new JsonParser();
-                                gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
-                                System.out.println("gsonObject::" + gsonObject);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            apiViewModel.updateworkpermita(getApplicationContext(), gsonObject);
+                            checkinJson.put("formtype", "checkin");
+                            checkinJson.put("email", email);
+                            checkinJson.put("id", id);
+                            checkinJson.put("emp_id", emp_id);
+                            checkinJson.put("live_pic", picArray);
+
+                            JsonObject finalJson = JsonParser.parseString(checkinJson.toString()).getAsJsonObject();
+
+                            ApiViewModel apiViewModel = new ApiViewModel();
+                            apiViewModel.updateworkpermita(context, finalJson);
+
+                            Intent intent = new Intent(context, ChekInPermitStatusActivity.class);
+                            intent.putExtra("status", "1");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+
+                        } catch (Exception e) {
+                            Log.e("startQrUpload", "Check-in JSON error", e);
                         }
+                    } else {
+                        Log.w("startQrUpload", "qrindex failed: " + code);
                     }
-                } catch (Exception e) {
-                    progressDialog.dismiss();
-                    throw new RuntimeException(e);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                progressDialog.dismiss();
-            }
-        }, PermitCaptureImageActivity.this, gsonObject);
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.e("startQrUpload", "qrindex failed", t);
+                }
+            }, context, gsonObject);
+
+        } catch (Exception e) {
+            Log.e("startQrUpload", "Exception", e);
+        }
     }
 
     @Override
@@ -367,7 +366,6 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
             }
         }
     }
-
 
     private void method_citizen() {
         relative_capture = findViewById(R.id.relative_capture);

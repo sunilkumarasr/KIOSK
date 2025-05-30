@@ -246,7 +246,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                             if (!contractorsDataList.isEmpty()) {
                                                 for (int j = 0; j < contractorsDataList.size(); j++) {
                                                     ContractorsData contractor = contractorsDataList.get(j);
-                                                    if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue)) {
+                                                    if (contractor != null && contractor.getEmail() != null && contractor.getEmail().equalsIgnoreCase(inputValue) || contractor != null && contractor.getMobile() != null && contractor.getMobile().equalsIgnoreCase(inputValue)) {
                                                         if (contractor.getCheckin() == (0)) {
                                                             Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
                                                             intent.putExtra("comp_id", comp_id);
@@ -272,7 +272,7 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                                                             if (!subcontractorsDataList.isEmpty()) {
                                                                 for (int k = 0; k < subcontractorsDataList.size(); k++) {
                                                                     SubContractorsData sublist = subcontractorsDataList.get(k);
-                                                                    if (sublist != null && sublist.getEmail() != null && sublist.getEmail().equalsIgnoreCase(inputValue)){
+                                                                    if (sublist != null && sublist.getEmail() != null && sublist.getEmail().equalsIgnoreCase(inputValue) || sublist != null && sublist.getMobile() != null && sublist.getMobile().equalsIgnoreCase(inputValue)){
                                                                         if (sublist.getCheckin() == (0)) {
                                                                             Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
                                                                             intent.putExtra("comp_id", comp_id);

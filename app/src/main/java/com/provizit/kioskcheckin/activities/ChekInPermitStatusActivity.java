@@ -1,5 +1,6 @@
 package com.provizit.kioskcheckin.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,22 +13,34 @@ import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
+import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.services.Conversions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class ChekInPermitStatusActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView back_image,company_logo;
+    ImageView back_image, company_logo;
     TextView txtNote;
     Button btn_ok;
     Handler handler = new Handler();
 
     String status = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +66,9 @@ public class ChekInPermitStatusActivity extends AppCompatActivity implements Vie
         handler.postDelayed(myRunnable, 5000);
 
 
-        if (status.equalsIgnoreCase("1")){
+        if (status.equalsIgnoreCase("1")) {
             txtNote.setText(R.string.SuccessfullyCheckIn);
-        }else {
+        } else {
             txtNote.setText(R.string.SuccessfullyCheckOut);
         }
 
@@ -66,11 +79,12 @@ public class ChekInPermitStatusActivity extends AppCompatActivity implements Vie
 
         //company logo
         String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
-        if (c_Logo.equalsIgnoreCase("")){
-        }else {
+        if (c_Logo.equalsIgnoreCase("")) {
+        } else {
             Glide.with(ChekInPermitStatusActivity.this).load(c_Logo)
                     .into(company_logo);
         }
+
         btn_ok.setOnClickListener(this);
         back_image.setOnClickListener(this);
     }
@@ -117,6 +131,7 @@ public class ChekInPermitStatusActivity extends AppCompatActivity implements Vie
         }
         return super.dispatchKeyEvent(event);
     }
+
     private void disableTriggeredItems() {
         btn_ok.setFocusable(false);
         btn_ok.setFocusableInTouchMode(false);
@@ -142,6 +157,7 @@ public class ChekInPermitStatusActivity extends AppCompatActivity implements Vie
             }
         }, 500);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
