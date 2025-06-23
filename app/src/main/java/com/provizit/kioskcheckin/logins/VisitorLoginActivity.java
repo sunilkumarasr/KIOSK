@@ -338,6 +338,35 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void afterTextChanged(Editable s) {
+                // Remove non-digit characters
+                String digits = s.toString();
+
+                // Get base max length from country code
+                String countryCode = ccp.getSelectedCountryCode();
+                int maxLength = getMaxLengthForCountryCode(countryCode);
+                Log.e("countryCode_",countryCode);
+
+                // Special UAE logic: 10 digits if starts with 0, else 9
+                if (countryCode.equalsIgnoreCase("966")) {
+                    if (digits.startsWith("0")) {
+                        Log.e("countrydigits_",digits);
+                        maxLength = 10;
+                        visitor_mobile.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+                    } else {
+                        maxLength = 9;
+                    }
+                }
+                // Trim to allowed length
+                if (digits.length() > maxLength) {
+                    digits = digits.substring(0, maxLength);
+                }
+                // Prevent infinite loop
+                if (!s.toString().equalsIgnoreCase(digits)) {
+                    visitor_mobile.removeTextChangedListener(this);
+                    s.replace(0, s.length(), digits);
+                    visitor_mobile.addTextChangedListener(this);
+                }
+
                 // Remove non-numeric characters from the EditText
                 removeNonNumericCharacters(s);
             }
@@ -1430,6 +1459,13 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.country_Code, ccp.getSelectedCountryCode());
 
+
+        String input = visitor_mobile.getText().toString();
+        final String numberDigit = input.startsWith("0") ? input.substring(1) : input;
+
+        Log.e("countryCode_",numberDigit);
+
+        // Special UAE logic: 10 digits if starts with 0, else 9
         String regexStr = "^[0-9]*$";
         int minLength;
         int maxLength;
@@ -1437,7 +1473,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         if (ccp.getSelectedCountryCode().length() == 2) { // India
             minLength = 10;
             maxLength = 10;
-        } else {
+        }else {
             minLength = 9; // Default minLength for other countries
             maxLength = 13; // Default maxLength for other countries
         }
@@ -1449,23 +1485,23 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     }
                 }, 5000);
 
-        if (visitor_mobile.getText().length() == 0) {
+        if (numberDigit.length() == 0) {
 //            visitor_mobile.requestFocus();
             visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
-        } else if (visitor_mobile.length() < minLength || visitor_mobile.length() > maxLength) {
+        } else if (numberDigit.length() < minLength || numberDigit.length() > maxLength) {
 //            visitor_mobile.requestFocus();
             visitor_mobile.setError(getResources().getString(R.string.Invalidmobile_number));
-        } else if (!visitor_mobile.getText().toString().trim().matches(regexStr)) {
+        } else if (!numberDigit.trim().matches(regexStr)) {
 //            visitor_mobile.requestFocus();
             visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
-        } else if (visitor_mobile.getText().toString().trim().matches(regexStr)) {
+        } else if (numberDigit.trim().matches(regexStr)) {
             progress.show();
             int otp = Conversions.getNDigitRandomNumber(4);
             Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.otp, otp + "");
             String senderId = Preferences.loadStringValue(getApplicationContext(), Preferences.senderId, "");
             JSONObject jsonObj_ = new JSONObject();
             try {
-                String newMobile = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
+                String newMobile = "+" + ccp.getSelectedCountryCode() + numberDigit;
                 jsonObj_.put("mobile", newMobile);
                 jsonObj_.put("otp", otp);
                 jsonObj_.put("senderid", senderId);
@@ -1473,7 +1509,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
             }
             apiViewModel.verifylinkmobile(getApplicationContext(), jsonObj_);
-            apiViewModel.getcvisitordetails(getApplicationContext(),comp_id_val , emp_id, ccp.getSelectedCountryCode() + visitor_mobile.getText().toString(), location_id);
+            apiViewModel.getcvisitordetails(getApplicationContext(),comp_id_val , emp_id, ccp.getSelectedCountryCode() + numberDigit, location_id);
             apiViewModel.getResponseforCVisitor().observe(this, model -> {
                 progress.dismiss();
                 try {
@@ -1482,13 +1518,13 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         if (visitor_status == 0) {
                             model.setIncomplete_data(new IncompleteData());
                             model.getIncomplete_data().setEmail("");
-                            model.getIncomplete_data().setMobile("+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString());
+                            model.getIncomplete_data().setMobile("+" + ccp.getSelectedCountryCode() + numberDigit);
                         }
                         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "mobile");
 
                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                         intent.putExtra("model_key", model);
-                        intent.putExtra("finalQrValue",  "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString());
+                        intent.putExtra("finalQrValue",  "+" + ccp.getSelectedCountryCode() + numberDigit);
                         intent.putExtra("finalValueType",  "mobile");
                         startActivity(intent);
 
