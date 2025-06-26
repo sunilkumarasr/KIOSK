@@ -338,34 +338,45 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void afterTextChanged(Editable s) {
-                // Remove non-digit characters
-                String digits = s.toString();
-
-                // Get base max length from country code
-                String countryCode = ccp.getSelectedCountryCode();
-                int maxLength = getMaxLengthForCountryCode(countryCode);
-                Log.e("countryCode_",countryCode);
-
-                // Special UAE logic: 10 digits if starts with 0, else 9
-                if (countryCode.equalsIgnoreCase("966")) {
-                    if (digits.startsWith("0")) {
-                        Log.e("countrydigits_",digits);
-                        maxLength = 10;
-                        visitor_mobile.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-                    } else {
-                        maxLength = 9;
-                    }
-                }
-                // Trim to allowed length
-                if (digits.length() > maxLength) {
-                    digits = digits.substring(0, maxLength);
-                }
-                // Prevent infinite loop
-                if (!s.toString().equalsIgnoreCase(digits)) {
-                    visitor_mobile.removeTextChangedListener(this);
-                    s.replace(0, s.length(), digits);
-                    visitor_mobile.addTextChangedListener(this);
-                }
+//                // Remove non-digit characters
+//                String digits = s.toString();
+//
+//                // Get base max length from country code
+//                String countryCode = ccp.getSelectedCountryCode();
+//                int maxLength = getMaxLengthForCountryCode(countryCode);
+//                Log.e("countryCode_",countryCode);
+//
+//                // Special UAE logic: 10 digits if starts with 0, else 9
+//                if (countryCode.equalsIgnoreCase("966")) {
+//                    if (digits.startsWith("0")) {
+//                        Log.e("countrydigits_",digits);
+//                        maxLength = 10;
+//                        visitor_mobile.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+//                    } else {
+//                        maxLength = 9;
+//                    }
+//                }
+//                // Special India logic: 10 digits if starts with 0, else 9
+//                if (countryCode.equalsIgnoreCase("91")) {
+//                    if (digits.startsWith("0")) {
+//                        Log.e("countrydigits_",digits);
+//                        maxLength = 11;
+//                        visitor_mobile.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
+//                    } else {
+//                        maxLength = 10;
+//                    }
+//                }
+//
+//                // Trim to allowed length
+//                if (digits.length() > maxLength) {
+//                    digits = digits.substring(0, maxLength);
+//                }
+//                // Prevent infinite loop
+//                if (!s.toString().equalsIgnoreCase(digits)) {
+//                    visitor_mobile.removeTextChangedListener(this);
+//                    s.replace(0, s.length(), digits);
+//                    visitor_mobile.addTextChangedListener(this);
+//                }
 
                 // Remove non-numeric characters from the EditText
                 removeNonNumericCharacters(s);
@@ -421,7 +432,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             conf.setLayoutDirection(myLocale);
             res.updateConfiguration(conf, dm);
         }
-
 
         apiViewModel.getResponsecheckinuserlogin().observe(this, model -> {
             progress.dismiss();
@@ -760,37 +770,47 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         visitor_mobile.setText(newStr);
                         ScanneMobileMethod(last24Chars);
                     } else {
+                        newVal = newVal.trim().replaceAll("\u0000", "");
                         visitor_email.setText(newVal.trim());
                         ScanneEmailMethod(newVal.trim(), last24Chars);
                     }
                 } else {
+                    visitor_mobile.getText().clear();
+                    visitor_mobile.setHint(getString(R.string.visitor_mobile));
+                    visitor_email.getText().clear();
+                    visitor_email.setHint(getString(R.string.visitor_email));
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
             } else if (spre[0].trim().equalsIgnoreCase("checkin")) {
                 String input = spre[1].trim();
                 String last24Chars = "";
                 String valueType;
+                String valueData;
                 if (input.length() >= 24) {
                     last24Chars = input.substring(input.length() - 24);
                 }
                 if (spre.length == 3) {
-
                     String newVal = spre[2].toString().trim();
                     char first = newVal.charAt(0);
                     String str = String.valueOf(first);
                     if (str.equalsIgnoreCase("+")) {
                         valueType = "mobile";
                         countrycode = extractCountryCode(newVal);
+                        Log.e("countrycode_",countrycode);
                         String newStr = newVal.substring(countrycode.length());
                         countrycode = countrycode.substring(1);
                         ccp.setDefaultCountryUsingPhoneCode(Integer.parseInt(countrycode));
                         ccp.setCountryForNameCode(countrycode);
-                        visitor_mobile.setText(newStr);
-                        newVal = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
+                        valueData =  countrycode+newStr.trim();
+                        Log.e("newStr_",newStr);
+
+                        newVal = "+" + ccp.getSelectedCountryCode() + newStr;
+                        visitor_mobile.setText(newVal);
                     } else {
                         valueType = "email";
-                        visitor_email.setText(newVal.trim());
                         newVal = newVal.trim().replaceAll("\u0000", "");
+                        visitor_email.setText(newVal.trim());
+                        valueData = newVal.trim();
                     }
 //                    valueType = "checkin";
                     String locationId = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
@@ -799,18 +819,15 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     apiViewModel.getQrcodeStatus_response().observe(this, Qrmodel -> {
                         try {
                             if (Qrmodel.getResult() == 200) {
-
-                                String inputValue = "";
-                                if (valueType.equalsIgnoreCase("mobile")) {
-                                    inputValue = visitor_mobile.getText().toString();
-                                } else {
-                                    inputValue = visitor_email.getText().toString();
-                                }
-                                apiViewModel.getcvisitordetails(getApplicationContext(), comp_id_val, emp_id, inputValue, locationId);
+                                apiViewModel.getcvisitordetails(getApplicationContext(), comp_id_val, emp_id, valueData, locationId);
                                 apiViewModel.getResponseforCVisitor().observe(this, model -> {
                                     try {
                                         if (model.getResult() == 200) {
-                                            Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "mobile");
+                                            if (valueType.equalsIgnoreCase("mobile")){
+                                                Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "mobile");
+                                            }else {
+                                                Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.email_mobile_type, "email");
+                                            }
 
                                             if (Qrmodel.getItems().getCheckin() != (0) && Qrmodel.getItems().getCheckout() == (0)) {
                                                 //checkout
@@ -818,6 +835,10 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                                 intent1.putExtra("model_key", model);
                                                 startActivity(intent1);
                                             } else {
+                                                visitor_mobile.getText().clear();
+                                                visitor_mobile.setHint(getString(R.string.visitor_mobile));
+                                                visitor_email.getText().clear();
+                                                visitor_email.setHint(getString(R.string.visitor_email));
                                                 ViewController.worngingPopup(VisitorLoginActivity.this, "Invalid QR code");
                                             }
 
@@ -839,6 +860,10 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
                 } else {
                     valueType = "";
+                    visitor_mobile.getText().clear();
+                    visitor_mobile.setHint(getString(R.string.visitor_mobile));
+                    visitor_email.getText().clear();
+                    visitor_email.setHint(getString(R.string.visitor_email));
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
             } else if (spre[0].trim().equalsIgnoreCase("material")) {
@@ -861,9 +886,9 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         valueType = "mobile";
                         qrValue = "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
                     } else {
-                        visitor_email.setText(newVal.trim());
-                        valueType = "email";
                         qrValue = newVal.trim().replaceAll("\u0000", "");
+                        visitor_email.setText(qrValue.trim());
+                        valueType = "email";
                     }
                     if (input.length() >= 24) {
                         // Get the last 24 characters from the string
@@ -958,9 +983,17 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                             }
                         });
                     } else {
+                        visitor_mobile.getText().clear();
+                        visitor_mobile.setHint(getString(R.string.visitor_mobile));
+                        visitor_email.getText().clear();
+                        visitor_email.setHint(getString(R.string.visitor_email));
                         ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
                     }
                 } else {
+                    visitor_mobile.getText().clear();
+                    visitor_mobile.setHint(getString(R.string.visitor_mobile));
+                    visitor_email.getText().clear();
+                    visitor_email.setHint(getString(R.string.visitor_email));
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
 
@@ -984,9 +1017,9 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         visitor_mobile.setText(newStr);
                         qrValue =  "+" + ccp.getSelectedCountryCode() + visitor_mobile.getText().toString();
                     } else {
-                        visitor_email.setText(newVal.trim());
-                        valueType = "email";
                         qrValue = newVal.trim().replaceAll("\u0000", "");
+                        visitor_email.setText(qrValue.trim());
+                        valueType = "email";
                     }
                     if (input.length() >= 24) {
                         // Get the last 24 characters from the string
@@ -1162,13 +1195,21 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         });
 
                     } else {
+                        visitor_mobile.getText().clear();
+                        visitor_email.getText().clear();
                         ViewController.worngingPopup(VisitorLoginActivity.this, "Not valid");
                     }
                 } else {
+                    visitor_mobile.getText().clear();
+                    visitor_email.getText().clear();
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
 
             } else {
+                visitor_mobile.getText().clear();
+                visitor_mobile.setHint(getString(R.string.visitor_mobile));
+                visitor_email.getText().clear();
+                visitor_email.setHint(getString(R.string.visitor_email));
                 delayedReload();
                 ViewController.worngingPopup(VisitorLoginActivity.this, "Try Again");
             }
@@ -1212,14 +1253,23 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
     //mobile length for country code bases logic
     private int getMaxLengthForCountryCode(String countryCode) {
+//        if (ccp.getSelectedCountryCode().length() == 3) {
+//            return 9;
+//        } else if (ccp.getSelectedCountryCode().length() == 2) {
+//            return 10;
+//        } else if (ccp.getSelectedCountryCode().length() == 1) {
+//            return 11;
+//        } else {
+//            return 13;
+//        }
         if (ccp.getSelectedCountryCode().length() == 3) {
-            return 9;
+            return 15;
         } else if (ccp.getSelectedCountryCode().length() == 2) {
-            return 10;
+            return 15;
         } else if (ccp.getSelectedCountryCode().length() == 1) {
-            return 11;
+            return 15;
         } else {
-            return 13;
+            return 15;
         }
     }
 
@@ -1459,7 +1509,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
         Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.country_Code, ccp.getSelectedCountryCode());
 
-
         String input = visitor_mobile.getText().toString();
         final String numberDigit = input.startsWith("0") ? input.substring(1) : input;
 
@@ -1467,16 +1516,16 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
 
         // Special UAE logic: 10 digits if starts with 0, else 9
         String regexStr = "^[0-9]*$";
-        int minLength;
-        int maxLength;
-
-        if (ccp.getSelectedCountryCode().length() == 2) { // India
-            minLength = 10;
-            maxLength = 10;
-        }else {
-            minLength = 9; // Default minLength for other countries
-            maxLength = 13; // Default maxLength for other countries
-        }
+//        int minLength;
+//        int maxLength;
+//
+//        if (ccp.getSelectedCountryCode().length() == 2) { // India
+//            minLength = 10;
+//            maxLength = 10;
+//        }else {
+//            minLength = 9; // Default minLength for other countries
+//            maxLength = 13; // Default maxLength for other countries
+//        }
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -1488,13 +1537,15 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         if (numberDigit.length() == 0) {
 //            visitor_mobile.requestFocus();
             visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
-        } else if (numberDigit.length() < minLength || numberDigit.length() > maxLength) {
-//            visitor_mobile.requestFocus();
-            visitor_mobile.setError(getResources().getString(R.string.Invalidmobile_number));
-        } else if (!numberDigit.trim().matches(regexStr)) {
-//            visitor_mobile.requestFocus();
-            visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
-        } else if (numberDigit.trim().matches(regexStr)) {
+        }
+//        else if (numberDigit.length() < minLength || numberDigit.length() > maxLength) {
+////            visitor_mobile.requestFocus();
+//            visitor_mobile.setError(getResources().getString(R.string.Invalidmobile_number));
+//        } else if (!numberDigit.trim().matches(regexStr)) {
+////            visitor_mobile.requestFocus();
+//            visitor_mobile.setError(getResources().getString(R.string.Mobile_number));
+//        }
+        else if (numberDigit.trim().matches(regexStr)) {
             progress.show();
             int otp = Conversions.getNDigitRandomNumber(4);
             Preferences.saveStringValue(VisitorLoginActivity.this, Preferences.otp, otp + "");
@@ -1803,7 +1854,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
         textView.setTypeface(ResourcesCompat.getFont(this, R.font.arbfonts_dinnextttlrabic_medium));
 
         AlertDialog alertDialog = new AlertDialog.Builder(VisitorLoginActivity.this)
-
                 .setTitle("Access denied")
                 .setCancelable(false)
                 .setView(textView) // Set the custom TextView as the message view
