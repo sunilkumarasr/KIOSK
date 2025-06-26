@@ -1022,6 +1022,7 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                         valueType = "email";
                     }
                     if (input.length() >= 24) {
+
                         // Get the last 24 characters from the string
                         //ftprovizitstc***6788e1613674e95fb517ad62 get last 24 characters
                         String last24Chars = input.substring(input.length() - 24);
