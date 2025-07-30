@@ -421,8 +421,6 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
                 // permissionToken.cancelPermissionRequest(); to cancel the request
             }
         };
-
-
     }
 
 
@@ -450,8 +448,8 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
             }
         } else {
             method_citizen();
-
         }
+
     }
 
     @SuppressLint("Range")
@@ -497,7 +495,6 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
         return path;
     }
 
-
     public String getRealPathFromURI(Uri uri) {
         Cursor cursor = getApplicationContext().getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
@@ -512,23 +509,18 @@ public class PermitCaptureImageActivity extends AppCompatActivity implements Vie
     //only kiosk checkin
     //capture image convert to base64
     public static String encodeTobase64(Bitmap image, Boolean Status) {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        Matrix mtx = new Matrix();
-        mtx.postRotate(0);
-        mtx.postScale(-1, 1, w / 2, h / 2);
-//        Bitmap scaledBitmap = Bitmap.createBitmap(image, 0, 0, w, h, mtx, true);
-//        Bitmap scaledBitmap = Bitmap.createScaledBitmap(image, image.getWidth(), image.getHeight(), true);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), mtx, true);
-        Bitmap immagex = rotatedBitmap;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
 
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(image, image.getWidth(), image.getHeight(), true);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        Bitmap immagex = rotatedBitmap;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.JPEG, 20, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 
-        Log.e("LOOK", imageEncoded);
         return imageEncoded;
     }
 

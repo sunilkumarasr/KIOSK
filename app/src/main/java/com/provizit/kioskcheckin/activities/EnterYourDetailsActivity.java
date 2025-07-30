@@ -44,6 +44,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationSet;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,6 +52,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -154,13 +156,18 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
     String vistiorbloclist;
     String blocking = "false";
 
+    Spinner spinnerMeetingType;
+
     boolean nationalityStatus = false;
     boolean nationalityActive = false;
+
+    String[] meetingTypes = {"WorkPermit", "MaterialPermit", "Meeting"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_your_details);
+        spinnerMeetingType = findViewById(R.id.spinnerMeetingType);
         mobile = findViewById(R.id.mobile);
         text_mobile = findViewById(R.id.text_mobile);
         text_email = findViewById(R.id.text_email);
@@ -592,16 +599,39 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
         setData();
         visitorformdetails();
 
-
         InputFilter[] filters = new InputFilter[]{new NoSpaceInputFilter()};
         e_pname.setFilters(filters);
         nationality_search.setFilters(filters);
+
+
+        //meeting type
+        // Adapter to set data into spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                meetingTypes
+        );
+        // Set dropdown style
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Attach adapter to spinner
+        spinnerMeetingType.setAdapter(adapter);
+        spinnerMeetingType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                Toast.makeText(getApplicationContext(), "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle no selection if needed
+            }
+        });
+
 
         btn_next.setOnClickListener(this);
         back_image.setOnClickListener(this);
         checkBox.setOnClickListener(this);
         linaer_privacy_policy.setOnClickListener(this);
-
 
     }
 
@@ -766,11 +796,9 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
             ccp.setCountryForNameCode(countrycode);
             ccp1.setDefaultCountryUsingPhoneCode(Integer.parseInt(countrycode));
             ccp1.setCountryForNameCode(countrycode);
-
         }
         email.setText(model.getIncomplete_data().getEmail().trim());
         mobile.setText(newVal);
-
         try {
             if (!model.getIncomplete_data().getEmail().equals("")) {
                 liner_ccp.setVisibility(GONE);

@@ -233,6 +233,19 @@
     <string name="EmployeeOrMeetingDetailsAreMissing">تفاصيل الموظف أو الاجتماع مفقودة</string>
 
 
+    <string name="WorkVisitPermit">ورک / وزٹ پرمٹ</string>
+    <string name="ContractorDetails">ٹھیکیدار کی تفصیلات</string>
+    <string name="SubContractorDetailsOptional">ذیلی ٹھیکیدار کی تفصیلات (اختیاری)</string>
+    <string name="CName">کمپنی کا نام</string>
+    <string name="Name">نام</string>
+    <string name="IDNumber">شناختی نمبر</string>
+    <string name="AddMore">مزید شامل کریں</string>
+    <string name="DateOfWorkVisit">کام / دورے کی تاریخ</string>
+    <string name="From">سے</string>
+    <string name="To">تک</string>
+
+
+
     //Access denied
     <string name="number_email_belongs">هذا الرقم/البريد الإلكتروني يخص أحد موظفي هذه المؤسسة</string>
     <string name="declined_visitor">تم رفض طلبك</string>

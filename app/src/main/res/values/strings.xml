@@ -230,6 +230,18 @@
     <string name="EmployeeOrMeetingDetailsAreMissing">Employee or meeting details are missing</string>
 
 
+    <string name="WorkVisitPermit">Work / Visit Permit</string>
+    <string name="ContractorDetails">Contractor Details</string>
+    <string name="SubContractorDetailsOptional">Sub-Contractor Details (optional)</string>
+    <string name="CName">Company Name</string>
+    <string name="Name">Name</string>
+    <string name="IDNumber">ID Number</string>
+    <string name="AddMore">Add More</string>
+    <string name="DateOfWorkVisit">Date of Work / Visit</string>
+    <string name="From">From</string>
+    <string name="To">To</string>
+
+
     //Access denied
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
 

@@ -888,7 +888,8 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
                     } catch (Exception e) {
                         Log.e(TAG, "Error processing vehicles: ", e);  // Proper logging
                     }
-                    //     object post
+
+                    //object post
 
                     Object_post();
 
@@ -1149,7 +1150,6 @@ public class MeetingRequestActivity extends AppCompatActivity implements View.On
     }
 
     public class NoSpaceInputFilter implements InputFilter {
-
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             if (dstart == 0 && source.length() > 0 && Character.isWhitespace(source.charAt(0))) {

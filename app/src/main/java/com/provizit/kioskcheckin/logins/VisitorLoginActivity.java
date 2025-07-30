@@ -409,7 +409,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
             Log.w(TAG, "QR URL is empty. QR code will not be generated.");
         }
 
-
         if (language.equals("ar")) {
             text_english.setText("English");
             text_isClick = true;
@@ -996,7 +995,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                     visitor_email.setHint(getString(R.string.visitor_email));
                     ViewController.worngingPopup(VisitorLoginActivity.this, "Sorry Wrong QR code");
                 }
-
             } else if (spre[0].trim().equalsIgnoreCase("workpermit")) {
 
                 String input = spre[1].trim();
