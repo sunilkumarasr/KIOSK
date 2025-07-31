@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_img"
+    tools:context=".activities.WorkPermitFormActivity">
+
+    <include
+        android:id="@+id/relative_internet"
+        layout="@layout/no_internet" />
+
+    <RelativeLayout
+        android:id="@+id/relative_ui"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtVersion">
+
+        <LinearLayout
+            android:id="@+id/relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp">
+
+            <ImageView
+                android:id="@+id/back_image"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="25dp"
+                android:autoMirrored="true"
+                android:src="@drawable/backimg" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/company_logo"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_below="@id/relative"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/company_logo">
+            <LinearLayout
+                android:id="@+id/workPermitLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:padding="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/WorkVisitPermit"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_15sdp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:padding="@dimen/_6sdp"
+                    android:background="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:text="@string/ContractorDetails"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp"/>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitEmail"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/enter_email"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/workPermitCCP"
+                        style="@style/medium_font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:ccp_showFlag="true"
+                        app:ccp_showNameCode="false"
+                        app:ccp_textSize="@dimen/_12sdp" />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/workPermitMobile"
+                        style="@style/medium_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:hint="@string/enter_mobile"
+                        android:maxLength="10"
+                        android:inputType="number"
+                        android:textColorHint="#707070"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitCompanyName"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/CompanyNameM"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitName"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/Name"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+                <Spinner
+                    android:id="@+id/spinnerSelectID"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+                <Spinner
+                    android:id="@+id/spinnerNationality"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitIDNumber"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/IDNumber"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddMore"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:drawableLeft="@drawable/add_circle"
+                    android:text="@string/AddMore"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    app:cornerRadius="5dp"
+                    app:strokeColor="#414F6C"
+                    app:strokeWidth="1dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:padding="@dimen/_6sdp"
+                    android:background="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:text="@string/SubContractorDetailsOptional"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp"/>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitSubEmail"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/enter_email"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/MaterialPermitCCP"
+                        style="@style/medium_font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:ccp_showFlag="true"
+                        app:ccp_showNameCode="false"
+                        app:ccp_textSize="@dimen/_12sdp" />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/MaterialPermitMobile"
+                        style="@style/medium_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:hint="@string/enter_mobile"
+                        android:maxLength="10"
+                        android:inputType="number"
+                        android:textColorHint="#707070"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitSubCompanyName"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/CompanyNameM"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitSubName"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/Name"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+                <Spinner
+                    android:id="@+id/spinnerWorkPermitSubSelectID"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+                <Spinner
+                    android:id="@+id/spinnerMaterialNationality"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/WorkPermitSubIDNumber"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="@string/IDNumber"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnWorkPermitSubAddMore"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:drawableLeft="@drawable/add_circle"
+                    android:text="@string/AddMore"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    app:cornerRadius="5dp"
+                    app:strokeColor="#414F6C"
+                    app:strokeWidth="1dp" />
+
+
+                <!--                    others-->
+                <Spinner
+                    android:id="@+id/spinnerLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+                <Spinner
+                    android:id="@+id/spinnerVisitType"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+                <Spinner
+                    android:id="@+id/spinnerPlaceOfWork"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/DateOfWorkVisit"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_13sdp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/From"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_13sdp"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/baseline_calendar_month_24"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/To"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_13sdp"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/baseline_calendar_month_24"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp">
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/HourAccess24"/>
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/WorkingHoursOnly"/>
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/TimeOfWorkVisit"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_13sdp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/StartTime"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_13sdp"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/baseline_calendar_month_24"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/EndTime"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_13sdp"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/baseline_calendar_month_24"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <Spinner
+                    android:id="@+id/spinnerSelectScopeOfWork"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    style="@style/medium_font"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_next"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/Submit"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:cornerRadius="5dp"
+                    app:strokeColor="#414F6C"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="version"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+</RelativeLayout>

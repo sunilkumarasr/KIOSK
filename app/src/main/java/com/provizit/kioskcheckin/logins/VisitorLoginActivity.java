@@ -68,18 +68,10 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.provizit.kioskcheckin.BuildConfig;
 import com.provizit.kioskcheckin.activities.AlreadyCheckedInActivity;
-import com.provizit.kioskcheckin.activities.ChekInPermitStatusActivity;
-import com.provizit.kioskcheckin.activities.DeclinedActivity;
-import com.provizit.kioskcheckin.activities.EnterYourDetailsActivity;
 import com.provizit.kioskcheckin.activities.MaterialPermitActivity;
-import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
-import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
-import com.provizit.kioskcheckin.activities.NDAPermitActivity;
-import com.provizit.kioskcheckin.activities.NDA_FormActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.InValidPermitActivity;
 import com.provizit.kioskcheckin.activities.WorkPermitActivity;
-import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.config.ViewController;
@@ -89,7 +81,6 @@ import com.provizit.kioskcheckin.services.BlockedvisitorrequestsModel;
 import com.provizit.kioskcheckin.services.Blocklist_Model;
 import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.api.DataManger;
-import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.GetNdaActiveDetailsModel;
 import com.provizit.kioskcheckin.utilities.CompanyData;
 import com.provizit.kioskcheckin.utilities.GetvisitorrequestblocklistModel;
@@ -97,21 +88,17 @@ import com.provizit.kioskcheckin.utilities.IncompleteData;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.utilities.WorkPermit.ContractorsData;
 import com.provizit.kioskcheckin.utilities.WorkPermit.SubContractorsData;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import android.text.InputFilter;
 import android.widget.Toast;
 

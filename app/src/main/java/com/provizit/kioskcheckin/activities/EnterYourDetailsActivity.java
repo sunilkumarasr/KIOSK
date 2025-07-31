@@ -156,18 +156,14 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
     String vistiorbloclist;
     String blocking = "false";
 
-    Spinner spinnerMeetingType;
-
     boolean nationalityStatus = false;
     boolean nationalityActive = false;
 
-    String[] meetingTypes = {"WorkPermit", "MaterialPermit", "Meeting"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_your_details);
-        spinnerMeetingType = findViewById(R.id.spinnerMeetingType);
         mobile = findViewById(R.id.mobile);
         text_mobile = findViewById(R.id.text_mobile);
         text_email = findViewById(R.id.text_email);
@@ -186,7 +182,6 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
         location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
         Comp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.Comp_id, "");
         blocking = Preferences.loadStringValue(getApplicationContext(), Preferences.blocking, "");
-
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String VersionName = sharedPreferences.getString("VersionName", "1.0");
@@ -602,30 +597,6 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
         InputFilter[] filters = new InputFilter[]{new NoSpaceInputFilter()};
         e_pname.setFilters(filters);
         nationality_search.setFilters(filters);
-
-
-        //meeting type
-        // Adapter to set data into spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                meetingTypes
-        );
-        // Set dropdown style
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Attach adapter to spinner
-        spinnerMeetingType.setAdapter(adapter);
-        spinnerMeetingType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(), "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle no selection if needed
-            }
-        });
 
 
         btn_next.setOnClickListener(this);
@@ -1463,7 +1434,6 @@ public class EnterYourDetailsActivity extends AppCompatActivity implements View.
     }
 
     public class NoSpaceInputFilter implements InputFilter {
-
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             if (dstart == 0 && source.length() > 0 && Character.isWhitespace(source.charAt(0))) {

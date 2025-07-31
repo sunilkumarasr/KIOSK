@@ -243,8 +243,27 @@
     <string name="DateOfWorkVisit">کام / دورے کی تاریخ</string>
     <string name="From">سے</string>
     <string name="To">تک</string>
+    <string name="TimeOfWorkVisit">کام / دورے کا وقت</string>
+    <string name="StartTime">آغاز کا وقت</string>
+    <string name="EndTime">اختتام کا وقت</string>
+    <string name="HourAccess24">24 گھنٹے رسائی</string>
+    <string name="WorkingHoursOnly">صرف کام کے اوقات</string>
+    <string name="Submit">جمع کریں</string>
+    <string name="NewMeetingSet">نئی میٹنگ</string>
+    <string name="NewWorkPermit">نیا ورک پرمٹ</string>
+    <string name="NewMaterialPermit">نیا مٹیریل پرمٹ</string>
+    <string name="MaterialPermit">مٹیریل پرمٹ</string>
+    <string name="Entry">داخلہ</string>
+    <string name="Add">شامل کریں</string>
+    <string name="SupplierDetails">سپلائر کی تفصیلات</string>
+    <string name="VehicleNumberM">گاڑی کا نمبر</string>
+    <string name="VehicleType">گاڑی کی قسم</string>
+    <string name="CompanyNameM">کمپنی کا نام</string>
 
 
+
+    <string name="MeetingExit">میٹنگ سے باہر نکلیں</string>
+    <string name="AreYouSureMeetingExit">کیا آپ واقعی اس میٹنگ سیٹ اپ سے باہر نکلنا چاہتے ہیں؟</string>
 
     //Access denied
     <string name="number_email_belongs">هذا الرقم/البريد الإلكتروني يخص أحد موظفي هذه المؤسسة</string>

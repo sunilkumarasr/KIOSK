@@ -240,6 +240,25 @@
     <string name="DateOfWorkVisit">Date of Work / Visit</string>
     <string name="From">From</string>
     <string name="To">To</string>
+    <string name="TimeOfWorkVisit">Time of Work / Visit</string>
+    <string name="StartTime">Start Time</string>
+    <string name="EndTime">End Time</string>
+    <string name="HourAccess24">Hour Access 24</string>
+    <string name="WorkingHoursOnly">Working Hours Only</string>
+    <string name="Submit">Submit</string>
+    <string name="NewMeetingSet">New Meeting</string>
+    <string name="NewWorkPermit">New Work Permit</string>
+    <string name="NewMaterialPermit">New Material Permit</string>
+    <string name="MaterialPermit">Material Permit</string>
+    <string name="Entry">Entry</string>
+    <string name="Add">Add</string>
+    <string name="SupplierDetails">Supplier Details</string>
+    <string name="VehicleNumberM">Vehicle Number</string>
+    <string name="VehicleType">Vehicle Type</string>
+    <string name="CompanyNameM">Company Name</string>
+
+    <string name="MeetingExit">Meeting Exit</string>
+    <string name="AreYouSureMeetingExit">Are you sure you want to Exit this MeetingSetUp?</string>
 
 
     //Access denied

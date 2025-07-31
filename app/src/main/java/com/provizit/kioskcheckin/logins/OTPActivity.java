@@ -8,11 +8,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +24,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationSet;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,15 +35,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.provizit.kioskcheckin.activities.AlreadyCheckedInActivity;
 import com.provizit.kioskcheckin.activities.DeclinedActivity;
 import com.provizit.kioskcheckin.activities.EnterYourDetailsActivity;
+import com.provizit.kioskcheckin.activities.MaterialPermitFormActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
 import com.provizit.kioskcheckin.activities.NDAPermitActivity;
 import com.provizit.kioskcheckin.activities.NDA_FormActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.LocationValidationMeetingActivity;
 import com.provizit.kioskcheckin.activities.WarningScreens.MeetingValidationActivity;
+import com.provizit.kioskcheckin.activities.WorkPermitFormActivity;
 import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.ViewController;
@@ -58,6 +65,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class OTPActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -268,9 +276,9 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                     if (otpvalue.equals(otp1 + "") || otpvalue.equals("5025")) {
                         Conversions.hideKeyboard(OTPActivity.this);
                         int resultType = model.getResult_type();
-                        if(resultType==1 && !model.getResult_data().isEmpty()){
-                            String finalQrValue =  getIntent().getStringExtra("finalQrValue");
-                            String finalValueType =  getIntent().getStringExtra("finalValueType");
+                        if (resultType == 1 && !model.getResult_data().isEmpty()) {
+                            String finalQrValue = getIntent().getStringExtra("finalQrValue");
+                            String finalValueType = getIntent().getStringExtra("finalValueType");
                             String last24Chars = model.getResult_data().get(0).get_id().get$oid().toString();
 //                            Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
 //                            intent.putExtra("comp_id", last24Chars);
@@ -288,13 +296,12 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                             intent.putExtra("ndaStatus", "true");
                             startActivity(intent);
 
-                        }else{
+                        } else {
                             Float visitor_status = model.getItems().getVisitorStatus();
                             Float checkin_status = model.getItems().getCheckINStatus();
                             Float meeting_status = model.getItems().getMeetingStatus();
                             String Nation = model.getIncomplete_data().getNation();
                             String Visitor_ID = model.getIncomplete_data().getIdnumber();
-
 
 
                             String meetingId = Preferences.loadStringValue(getApplicationContext(), Preferences.meetingId, "");
@@ -321,15 +328,15 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                 if (!location_id.equalsIgnoreCase(detailmodel.getItems().getLocation())) {
                                                     Intent intent = new Intent(getApplicationContext(), LocationValidationMeetingActivity.class);
                                                     startActivity(intent);
-                                                }else if (!meetingdate.equalsIgnoreCase(currentDate)){
+                                                } else if (!meetingdate.equalsIgnoreCase(currentDate)) {
                                                     Intent intent = new Intent(getApplicationContext(), MeetingValidationActivity.class);
                                                     intent.putExtra("message", getResources().getString(R.string.PleaseCheckTheDateOfThemeeting));
                                                     startActivity(intent);
-                                                }else if (detailmodel.getItems().getStatus().equalsIgnoreCase("1.0")){
+                                                } else if (detailmodel.getItems().getStatus().equalsIgnoreCase("1.0")) {
                                                     Intent intent = new Intent(getApplicationContext(), MeetingValidationActivity.class);
                                                     intent.putExtra("message", getResources().getString(R.string.TheMeetingHasBeenCancelled));
                                                     startActivity(intent);
-                                                }else {
+                                                } else {
                                                     // Check if blocking is true
                                                     if (blocking.equals("true") && Nation != null) {
                                                         // Check if Nation is on the blocklist
@@ -367,13 +374,15 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                                     intent.putExtra("model_key", model);
                                                                     startActivity(intent);
                                                                 } else if (meeting_status == 1 && visitor_status == 0) {
-                                                                    Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                                                    intent.putExtra("model_key", model);
-                                                                    startActivity(intent);
+//                                                                    Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                                                    intent.putExtra("model_key", model);
+//                                                                    startActivity(intent);
+                                                                    MeetingTypeDailougeBottomPopUp();
                                                                 } else if (visitor_status == 0) {
-                                                                    Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                                                    intent1.putExtra("model_key", model);
-                                                                    startActivity(intent1);
+//                                                                    Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                                                    intent1.putExtra("model_key", model);
+//                                                                    startActivity(intent1);
+                                                                    MeetingTypeDailougeBottomPopUp();
                                                                 } else if (visitor_status == 1) {
                                                                     Boolean nda_terms = model.getIncomplete_data().getNda_terms();
                                                                     Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
@@ -434,13 +443,15 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                             intent.putExtra("model_key", model);
                                                             startActivity(intent);
                                                         } else if (meeting_status == 1 && visitor_status == 0) {
-                                                            Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                                            intent.putExtra("model_key", model);
-                                                            startActivity(intent);
+//                                                            Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                                            intent.putExtra("model_key", model);
+//                                                            startActivity(intent);
+                                                            MeetingTypeDailougeBottomPopUp();
                                                         } else if (visitor_status == 0) {
-                                                            Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                                            intent1.putExtra("model_key", model);
-                                                            startActivity(intent1);
+//                                                            Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                                            intent1.putExtra("model_key", model);
+//                                                            startActivity(intent1);
+                                                            MeetingTypeDailougeBottomPopUp();
                                                         } else if (visitor_status == 1) {
                                                             Boolean nda_terms = model.getIncomplete_data().getNda_terms();
                                                             Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
@@ -470,7 +481,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                     }
                                 });
 
-                            }else {
+                            } else {
                                 // Check if blocking is true
                                 if (blocking.equals("true") && Nation != null) {
                                     // Check if Nation is on the blocklist
@@ -509,13 +520,15 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                 intent.putExtra("model_key", model);
                                                 startActivity(intent);
                                             } else if (meeting_status == 1 && visitor_status == 0) {
-                                                Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                                intent.putExtra("model_key", model);
-                                                startActivity(intent);
+//                                                Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                                intent.putExtra("model_key", model);
+//                                                startActivity(intent);
+                                                MeetingTypeDailougeBottomPopUp();
                                             } else if (visitor_status == 0) {
-                                                Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                                intent1.putExtra("model_key", model);
-                                                startActivity(intent1);
+//                                                Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                                intent1.putExtra("model_key", model);
+//                                                startActivity(intent1);
+                                                MeetingTypeDailougeBottomPopUp();
                                             } else if (visitor_status == 1) {
                                                 Boolean nda_terms = model.getIncomplete_data().getNda_terms();
                                                 Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
@@ -539,16 +552,16 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                                             intent1.putExtra("model_key", model);
                                                             startActivity(intent1);
                                                         }
-                                                    }else {
-                                                        Log.e("asdf","123");
+                                                    } else {
+                                                        Log.e("asdf", "123");
                                                         Intent intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
                                                         intent1.putExtra("model_key", model);
                                                         startActivity(intent1);
                                                     }
 
                                                 }
-                                            }else {
-                                                Log.e("asdf","123");
+                                            } else {
+                                                Log.e("asdf", "123");
                                             }
 
 
@@ -581,13 +594,15 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                         intent.putExtra("model_key", model);
                                         startActivity(intent);
                                     } else if (meeting_status == 1 && visitor_status == 0) {
-                                        Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                        intent.putExtra("model_key", model);
-                                        startActivity(intent);
+//                                        Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                        intent.putExtra("model_key", model);
+//                                        startActivity(intent);
+                                        MeetingTypeDailougeBottomPopUp();
                                     } else if (visitor_status == 0) {
-                                        Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
-                                        intent1.putExtra("model_key", model);
-                                        startActivity(intent1);
+//                                        Intent intent1 = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+//                                        intent1.putExtra("model_key", model);
+//                                        startActivity(intent1);
+                                        MeetingTypeDailougeBottomPopUp();
                                     } else if (visitor_status == 1) {
                                         Boolean nda_terms = model.getIncomplete_data().getNda_terms();
                                         Preferences.saveStringValue(getApplicationContext(), Preferences.nda_terms, nda_terms + "");
@@ -804,6 +819,78 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void MeetingTypeDailougeBottomPopUp() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+        View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
+        bottomSheetDialog.setContentView(sheetView);
+
+        ImageView imgClose = sheetView.findViewById(R.id.imgClose);
+        LinearLayout linearNewMeeting = sheetView.findViewById(R.id.linearNewMeeting);
+        LinearLayout linearNewWorkingPermit = sheetView.findViewById(R.id.linearNewWorkingPermit);
+        LinearLayout linearNewMaterialPermit = sheetView.findViewById(R.id.linearNewMaterialPermit);
+
+        imgClose.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            exitPopUp();
+        });
+
+        linearNewMeeting.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), EnterYourDetailsActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewWorkingPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMaterialPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), MaterialPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
+    }
+
+    private void exitPopUp() {
+        final Dialog dialog = new Dialog(OTPActivity.this);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.setup_meeting_exit);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        RelativeLayout bt_yes = (RelativeLayout) dialog.findViewById(R.id.bt_yes);
+        RelativeLayout bt_no = (RelativeLayout) dialog.findViewById(R.id.bt_no);
+
+        bt_yes.setOnClickListener(v -> {
+            AnimationSet animationp = Conversions.animation();
+            v.startAnimation(animationp);
+            Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
+        });
+        bt_no.setOnClickListener(v -> {
+            AnimationSet animationp = Conversions.animation();
+            v.startAnimation(animationp);
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     protected void registoreNetWorkBroadcast() {
