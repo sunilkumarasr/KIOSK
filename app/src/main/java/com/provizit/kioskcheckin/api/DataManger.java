@@ -36,14 +36,13 @@ import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
 import com.provizit.kioskcheckin.services.VisitorformDetailsModel;
 import com.provizit.kioskcheckin.config.Preferences;
+import com.provizit.kioskcheckin.services.WorkVisitTypeModel;
+import com.provizit.kioskcheckin.services.WorkingDaysModal;
 import com.provizit.kioskcheckin.utilities.EntryPermit.EntryPermitModel;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -492,7 +491,6 @@ public class DataManger {
     }
 
 
-
     public void materialcheckin(Callback<EntryPermitModel> cb, Context context, JsonObject jsonObject) {
         API apiService = retrofit2.create(API.class);
         String newEncrypt = encrypt(context, false);
@@ -512,5 +510,56 @@ public class DataManger {
         call.enqueue((Callback<MeetingDetailsModel>) cb);
     }
 
+    public void getworkingdays(Callback<WorkingDaysModal> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<WorkingDaysModal> call = apiService.getworkingdays(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<WorkingDaysModal>) cb);
+    }
+
+    public void getuserDetails(Callback<CompanyDetailsModel> cb, Context context, String Type) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<CompanyDetailsModel> call = apiService.getuserDetails(bearer, newEncrypt, Type);
+        call.enqueue((Callback<CompanyDetailsModel>) cb);
+    }
+
+    public void getworktypes(Callback<WorkVisitTypeModel> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<WorkVisitTypeModel> call = apiService.getworktypes(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<WorkVisitTypeModel>) cb);
+    }
+
+    public void getworklocation(Callback<WorkVisitTypeModel> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<WorkVisitTypeModel> call = apiService.getworklocation(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<WorkVisitTypeModel>) cb);
+    }
+
+    public void getworkpurposes(Callback<WorkVisitTypeModel> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<WorkVisitTypeModel> call = apiService.getworkpurposes(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<WorkVisitTypeModel>) cb);
+    }
+
+    //Create work permit
+    public void actionworkpermita(Callback<WorkVisitTypeModel> cb, Context context, JsonObject jsonObject) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        JsonObject data = new JsonObject();
+        JsonParser jsonParser = new JsonParser();
+        data = (JsonObject) jsonParser.parse(jsonObject.toString());
+        Call<WorkVisitTypeModel> call = apiService.actionworkpermita(bearer, newEncrypt, data);
+        call.enqueue((Callback<WorkVisitTypeModel>) cb);
+    }
 
 }

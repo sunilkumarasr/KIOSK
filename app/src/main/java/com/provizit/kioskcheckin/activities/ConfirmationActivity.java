@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestFormActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
@@ -100,7 +100,6 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
             ArrayList<Getdocuments> documents_list = new ArrayList<>();
             documents_list = d_model.getItems();
             int idtypeVal = 1;
-
             if(model.getIncomplete_data().getDocument()!=null){
                idtypeVal =  (int) model.getIncomplete_data().getDocument().floatValue();
             }
@@ -109,8 +108,8 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
             }else {
                 linear_idtype.setVisibility(View.GONE);
             }
-
         });
+
 
         //company logo
         String c_Logo = Preferences.loadStringValue(getApplicationContext(), Preferences.company_Logo, "");
@@ -129,13 +128,11 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
 
         btn_confirm.setOnClickListener(this);
         back_image.setOnClickListener(this);
-
     }
 
     //disable auto click action after scann
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             // Barcode scanner has scanned a barcode, disable triggered items
             return true;
@@ -143,13 +140,9 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
         if (keyCode == KeyEvent.KEYCODE_DEL) {
             return true;
         }
-
         disableTriggeredItems();
-
-
         return super.onKeyDown(keyCode, event);
     }
-
     //usb scanner
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -173,7 +166,6 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
         }
         return super.dispatchKeyEvent(event);
     }
-
     private void disableTriggeredItems() {
         back_image.setFocusable(false);
         back_image.setFocusableInTouchMode(false);
@@ -181,7 +173,6 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
         btn_confirm.setFocusableInTouchMode(false);
         runthred();
     }
-
     private void runthred() {
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
@@ -200,7 +191,6 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
 
         }, 500);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -227,7 +217,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                         intent.putExtra(MODEL_KEY, model);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
                         intent.putExtra(MODEL_KEY, model);
                         startActivity(intent);
                     }
@@ -246,7 +236,6 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
-
 
     private void visitorformdetails() {
         DataManger dataManger = DataManger.getDataManager();

@@ -23,6 +23,8 @@ import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
 import com.provizit.kioskcheckin.services.VisitorEmailModel;
 import com.provizit.kioskcheckin.services.VisitorformDetailsModel;
+import com.provizit.kioskcheckin.services.WorkVisitTypeModel;
+import com.provizit.kioskcheckin.services.WorkingDaysModal;
 import com.provizit.kioskcheckin.utilities.EntryPermit.EntryPermitModel;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
 
@@ -58,10 +60,6 @@ public interface API {
 
     @POST("useractions/verifylinkmobile")
     Call<VisitorActionModel> verifylinkmobile(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
-
-
-    @GET("masters/getuserDetails")
-    Call<CompanyDetailsModel> getuserDetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header);
 
     @GET("masters/getuserLDetails")
     Call<CompanyDetailsModel> getuserLDetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("type") String visitor);
@@ -138,6 +136,24 @@ public interface API {
 
     @GET("meeting/getmeetingdetails")
     Call<MeetingDetailsModel> getmeetingdetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("id") String id);
+
+    @GET("company/getworkingdays")
+    Call<WorkingDaysModal> getworkingdays(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @GET("masters/getuserDetails")
+    Call<CompanyDetailsModel> getuserDetails(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("type") String type);
+
+    @GET("workpermits/getworktypes")
+    Call<WorkVisitTypeModel> getworktypes(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @GET("workpermits/getworklocations")
+    Call<WorkVisitTypeModel> getworklocation(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @GET("workpermits/getworkpurposes")
+    Call<WorkVisitTypeModel> getworkpurposes(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @POST("workpermits/actionworkpermita")
+    Call<WorkVisitTypeModel> actionworkpermita(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
 
 
 }

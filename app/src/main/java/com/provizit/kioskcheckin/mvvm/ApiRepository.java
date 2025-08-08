@@ -25,6 +25,8 @@ import com.provizit.kioskcheckin.services.QrCodeStatusModel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
 import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
+import com.provizit.kioskcheckin.services.WorkVisitTypeModel;
+import com.provizit.kioskcheckin.services.WorkingDaysModal;
 import com.provizit.kioskcheckin.utilities.EntryPermit.EntryPermitModel;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
 
@@ -590,8 +592,6 @@ public class ApiRepository {
     }
 
 
-
-
     //work permit checkIn Status
     public void materialcheckin(materialcheckin_ModelResponse logresponse, Context context, JsonObject jsonObject) {
         DataManger dataManger = DataManger.getDataManager();
@@ -612,6 +612,120 @@ public class ApiRepository {
         }, context, jsonObject);
     }
 
+    public void getworkingdays(getworkingdays_ModelResponse logresponse, Context context, String comp_id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getworkingdays(new Callback<WorkingDaysModal>() {
+            @Override
+            public void onResponse(Call<WorkingDaysModal> call, Response<WorkingDaysModal> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WorkingDaysModal> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, comp_id);
+    }
+    public void getuserDetails(getuserDetails_ModelResponse logresponse, Context context, String type) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getuserDetails(new Callback<CompanyDetailsModel>() {
+            @Override
+            public void onResponse(Call<CompanyDetailsModel> call, Response<CompanyDetailsModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CompanyDetailsModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, type);
+    }
+
+    public void getworktypes(getworktypes_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getworktypes(new Callback<WorkVisitTypeModel>() {
+            @Override
+            public void onResponse(Call<WorkVisitTypeModel> call, Response<WorkVisitTypeModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WorkVisitTypeModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+
+    public void getworklocation(getworktypes_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getworklocation(new Callback<WorkVisitTypeModel>() {
+            @Override
+            public void onResponse(Call<WorkVisitTypeModel> call, Response<WorkVisitTypeModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WorkVisitTypeModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+    public void getworkpurposes(getworktypes_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getworkpurposes(new Callback<WorkVisitTypeModel>() {
+            @Override
+            public void onResponse(Call<WorkVisitTypeModel> call, Response<WorkVisitTypeModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WorkVisitTypeModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+    //Create work permit
+    public void actionworkpermita(actionworkpermita_ModelResponse logresponse, Context context, JsonObject jsonObject) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.actionworkpermita(new Callback<WorkVisitTypeModel>() {
+            @Override
+            public void onResponse(Call<WorkVisitTypeModel> call, Response<WorkVisitTypeModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+            @Override
+            public void onFailure(Call<WorkVisitTypeModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, jsonObject);
+    }
 
     public interface VisitorActionResponse {
         void onResponse(VisitorActionModel visitorActionModel);
@@ -783,6 +897,30 @@ public class ApiRepository {
 
     public interface getmeetingdetails_ModelResponse {
         void onResponse(MeetingDetailsModel meetingDetailsModel);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface getworkingdays_ModelResponse {
+        void onResponse(WorkingDaysModal locationModel);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface getuserDetails_ModelResponse {
+        void onResponse(CompanyDetailsModel locationModel);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface getworktypes_ModelResponse {
+        void onResponse(WorkVisitTypeModel workPermitModel);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface actionworkpermita_ModelResponse {
+        void onResponse(WorkVisitTypeModel entryPermitModel);
 
         void onFailure(Throwable t);
     }

@@ -63,7 +63,7 @@ public class EnterYourVehicleDetailsActivity extends AppCompatActivity {
         back_image.setOnClickListener(view -> {
             AnimationSet animation1 = Conversions.animation();
             view.startAnimation(animation1);
-            Intent intent=new Intent(getApplicationContext(),EnterYourDetailsActivity.class);
+            Intent intent=new Intent(getApplicationContext(), VisitorFormCreateActivity.class);
             intent.putExtra("model_key", model);
             startActivity(intent);
         });

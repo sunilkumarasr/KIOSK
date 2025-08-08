@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/popup_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/_6sdp"
+            android:layout_gravity="center"
+            android:text="@string/SubContractorDetailsOptional"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgClose"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/pic_cancle"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/WorkPermitSubEmail"
+            style="@style/medium_font"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            android:hint="@string/enter_email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#707070"
+            android:textSize="@dimen/_12sdp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/MaterialPermitCCP"
+                style="@style/medium_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:ccp_showFlag="true"
+                app:ccp_showNameCode="false"
+                app:ccp_textSize="@dimen/_12sdp" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/MaterialPermitMobile"
+                style="@style/medium_font"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:hint="@string/enter_mobile"
+                android:maxLength="10"
+                android:inputType="number"
+                android:textColorHint="@color/colorSecondary"
+                android:textSize="@dimen/_12sdp" />
+        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/WorkPermitSubCompanyName"
+            style="@style/medium_font"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            android:hint="@string/CompanyNameM"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/colorSecondary"
+            android:textSize="@dimen/_12sdp" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/WorkPermitSubName"
+            style="@style/medium_font"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            android:hint="@string/Name"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/colorSecondary"
+            android:textSize="@dimen/_12sdp" />
+        <Spinner
+            android:id="@+id/spinnerWorkPermitSubSelectID"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            style="@style/medium_font"
+            android:textSize="@dimen/_12sdp" />
+        <!-- Underline -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSecondary"/>
+        <Spinner
+            android:id="@+id/spinnerMaterialNationality"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            style="@style/medium_font"
+            android:textSize="@dimen/_12sdp" />
+        <!-- Underline -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSecondary"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/WorkPermitSubIDNumber"
+            style="@style/medium_font"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            android:hint="@string/IDNumber"
+            android:textColorHint="@color/colorSecondary"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddMore"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/Submit"
+            android:textColor="#fff"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:cornerRadius="5dp"
+            app:strokeColor="#414F6C"
+            app:strokeWidth="1dp" />
+    </LinearLayout>
+
+</LinearLayout>

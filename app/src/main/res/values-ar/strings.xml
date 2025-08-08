@@ -235,6 +235,7 @@
 
     <string name="WorkVisitPermit">ورک / وزٹ پرمٹ</string>
     <string name="ContractorDetails">ٹھیکیدار کی تفصیلات</string>
+    <string name="SubContractor">المقاول الفرعي</string>
     <string name="SubContractorDetailsOptional">ذیلی ٹھیکیدار کی تفصیلات (اختیاری)</string>
     <string name="CName">کمپنی کا نام</string>
     <string name="Name">نام</string>

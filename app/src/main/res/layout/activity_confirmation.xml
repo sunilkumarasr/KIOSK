@@ -317,8 +317,8 @@
                         android:text="*********"
                         android:textColor="#414F6c"
                         android:textSize="@dimen/_11sdp" />
-
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/linear_nationality"
                     android:layout_width="match_parent"
@@ -331,7 +331,6 @@
                     android:padding="5dp"
                     android:visibility="gone"
                     android:weightSum="2">
-
                     <TextView
                         style="@style/medium_font"
                         android:layout_width="match_parent"
@@ -340,7 +339,6 @@
                         android:layout_weight="1"
                         android:text="@string/con_Nationality"
                         android:textSize="@dimen/_11sdp" />
-
                     <TextView
                         android:id="@+id/nationality"
                         style="@style/bold_font"
@@ -350,7 +348,6 @@
                         android:text="*********"
                         android:textColor="#414F6c"
                         android:textSize="@dimen/_11sdp" />
-
                 </LinearLayout>
 
                 <LinearLayout

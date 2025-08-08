@@ -232,6 +232,7 @@
 
     <string name="WorkVisitPermit">Work / Visit Permit</string>
     <string name="ContractorDetails">Contractor Details</string>
+    <string name="SubContractor">Sub-Contractor</string>
     <string name="SubContractorDetailsOptional">Sub-Contractor Details (optional)</string>
     <string name="CName">Company Name</string>
     <string name="Name">Name</string>

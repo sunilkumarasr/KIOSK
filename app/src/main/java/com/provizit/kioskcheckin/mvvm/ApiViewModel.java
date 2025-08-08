@@ -28,6 +28,8 @@ import com.provizit.kioskcheckin.services.QrCodeStatusModel;
 import com.provizit.kioskcheckin.services.TvisitorsListModel;
 import com.provizit.kioskcheckin.services.VcheckuserModel;
 import com.provizit.kioskcheckin.services.VisitorActionModel;
+import com.provizit.kioskcheckin.services.WorkVisitTypeModel;
+import com.provizit.kioskcheckin.services.WorkingDaysModal;
 import com.provizit.kioskcheckin.utilities.EntryPermit.EntryPermitModel;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
 
@@ -89,6 +91,12 @@ public class ApiViewModel extends ViewModel {
     MutableLiveData<EntryPermitModel> materialcheckin_response = new MutableLiveData<>();
     MutableLiveData<MeetingDetailsModel> getMeetingDetails_response = new MutableLiveData<>();
 
+    MutableLiveData<WorkingDaysModal> getworkingdays_response = new MutableLiveData<>();
+    MutableLiveData<CompanyDetailsModel> getuserDetails_response = new MutableLiveData<>();
+    MutableLiveData<WorkVisitTypeModel> getworktypes_response = new MutableLiveData<>();
+    MutableLiveData<WorkVisitTypeModel> getworklocation_response = new MutableLiveData<>();
+    MutableLiveData<WorkVisitTypeModel> getworkpurposes_response = new MutableLiveData<>();
+    MutableLiveData<WorkVisitTypeModel> actionworkpermita_response = new MutableLiveData<>();
     ApiRepository apiRepository;
 
     public ApiViewModel() {
@@ -471,7 +479,6 @@ public class ApiViewModel extends ViewModel {
         }, context, jsonObject);
     }
 
-
     public void getentrypermitdetails(Context context, String id) {
         apiRepository.getentrypermitdetails(new ApiRepository.getentrypermitdetails_ModelResponse() {
             @Override
@@ -511,8 +518,92 @@ public class ApiViewModel extends ViewModel {
         }, context, id);
     }
 
+    public void getworkingdays(Context context, String comp_id) {
+        apiRepository.getworkingdays(new ApiRepository.getworkingdays_ModelResponse() {
+            @Override
+            public void onResponse(WorkingDaysModal entryPermitModel) {
+                getworkingdays_response.postValue(entryPermitModel);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, comp_id);
+
+    }
+    public void getuserDetails(Context context, String type) {
+        apiRepository.getuserDetails(new ApiRepository.getuserDetails_ModelResponse() {
+            @Override
+            public void onResponse(CompanyDetailsModel entryPermitModel) {
+                getuserDetails_response.postValue(entryPermitModel);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, type);
+
+    }
 
 
+    public void getworktypes(Context context, String id) {
+        apiRepository.getworktypes(new ApiRepository.getworktypes_ModelResponse() {
+            @Override
+            public void onResponse(WorkVisitTypeModel entryPermitModel) {
+                getworktypes_response.postValue(entryPermitModel);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, id);
+
+    }
+
+
+    public void getworklocation(Context context, String id) {
+        apiRepository.getworklocation(new ApiRepository.getworktypes_ModelResponse() {
+            @Override
+            public void onResponse(WorkVisitTypeModel entryPermitModel) {
+                getworklocation_response.postValue(entryPermitModel);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, id);
+
+    }
+
+
+    public void getworkpurposes(Context context, String id) {
+        apiRepository.getworkpurposes(new ApiRepository.getworktypes_ModelResponse() {
+            @Override
+            public void onResponse(WorkVisitTypeModel entryPermitModel) {
+                getworkpurposes_response.postValue(entryPermitModel);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, id);
+
+    }
+
+    public void actionworkpermita(Context context, JsonObject jsonObject) {
+        apiRepository.actionworkpermita(new ApiRepository.actionworkpermita_ModelResponse() {
+            @Override
+            public void onResponse(WorkVisitTypeModel entryPermitModel) {
+                actionworkpermita_response.postValue(entryPermitModel);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        }, context, jsonObject);
+    }
 
     public LiveData<VisitorActionModel> getResponseforvisitor() {
         return verifylinkmobile_response;
@@ -632,6 +723,30 @@ public class ApiViewModel extends ViewModel {
 
     public LiveData<MeetingDetailsModel> getMeetingDetails_response(){
         return getMeetingDetails_response;
+    }
+
+    public LiveData<WorkingDaysModal> getworkingdays_response(){
+        return getworkingdays_response;
+    }
+
+    public LiveData<CompanyDetailsModel> getuserDetails_response(){
+        return getuserDetails_response;
+    }
+
+    public LiveData<WorkVisitTypeModel> getworktypes_response(){
+        return getworktypes_response;
+    }
+
+    public LiveData<WorkVisitTypeModel> getworklocation_response(){
+        return getworklocation_response;
+    }
+
+    public LiveData<WorkVisitTypeModel> getworkpurposes_response(){
+        return getworkpurposes_response;
+    }
+
+    public LiveData<WorkVisitTypeModel> actionworkpermita_response(){
+        return actionworkpermita_response;
     }
 
 

@@ -222,7 +222,7 @@ public class MeetingDetailsActivity extends AppCompatActivity implements View.On
                     if (meeting_status == 1) {
                         intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                     } else {
-                        intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                        intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
                     }
                     intent.putExtra("model_key", ndamodel);
                     startActivity(intent);
@@ -332,7 +332,7 @@ public class MeetingDetailsActivity extends AppCompatActivity implements View.On
                 }
                 break;
             case R.id.btn_newmeeting:
-                Intent intents = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                Intent intents = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
                 intents.putExtra("model_key", model);
                 startActivity(intents);
                 break;

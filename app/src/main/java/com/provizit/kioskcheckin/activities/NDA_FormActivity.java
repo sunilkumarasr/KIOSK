@@ -1,12 +1,13 @@
 package com.provizit.kioskcheckin.activities;
 
 import static android.view.View.GONE;
-
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,15 +26,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.bumptech.glide.Glide;
-import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestFormActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
 import com.provizit.kioskcheckin.config.ConnectionReceiver;
 import com.provizit.kioskcheckin.config.InterNetConnectivityCheck;
@@ -43,14 +45,11 @@ import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.GetNdaActiveDetailsModel;
 import com.provizit.kioskcheckin.config.Preferences;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+import java.util.Objects;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -168,16 +167,13 @@ public class NDA_FormActivity extends AppCompatActivity implements View.OnClickL
 
         apiViewModel.getResponseactionvisitor().observe(this, model1 -> {
             try {
-                Intent intent1;
                 if(meeting_status==1){
-                    intent1 = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
-
+                    Intent intent1 = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
+                    intent1.putExtra("model_key", model);
+                    startActivity(intent1);
                 }else {
-                    intent1 = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                    MeetingTypeDailougeBottomPopUp();
                 }
-                intent1.putExtra("model_key", model);
-                startActivity(intent1);
-
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -336,10 +332,10 @@ public class NDA_FormActivity extends AppCompatActivity implements View.OnClickL
                         }
 
                     } else {
-
-                        Intent intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
-                        intent.putExtra("model_key", model);
-                        startActivity(intent);
+//                        Intent intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
+//                        intent.putExtra("model_key", model);
+//                        startActivity(intent);
+                        MeetingTypeDailougeBottomPopUp();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Please Accept the terms and conditions", Toast.LENGTH_SHORT).show();
@@ -359,6 +355,76 @@ public class NDA_FormActivity extends AppCompatActivity implements View.OnClickL
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
+    private void MeetingTypeDailougeBottomPopUp() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+        View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
+        bottomSheetDialog.setContentView(sheetView);
+
+        ImageView imgClose = sheetView.findViewById(R.id.imgClose);
+        LinearLayout linearNewMeeting = sheetView.findViewById(R.id.linearNewMeeting);
+        LinearLayout linearNewWorkingPermit = sheetView.findViewById(R.id.linearNewWorkingPermit);
+        LinearLayout linearNewMaterialPermit = sheetView.findViewById(R.id.linearNewMaterialPermit);
+
+        imgClose.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            exitPopUp();
+        });
+
+        linearNewMeeting.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewWorkingPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMaterialPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), MaterialPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
+    }
+    private void exitPopUp() {
+        final Dialog dialog = new Dialog(NDA_FormActivity.this);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.setup_meeting_exit);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        RelativeLayout bt_yes = (RelativeLayout) dialog.findViewById(R.id.bt_yes);
+        RelativeLayout bt_no = (RelativeLayout) dialog.findViewById(R.id.bt_no);
+
+        bt_yes.setOnClickListener(v -> {
+            AnimationSet animationp = Conversions.animation();
+            v.startAnimation(animationp);
+            Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
+        });
+        bt_no.setOnClickListener(v -> {
+            AnimationSet animationp = Conversions.animation();
+            v.startAnimation(animationp);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
 
     @Override
     public void onBackPressed() {

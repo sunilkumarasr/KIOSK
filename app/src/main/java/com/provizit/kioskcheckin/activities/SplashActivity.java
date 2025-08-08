@@ -128,6 +128,11 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
                 startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+
+//                Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
+//                intent.putExtra("model_key", "model");
+//                startActivity(intent);
+
 //                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
 //                intent.putExtra("comp_id", "6810a810068b1114eb361f5d");
 //                intent.putExtra("valueType", "email");

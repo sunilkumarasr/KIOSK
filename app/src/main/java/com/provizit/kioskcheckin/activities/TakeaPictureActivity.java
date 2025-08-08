@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestActivity;
+import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestFormActivity;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.services.Conversions;
@@ -59,7 +59,7 @@ public class TakeaPictureActivity extends AppCompatActivity {
             AnimationSet animation1 = Conversions.animation();
             view.startAnimation(animation1);
 
-            Intent intent1 =new Intent(getApplicationContext(), MeetingRequestActivity.class);
+            Intent intent1 =new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
             intent1.putExtra("model_key", model);
             startActivity(intent1);
         });

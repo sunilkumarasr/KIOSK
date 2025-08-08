@@ -1,5 +1,7 @@
 package com.provizit.kioskcheckin.utilities;
 
+import com.provizit.kioskcheckin.services.LocationAddressList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +13,7 @@ public class CompanyDetails implements Serializable {
     private Visitor visitor;
     private ArrayList<String> pic;
     private ArrayList<String> a_pic;
+    private ArrayList<LocationAddressList> address;
     public ArrayList<String> getA_pic() {
         return a_pic;
     }
@@ -103,6 +106,13 @@ public class CompanyDetails implements Serializable {
         this.visitor = visitor;
     }
 
+    public ArrayList<LocationAddressList> getAddress() {
+        return address;
+    }
+
+    public void setAddress(ArrayList<LocationAddressList> address) {
+        this.address = address;
+    }
 }
 
 

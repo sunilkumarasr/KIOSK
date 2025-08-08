@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -306,7 +305,7 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
                     if (meeting_status == 1) {
                         intent = new Intent(getApplicationContext(), MeetingDetailsActivity.class);
                     }else{
-                        intent = new Intent(getApplicationContext(), MeetingRequestActivity.class);
+                        intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
                     }
                     intent.putExtra("model_key", ndamodel);
                     startActivity(intent);
