@@ -745,12 +745,10 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
                             model.getItems().getEmployee().setPic(pic1);
                             if (selectedPurpose.equals("others")) {
                                 model.getItems().setSubject(selectedPurpose);
-
                             }
 
 //                            if (!otherpurpose.getText().toString().equals("")) {
                             model.getItems().setNote_val(otherpurpose.getText().toString());
-
 
 //                            }
 

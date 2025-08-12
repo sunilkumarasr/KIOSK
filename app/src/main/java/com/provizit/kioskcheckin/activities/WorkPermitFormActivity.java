@@ -55,20 +55,16 @@ import com.provizit.kioskcheckin.services.MobileData;
 import com.provizit.kioskcheckin.services.SubContractor;
 import com.provizit.kioskcheckin.services.WorkVisitTypeList;
 import com.provizit.kioskcheckin.services.WorkingDaysList;
-import com.provizit.kioskcheckin.services.WorkingDaysModal;
 import com.provizit.kioskcheckin.utilities.Getdocuments;
 import com.provizit.kioskcheckin.utilities.Getnationality;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -230,6 +226,30 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         StartAndEndTimeList(true);
 
 
+        //current Date
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat.format(calendar.getTime());
+        fromSelectDate =currentDate;
+        txtFromDate.setText(fromSelectDate);
+        //toDate
+        toDateCalendar = (Calendar) calendar.clone();
+        toSelectDate = currentDate;
+        txtToDate.setText(toSelectDate);
+        //timeStamp
+        try {
+            SimpleDateFormat sd = new SimpleDateFormat("d/MM/yyyy", Locale.getDefault());
+            sd.setTimeZone(TimeZone.getTimeZone("UTC")); // Ensure UTC if you want exact UNIX time
+            Date date = sd.parse(fromSelectDate);
+            long timestamp = date.getTime() / 1000;
+            fromDateTimeStamp = timestamp+"";
+            toDateTimeStamp = timestamp+"";
+            Log.e("fromtimestamp",timestamp+"");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
         checkBox24HR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -262,6 +282,18 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                     }
                     Toast.makeText(getApplicationContext(), "Unchecked", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+
+        //submit workPermit form
+        apiViewModel.actionworkpermita_response().observe(this, model -> {
+            if (model.getResult().equals(200)){
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                startActivity(intent);
+            }else {
+                Toast.makeText(getApplicationContext(), "Failed Please Try Again", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -305,16 +337,20 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.btnNext:
 
-                if (EditPlaceOfWork.getText().toString().equalsIgnoreCase("")) {
-                    placeOfWorkVisitType = EditPlaceOfWork.getText().toString();
+                if (StatusEditPlaceOfWork.equalsIgnoreCase("true")) {
+                    if (!EditPlaceOfWork.getText().toString().equalsIgnoreCase("")){
+                        placeOfWorkVisitType = EditPlaceOfWork.getText().toString();
+                    }
                 }
-                if (EditScopeOfWork.getText().toString().equalsIgnoreCase("")) {
-                    scopeOfWorkTextArea = EditScopeOfWork.getText().toString();
+                if (StatusEditScopeOfWork.equalsIgnoreCase("true")) {
+                    if (!EditScopeOfWork.getText().toString().equalsIgnoreCase("")){
+                        scopeOfWorkTextArea = EditScopeOfWork.getText().toString();
+                    }
                 }
 
 
                 if (contractorList.isEmpty() && subContractorList.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Add Contracto (or) Sub-Contractor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Add Contractor", Toast.LENGTH_SHORT).show();
                 } else if (locationItem.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Please Select Location", Toast.LENGTH_SHORT).show();
                 } else if (workVisitType.equalsIgnoreCase("")) {
@@ -332,7 +368,6 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                 } else if (txtToDate.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Please Select To Date", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     JsonObject json = createWorkPermitSubmit();
                     apiViewModel.actionworkpermita(getApplicationContext(), json);
 
@@ -350,6 +385,8 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         JSONArray assignDepartments = new JSONArray();
         JSONArray contractors_Data = new JSONArray();
         JSONArray sub_ContractorsData = new JSONArray();
+        JSONArray startTimesArray = new JSONArray();
+        JSONArray endTimesArray = new JSONArray();
 
         //empty contractorData
         try {
@@ -361,7 +398,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
             contractorData_.put("id_number", "");
             contractorData_.put("email", "");
             contractorData_.put("mobile", "");
-            contractorData_.put("mobileData", new JSONObject());
+            contractorData_.put("mobileData","");
             contractorData_.put("performing_work", "");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -422,16 +459,26 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         //start and end datetime array list
         //start Date 8/08/2025 and Start Time 10:15
         String StartDateTimeArray = DateRangeTimestamps.getTimestampArrayString(fromSelectDate, fromSelectTime, toSelectDate, toSelectTime);
+        try {
+            startTimesArray = new JSONArray(StartDateTimeArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //End and Start datetime array list
         //start Date 8/08/2025 and End Time 10:15
         String EndDateTimeArray = DateRangeTimestamps.getTimestampArrayString(fromSelectDate, toSelectTime, toSelectDate, toSelectTime);
+        try {
+            endTimesArray = new JSONArray(EndDateTimeArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         try {
             jsonObj_.put("worktype", workVisitType);
             jsonObj_.put("c_empId", model.getIncomplete_data().get_id().get$oid());
             jsonObj_.put("sc_empId", "");
-            jsonObj_.put("comp_id", compId);
+            jsonObj_.put("comp_id", "");
             jsonObj_.put("work_scope", scopeOfWorkTextArea);
             jsonObj_.put("sc_name", "");
             jsonObj_.put("sc_email", "");
@@ -443,10 +490,9 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
             jsonObj_.put("t_start", fromSelectTime);
             jsonObj_.put("t_end", toSelectTime);
             jsonObj_.put("sc_perwork", "");
-            jsonObj_.put("starts", StartDateTimeArray);
-            jsonObj_.put("ends", EndDateTimeArray);
+            jsonObj_.put("starts", startTimesArray);
+            jsonObj_.put("ends", endTimesArray);
             jsonObj_.put("formtype", "insert");
-            jsonObj_.put("_id", "");
             jsonObj_.put("c_workpermit", "");
             jsonObj_.put("sc_status", true);
             jsonObj_.put("contractorData", contractorData_);
@@ -533,7 +579,15 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
             spinnerVisitType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    workVisitType = parent.getItemAtPosition(position).toString();
+                    String selectedName = (String) parent.getItemAtPosition(position);
+
+                    for (WorkVisitTypeList item : documentsList) {
+                        if (item.getActive() && item.getName().equals(selectedName)) {
+                            workVisitType = item.get_id().get$oid();
+                            break;
+                        }
+                    }
+
                 }
 
                 @Override
@@ -837,6 +891,24 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         EditText WorkPermitIDNumber = dialogView.findViewById(R.id.WorkPermitIDNumber);
         Button btnAddMore = dialogView.findViewById(R.id.btnAddMore);
 
+        workPermitCCP.setDefaultCountryUsingPhoneCode(Integer.parseInt("+966"));
+        workPermitCCP.setCountryForNameCode("+966");
+
+
+        if (!subContractorList.isEmpty()){
+            WorkPermitCompanyName.setText(subContractorList.get(0).companyName);
+            WorkPermitCompanyName.setClickable(false);
+            WorkPermitCompanyName.setFocusable(false);
+            WorkPermitCompanyName.setFocusableInTouchMode(false);
+        }
+
+        if (!contractorList.isEmpty()){
+            WorkPermitCompanyName.setText(contractorList.get(0).companyName);
+            WorkPermitCompanyName.setClickable(false);
+            WorkPermitCompanyName.setFocusable(false);
+            WorkPermitCompanyName.setFocusableInTouchMode(false);
+        }
+
         setDataForContractor(spinnerSelectID, spinnerNationality);
 
         btnAddMore.setOnClickListener(new View.OnClickListener() {
@@ -868,13 +940,20 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                     Toast.makeText(getApplicationContext(), "Enter ID Number", Toast.LENGTH_SHORT).show();
                 } else {
                     String number = workPermitMobile.getText().toString();
-                    String internationalNumber = workPermitCCP.getSelectedCountryCode() + workPermitMobile.getText().toString();
-                    String nationalNumber = workPermitMobile.getText().toString();
+                    String internationalNumber = workPermitCCP.getSelectedCountryCodeWithPlus() + workPermitMobile.getText().toString();
+                    String nationalNumber = "0"+workPermitMobile.getText().toString();
+                    String e164Number = workPermitCCP.getSelectedCountryCodeWithPlus() + workPermitMobile.getText().toString().trim();
+                    String countryCode = workPermitCCP.getSelectedCountryNameCode();
+                    String dialCode = workPermitCCP.getSelectedCountryCodeWithPlus();
+
                     // Build MobileData object
                     MobileData mobileData = new MobileData(
                             number,
                             internationalNumber,
-                            nationalNumber
+                            nationalNumber,
+                            e164Number,
+                            countryCode,
+                            dialCode
                     );
 
                     // Optional
@@ -892,8 +971,8 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                             nationality,
                             idNumber,
                             email,
-                            mobile,
-                            new MobileData(),
+                            "",
+                            mobileData,
                             performing_work,
                             common_nation,
                             disabledStatus
@@ -1023,6 +1102,23 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         EditText WorkPermitSubIDNumber = dialogView.findViewById(R.id.WorkPermitSubIDNumber);
         Button btnAddMore = dialogView.findViewById(R.id.btnAddMore);
 
+        MaterialPermitCCP.setDefaultCountryUsingPhoneCode(Integer.parseInt("+966"));
+        MaterialPermitCCP.setCountryForNameCode("+966");
+
+        if (!contractorList.isEmpty()){
+            WorkPermitSubCompanyName.setText(contractorList.get(0).companyName);
+            WorkPermitSubCompanyName.setClickable(false);
+            WorkPermitSubCompanyName.setFocusable(false);
+            WorkPermitSubCompanyName.setFocusableInTouchMode(false);
+        }
+
+        if (!subContractorList.isEmpty()){
+            WorkPermitSubCompanyName.setText(subContractorList.get(0).companyName);
+            WorkPermitSubCompanyName.setClickable(false);
+            WorkPermitSubCompanyName.setFocusable(false);
+            WorkPermitSubCompanyName.setFocusableInTouchMode(false);
+        }
+
         setDataForSubContractor(spinnerWorkPermitSubSelectID, spinnerMaterialNationality);
 
         btnAddMore.setOnClickListener(new View.OnClickListener() {
@@ -1054,13 +1150,20 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                     Toast.makeText(getApplicationContext(), "Enter ID Number", Toast.LENGTH_SHORT).show();
                 } else {
                     String number = MaterialPermitMobile.getText().toString();
-                    String internationalNumber = MaterialPermitCCP.getSelectedCountryCode() + MaterialPermitMobile.getText().toString();
-                    String nationalNumber = MaterialPermitMobile.getText().toString();
+                    String internationalNumber = MaterialPermitCCP.getSelectedCountryCodeWithPlus() + MaterialPermitMobile.getText().toString();
+                    String nationalNumber = "0"+MaterialPermitMobile.getText().toString();
+                    String e164Number = MaterialPermitCCP.getSelectedCountryCodeWithPlus() + MaterialPermitMobile.getText().toString().trim();
+                    String countryCode = MaterialPermitCCP.getSelectedCountryNameCode();
+                    String dialCode = MaterialPermitCCP.getSelectedCountryCodeWithPlus();
+
                     // Build MobileData object
                     MobileData mobileData = new MobileData(
                             number,
                             internationalNumber,
-                            nationalNumber
+                            nationalNumber,
+                            e164Number,
+                            countryCode,
+                            dialCode
                     );
 
                     // Optional
@@ -1078,8 +1181,8 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                             nationality,
                             idNumber,
                             email,
-                            mobile,
-                            new MobileData(),
+                            "",
+                            mobileData,
                             performing_work,
                             common_nation,
                             disabledStatus

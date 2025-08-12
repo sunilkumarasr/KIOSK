@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/WorkVisitPermit"
+                    android:text="@string/WorkPermit"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_15sdp"/>
 
@@ -223,13 +223,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorSecondary"/>
+
+                <!-- Underline -->
                 <Spinner
                     android:id="@+id/spinnerPlaceOfWork"
+                    style="@style/medium_font"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_38sdp"
-                    style="@style/medium_font"
                     android:textSize="@dimen/_12sdp" />
-                <!-- Underline -->
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

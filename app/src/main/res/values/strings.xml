@@ -196,6 +196,8 @@
     <string name="dummyRoom">STC Meeting Room 2</string>
     <string name="SuccessfullyCheckIn">Successfully checked-In</string>
     <string name="SuccessfullyCheckOut">Successfully checked-Out</string>
+    <string name="WorkPermit">Work Permit</string>
+
     //Material Permit
     <string name="materialPermitDetails">Material Permit Details</string>
     <string name="CompanyName">Company Name:</string>
@@ -208,6 +210,7 @@
     <string name="CheckIn">Check-In</string>
     <string name="CheckOut">Check-Out</string>
     <string name="InvalidPermit">Invalid Permit</string>
+
 
 
     //warning
@@ -244,7 +247,7 @@
     <string name="TimeOfWorkVisit">Time of Work / Visit</string>
     <string name="StartTime">Start Time</string>
     <string name="EndTime">End Time</string>
-    <string name="HourAccess24">Hour Access 24</string>
+    <string name="HourAccess24">24 hour access</string>
     <string name="WorkingHoursOnly">Working Hours Only</string>
     <string name="Submit">Submit</string>
     <string name="NewMeetingSet">New Meeting</string>

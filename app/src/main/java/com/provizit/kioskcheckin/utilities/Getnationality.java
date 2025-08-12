@@ -6,7 +6,7 @@ public class Getnationality implements Serializable {
 
     private OidModel _id;
     private String comp_id, name, doc_id, supertype;
-    private Boolean active;
+    private Boolean active, common;
 
 
     public OidModel get_id() {
@@ -55,6 +55,14 @@ public class Getnationality implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getCommon() {
+        return common;
+    }
+
+    public void setCommon(Boolean common) {
+        this.common = common;
     }
 }
 

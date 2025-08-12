@@ -196,6 +196,7 @@
     <string name="dummyRoom">STC Meeting Room 2</string>
     <string name="SuccessfullyCheckIn">تم تسجيل الدخول بنجاح</string>
     <string name="SuccessfullyCheckOut">تم الخروج بنجاح</string>
+    <string name="WorkPermit">تصريح العمل</string>
 
 
     //Material Permit
@@ -247,7 +248,7 @@
     <string name="TimeOfWorkVisit">کام / دورے کا وقت</string>
     <string name="StartTime">آغاز کا وقت</string>
     <string name="EndTime">اختتام کا وقت</string>
-    <string name="HourAccess24">24 گھنٹے رسائی</string>
+    <string name="HourAccess24">الوصول على مدار 24 ساعة</string>
     <string name="WorkingHoursOnly">صرف کام کے اوقات</string>
     <string name="Submit">جمع کریں</string>
     <string name="NewMeetingSet">نئی میٹنگ</string>
