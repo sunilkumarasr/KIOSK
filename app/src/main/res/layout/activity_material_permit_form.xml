@@ -86,6 +86,83 @@
                         android:textSize="@dimen/_18sdp"/>
                 </RadioGroup>
 
+
+                <LinearLayout
+                    android:id="@+id/linearSupplierDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/border"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_weight="1">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        app:tint="@color/colorPrimary"
+                        android:src="@drawable/add_circle"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/addSupplierDetails"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center_vertical"
+                        style="@style/medium_font"
+                        android:textSize="@dimen/_12sdp"/>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:visibility="gone"
+                        android:id="@+id/imgSuppliersInfo"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        app:tint="@color/colorPrimary"
+                        android:src="@drawable/info"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/linearC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerviewSuppliers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddMoreContractors"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_gravity="end"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/AddMore"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/_15sdp"
+                        android:textStyle="bold"
+                        app:cornerRadius="5dp"
+                        app:strokeColor="#414F6C"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/Date"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_11sdp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,6 +175,7 @@
                         android:gravity="center_vertical"
                         android:layout_weight="1">
                         <TextView
+                            android:id="@+id/txtFromDate"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_weight="1"
@@ -119,6 +197,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_weight="1">
                         <TextView
+                            android:id="@+id/txtToDate"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_weight="1"
@@ -139,6 +218,11 @@
                     android:layout_height="@dimen/_38sdp"
                     style="@style/medium_font"
                     android:textSize="@dimen/_12sdp" />
+                <!-- Underline -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSecondary"/>
 
                 <Spinner
                     android:id="@+id/spinnerPurpose"
@@ -146,6 +230,11 @@
                     android:layout_height="@dimen/_38sdp"
                     style="@style/medium_font"
                     android:textSize="@dimen/_12sdp" />
+                <!-- Underline -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSecondary"/>
 
                 <Spinner
                     android:id="@+id/spinnerLocation"
@@ -153,6 +242,11 @@
                     android:layout_height="@dimen/_38sdp"
                     style="@style/medium_font"
                     android:textSize="@dimen/_12sdp" />
+                <!-- Underline -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSecondary"/>
 
                 <Spinner
                     android:id="@+id/spinnerPertains"
@@ -160,6 +254,11 @@
                     android:layout_height="@dimen/_38sdp"
                     style="@style/medium_font"
                     android:textSize="@dimen/_12sdp" />
+                <!-- Underline -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSecondary"/>
 
                 <Spinner
                     android:id="@+id/spinnerEmployee"
@@ -167,142 +266,63 @@
                     android:layout_height="@dimen/_38sdp"
                     style="@style/medium_font"
                     android:textSize="@dimen/_12sdp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnMaterialDetails"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                <!-- Underline -->
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_gravity="end"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:text="@string/Add"
-                    android:textColor="#fff"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="#414F6C"
-                    app:strokeWidth="1dp" />
+                    android:layout_height="1dp"
+                    android:background="@color/colorSecondary"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewMeetingDetailsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnMaterialAddMore"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_gravity="end"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:drawableLeft="@drawable/add_circle"
-                    android:text="@string/AddMore"
-                    android:textColor="#fff"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="#414F6C"
-                    app:strokeWidth="1dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:padding="@dimen/_6sdp"
-                    android:background="@color/colorPrimary"
-                    android:layout_gravity="center"
-                    android:text="@string/SupplierDetails"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_13sdp"/>
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/MaterialPermitSupplierName"
-                    style="@style/medium_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    android:hint="@string/SupplierName"
-                    android:inputType="textEmailAddress"
-                    android:textColorHint="#707070"
-                    android:textSize="@dimen/_12sdp" />
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/MaterialPermitEmail"
-                    style="@style/medium_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    android:hint="@string/enter_email"
-                    android:inputType="textEmailAddress"
-                    android:textColorHint="#707070"
-                    android:textSize="@dimen/_12sdp" />
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/MaterialPermitName"
-                    style="@style/medium_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    android:hint="@string/Name"
-                    android:inputType="textEmailAddress"
-                    android:textColorHint="#707070"
-                    android:textSize="@dimen/_12sdp" />
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/MaterialPermitCCP"
-                        style="@style/medium_font"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:id="@+id/linearAddMaterialDetails"
+                    android:layout_width="@dimen/_190sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/button_border"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_weight="1">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_gravity="center_vertical"
-                        app:ccp_showFlag="true"
-                        app:ccp_showNameCode="false"
-                        app:ccp_textSize="@dimen/_12sdp" />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/MaterialPermitMobile"
-                        style="@style/medium_font"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_38sdp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:src="@drawable/add_circle"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:hint="@string/enter_mobile"
-                        android:maxLength="10"
-                        android:inputType="number"
-                        android:textColorHint="#707070"
-                        android:textSize="@dimen/_12sdp" />
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/materialPermitDetails"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        style="@style/medium_font"
+                        android:textSize="@dimen/_12sdp"/>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:visibility="gone"
+                        android:id="@+id/imgMaterialInfo"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        app:tint="@color/white"
+                        android:src="@drawable/info"/>
                 </LinearLayout>
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/MaterialPermitIDNumber"
-                    style="@style/medium_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    android:hint="@string/IDNumber"
-                    android:textColorHint="#707070"
-                    android:textSize="@dimen/_12sdp" />
-                <Spinner
-                    android:id="@+id/spinnerMaterialNationality"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    style="@style/medium_font"
-                    android:textSize="@dimen/_12sdp" />
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/MaterialPermitVehicleNumber"
-                    style="@style/medium_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    android:hint="@string/VehicleNumberM"
-                    android:textColorHint="#707070"
-                    android:textSize="@dimen/_12sdp" />
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/MaterialPermitVehicleType"
-                    style="@style/medium_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
-                    android:hint="@string/VehicleType"
-                    android:textColorHint="#707070"
-                    android:textSize="@dimen/_12sdp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_next"
+                    android:id="@+id/btnNext"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="@string/Submit"
                     android:textColor="#fff"
@@ -311,6 +331,7 @@
                     app:cornerRadius="5dp"
                     app:strokeColor="#414F6C"
                     app:strokeWidth="1dp" />
+
 
             </LinearLayout>
         </ScrollView>

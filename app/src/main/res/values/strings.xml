@@ -256,16 +256,22 @@
     <string name="MaterialPermit">Material Permit</string>
     <string name="Entry">Entry</string>
     <string name="Add">Add</string>
+    <string name="addSupplierDetails">Add Supplier Details</string>
     <string name="SupplierDetails">Supplier Details</string>
     <string name="VehicleNumberM">Vehicle Number</string>
     <string name="VehicleType">Vehicle Type</string>
     <string name="CompanyNameM">Company Name</string>
 
+<!--    add meterial details-->
+    <string name="nameAndDescription">Name And Description</string>
+    <string name="serialNo">Serial no</string>
+    <string name="quantity">Quantity</string>
+
     <string name="MeetingExit">Meeting Exit</string>
     <string name="AreYouSureMeetingExit">Are you sure you want to Exit this MeetingSetUp?</string>
 
 
-    //Access denied
+<!--    Access denied-->
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
 
 

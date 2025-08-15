@@ -1,7 +1,6 @@
 package com.provizit.kioskcheckin.activities;
 
 import static android.view.View.GONE;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
@@ -27,14 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
