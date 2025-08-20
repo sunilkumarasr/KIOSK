@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_38sdp"
             android:hint="@string/SupplierName"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
         <androidx.appcompat.widget.AppCompatEditText
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_38sdp"
             android:hint="@string/Name"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
         <LinearLayout
@@ -124,7 +124,7 @@
             android:textSize="@dimen/_12sdp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNext"
+            android:id="@+id/btnSubmit"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"

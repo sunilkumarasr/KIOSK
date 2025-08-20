@@ -21,6 +21,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MaterialModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
@@ -69,7 +70,7 @@ public class ApiViewModel extends ViewModel {
     //MeetingRequestActivity
     MutableLiveData<GetpurposesModel> getpurposes_response = new MutableLiveData<>();
 
-    MutableLiveData<GetsubhierarchysModel> Getsubhierarchys_response = new MutableLiveData<>();
+    MutableLiveData<GetsubhierarchysModel> getsubhierarchys_response = new MutableLiveData<>();
 
     MutableLiveData<TvisitorsListModel> gettvisitors_response = new MutableLiveData<>();
 
@@ -97,6 +98,12 @@ public class ApiViewModel extends ViewModel {
     MutableLiveData<WorkVisitTypeModel> getworklocation_response = new MutableLiveData<>();
     MutableLiveData<WorkVisitTypeModel> getworkpurposes_response = new MutableLiveData<>();
     MutableLiveData<WorkVisitTypeModel> actionworkpermita_response = new MutableLiveData<>();
+    MutableLiveData<MaterialModel> getrefdocuments_response = new MutableLiveData<>();
+    MutableLiveData<MaterialModel> getentrypurposes_response = new MutableLiveData<>();
+    MutableLiveData<MaterialModel> getexitpurposes_response = new MutableLiveData<>();
+    MutableLiveData<GetsubhierarchysModel> getsubhierarchysmaterial_response = new MutableLiveData<>();
+    MutableLiveData<MaterialModel> actionentrypermitrequest_response = new MutableLiveData<>();
+
     ApiRepository apiRepository;
 
     public ApiViewModel() {
@@ -333,7 +340,7 @@ public class ApiViewModel extends ViewModel {
         apiRepository.getsubhierarchys(new ApiRepository.GetsubhierarchysResponse() {
             @Override
             public void onResponse(GetsubhierarchysModel getsubhierarchysModel) {
-                Getsubhierarchys_response.postValue(getsubhierarchysModel);
+                getsubhierarchys_response.postValue(getsubhierarchysModel);
             }
 
             @Override
@@ -605,6 +612,92 @@ public class ApiViewModel extends ViewModel {
         }, context, jsonObject);
     }
 
+
+    public void getrefdocuments(Context context, String id) {
+        apiRepository.getrefdocuments(new ApiRepository.getMaterialModel_ModelResponse() {
+            @Override
+            public void onResponse(MaterialModel model) {
+                getrefdocuments_response.postValue(model);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, id);
+
+    }
+
+    public void getentrypurposes(Context context, String id) {
+        apiRepository.getentrypurposes(new ApiRepository.getMaterialModel_ModelResponse() {
+            @Override
+            public void onResponse(MaterialModel model) {
+                getentrypurposes_response.postValue(model);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, id);
+
+    }
+
+    public void getexitpurposes(Context context, String id) {
+        apiRepository.getexitpurposes(new ApiRepository.getMaterialModel_ModelResponse() {
+            @Override
+            public void onResponse(MaterialModel model) {
+                getexitpurposes_response.postValue(model);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "progress: " + t);
+            }
+        }, context, id);
+
+    }
+
+
+    public void getsubhierarchysmaterial(Context context, String id, String indexid) {
+        apiRepository.getsubhierarchysmaterial(new ApiRepository.GetsubhierarchysResponse() {
+            @Override
+            public void onResponse(GetsubhierarchysModel getsubhierarchysModel) {
+                getsubhierarchysmaterial_response.postValue(getsubhierarchysModel);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, context, id, indexid);
+    }
+
+    public void getsearchemployeesmaterial(Context context, String l_id, String h_id, String type) {
+        apiRepository.getsearchemployeesmaterial(new ApiRepository.SearchEmployeesResponse() {
+            @Override
+            public void onResponse(GetSearchEmployeesModel getSearchEmployeesModel) {
+                getsearchemployees_response.postValue(getSearchEmployeesModel);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, context, l_id, h_id, type);
+
+    }
+
+    public void actionentrypermitrequest(Context context, JsonObject jsonObject) {
+        apiRepository.actionentrypermitrequest(new ApiRepository.actionentrypermitrequest_ModelResponse() {
+            @Override
+            public void onResponse(MaterialModel entryPermitModel) {
+                actionentrypermitrequest_response.postValue(entryPermitModel);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        }, context, jsonObject);
+    }
+
+
     public LiveData<VisitorActionModel> getResponseforvisitor() {
         return verifylinkmobile_response;
     }
@@ -674,7 +767,7 @@ public class ApiViewModel extends ViewModel {
     }
 
     public LiveData<GetsubhierarchysModel> getResponsesubhierarchys() {
-        return Getsubhierarchys_response;
+        return getsubhierarchys_response;
     }
 
     public LiveData<TvisitorsListModel> getResponseforTvisitorsList() {
@@ -747,6 +840,26 @@ public class ApiViewModel extends ViewModel {
 
     public LiveData<WorkVisitTypeModel> actionworkpermita_response(){
         return actionworkpermita_response;
+    }
+
+    public LiveData<MaterialModel> getrefdocuments_response(){
+        return getrefdocuments_response;
+    }
+
+    public LiveData<MaterialModel> getentrypurposes_response(){
+        return getentrypurposes_response;
+    }
+
+    public LiveData<MaterialModel> getexitpurposes_response(){
+        return getexitpurposes_response;
+    }
+
+    public LiveData<GetsubhierarchysModel> getsubhierarchysmaterial_response() {
+        return getsubhierarchysmaterial_response;
+    }
+
+    public LiveData<MaterialModel> actionentrypermitrequest_response() {
+        return actionentrypermitrequest_response;
     }
 
 

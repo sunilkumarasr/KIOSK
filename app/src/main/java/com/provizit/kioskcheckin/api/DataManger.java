@@ -27,6 +27,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MaterialModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
@@ -560,6 +561,59 @@ public class DataManger {
         data = (JsonObject) jsonParser.parse(jsonObject.toString());
         Call<WorkVisitTypeModel> call = apiService.actionworkpermita(bearer, newEncrypt, data);
         call.enqueue((Callback<WorkVisitTypeModel>) cb);
+    }
+
+
+    public void getrefdocuments(Callback<MaterialModel> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<MaterialModel> call = apiService.getrefdocuments(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<MaterialModel>) cb);
+    }
+
+    public void getentrypurposes(Callback<MaterialModel> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<MaterialModel> call = apiService.getentrypurposes(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<MaterialModel>) cb);
+    }
+
+    public void getexitpurposes(Callback<MaterialModel> cb, Context context, String comp_id) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<MaterialModel> call = apiService.getexitpurposes(bearer, newEncrypt, comp_id);
+        call.enqueue((Callback<MaterialModel>) cb);
+    }
+
+    public void getsubhierarchysmaterial(Callback<GetsubhierarchysModel> cb, Context context, String comp_id, String indexid) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<GetsubhierarchysModel> call = apiService.getsubhierarchysmaterial(bearer, newEncrypt, comp_id, indexid);
+        call.enqueue((Callback<GetsubhierarchysModel>) cb);
+    }
+
+    public void getsearchemployeesmaterial(Callback<GetSearchEmployeesModel> cb, Context context, String l_id, String h_id, String type) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        Call<GetSearchEmployeesModel> call = apiService.getsearchemployeesmaterial(bearer, newEncrypt, l_id, h_id, type);
+        call.enqueue((Callback<GetSearchEmployeesModel>) cb);
+    }
+
+    //Create work permit
+    public void actionentrypermitrequest(Callback<MaterialModel> cb, Context context, JsonObject jsonObject) {
+        API apiService = retrofit2.create(API.class);
+        String newEncrypt = encrypt(context, false);
+        String bearer = BEARER_PREFIX + newEncrypt;
+        JsonObject data = new JsonObject();
+        JsonParser jsonParser = new JsonParser();
+        data = (JsonObject) jsonParser.parse(jsonObject.toString());
+        Call<MaterialModel> call = apiService.actionentrypermitrequest(bearer, newEncrypt, data);
+        call.enqueue((Callback<MaterialModel>) cb);
     }
 
 }

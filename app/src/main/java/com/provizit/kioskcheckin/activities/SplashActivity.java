@@ -127,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-                startActivity( new Intent( getApplicationContext(), MaterialPermitFormActivity.class ) );
+                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
 
 //                Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
 //                intent.putExtra("model_key", "model");

@@ -52,21 +52,78 @@
             android:inputType="text"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditQuantity"
-            style="@style/medium_font"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_38sdp"
-            android:hint="@string/quantity"
-            android:inputType="text"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/txtQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:text="1"
+                style="@style/medium_font"
+                android:textSize="@dimen/_12sdp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/linearDecrement"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/min_remove">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/minimize_ic"
+                        app:tint="@color/white"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/cartQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:text="1"
+                    android:gravity="center"
+                    android:textSize="@dimen/_12sdp"/>
+                <LinearLayout
+                    android:id="@+id/linearIncrement"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/min_remove">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/plus_ic"
+                        app:tint="@color/white"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <!-- Underline -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSecondary"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNext"
+            android:id="@+id/btnAdd"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/Add"
             android:textColor="#fff"

@@ -93,8 +93,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/border"
-                    android:padding="@dimen/_5sdp"
+
                     android:layout_weight="1">
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="@dimen/_18sdp"
@@ -138,7 +137,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddMoreContractors"
+                        android:id="@+id/btnAddMoreSupplierDetails"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_40sdp"
@@ -181,7 +180,7 @@
                             android:layout_weight="1"
                             android:layout_gravity="center_vertical"
                             android:gravity="center_vertical"
-                            android:text="@string/From"
+                            android:hint="@string/From"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_13sdp"/>
                         <androidx.appcompat.widget.AppCompatImageView
@@ -202,7 +201,7 @@
                             android:layout_height="@dimen/_35sdp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="@string/To"
+                            android:hint="@string/To"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_13sdp"/>
                         <androidx.appcompat.widget.AppCompatImageView
@@ -212,6 +211,15 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/txtRefDoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Ref Document"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_11sdp"/>
+
                 <Spinner
                     android:id="@+id/spinnerRefDoc"
                     android:layout_width="match_parent"
@@ -220,9 +228,28 @@
                     android:textSize="@dimen/_12sdp" />
                 <!-- Underline -->
                 <View
+                    android:id="@+id/viewRef"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorSecondary"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:visibility="gone"
+                    android:id="@+id/EditSpinnerRefDoc"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:hint="Enter Ref Document Details"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Purpose"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_11sdp"/>
 
                 <Spinner
                     android:id="@+id/spinnerPurpose"
@@ -236,6 +263,14 @@
                     android:layout_height="1dp"
                     android:background="@color/colorSecondary"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Location"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_11sdp"/>
+
                 <Spinner
                     android:id="@+id/spinnerLocation"
                     android:layout_width="match_parent"
@@ -248,6 +283,14 @@
                     android:layout_height="1dp"
                     android:background="@color/colorSecondary"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Pertains to"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_11sdp"/>
+
                 <Spinner
                     android:id="@+id/spinnerPertains"
                     android:layout_width="match_parent"
@@ -259,6 +302,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorSecondary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Employee"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_11sdp"/>
 
                 <Spinner
                     android:id="@+id/spinnerEmployee"
@@ -279,8 +330,8 @@
 
                 <LinearLayout
                     android:id="@+id/linearAddMaterialDetails"
-                    android:layout_width="@dimen/_190sdp"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_38sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_gravity="end"
@@ -295,8 +346,10 @@
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:src="@drawable/add_circle"/>
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/txtMaterial"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:text="@string/materialPermitDetails"
@@ -304,16 +357,6 @@
                         android:gravity="center_vertical"
                         style="@style/medium_font"
                         android:textSize="@dimen/_12sdp"/>
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:visibility="gone"
-                        android:id="@+id/imgMaterialInfo"
-                        android:layout_width="@dimen/_22sdp"
-                        android:layout_height="@dimen/_22sdp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        app:tint="@color/white"
-                        android:src="@drawable/info"/>
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton

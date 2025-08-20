@@ -14,6 +14,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MaterialModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
@@ -27,7 +28,6 @@ import com.provizit.kioskcheckin.services.WorkVisitTypeModel;
 import com.provizit.kioskcheckin.services.WorkingDaysModal;
 import com.provizit.kioskcheckin.utilities.EntryPermit.EntryPermitModel;
 import com.provizit.kioskcheckin.utilities.WorkPermit.WorkPermitModel;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -154,6 +154,24 @@ public interface API {
 
     @POST("workpermits/actionworkpermita")
     Call<WorkVisitTypeModel> actionworkpermita(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
+
+    @GET("entry/getrefdocuments")
+    Call<MaterialModel> getrefdocuments(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @GET("entry/getentrypurposes")
+    Call<MaterialModel> getentrypurposes(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @GET("entry/getexitpurposes")
+    Call<MaterialModel> getexitpurposes(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String id);
+
+    @GET("masters/getsubhierarchys")
+    Call<GetsubhierarchysModel> getsubhierarchysmaterial(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("comp_id") String comp_id, @Query("indexid") String indexid);
+
+    @GET("company/getsearchemployees")
+    Call<GetSearchEmployeesModel> getsearchemployeesmaterial(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Query("l_id") String l_id, @Query("h_id") String h_id, @Query("type") String type);
+
+    @POST("entry/actionentrypermitrequest")
+    Call<MaterialModel> actionentrypermitrequest(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
 
 
 }

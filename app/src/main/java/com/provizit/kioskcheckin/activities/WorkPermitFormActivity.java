@@ -133,8 +133,6 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
     List<String> filteredStartList = new ArrayList<>(allTimeList);
 
 
-
-
     Button btnNext;
 
     ApiViewModel apiViewModel;

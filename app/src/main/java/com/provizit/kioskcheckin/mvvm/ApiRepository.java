@@ -18,6 +18,7 @@ import com.provizit.kioskcheckin.services.GetdocumentsModel;
 import com.provizit.kioskcheckin.services.GetnationalityModel;
 import com.provizit.kioskcheckin.services.GetpurposesModel;
 import com.provizit.kioskcheckin.services.GetsubhierarchysModel;
+import com.provizit.kioskcheckin.services.MaterialModel;
 import com.provizit.kioskcheckin.services.MeetingDetailsModel;
 import com.provizit.kioskcheckin.services.Model;
 import com.provizit.kioskcheckin.services.Privacypolicymodel;
@@ -727,6 +728,126 @@ public class ApiRepository {
         }, context, jsonObject);
     }
 
+
+    public void getrefdocuments(getMaterialModel_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getrefdocuments(new Callback<MaterialModel>() {
+            @Override
+            public void onResponse(Call<MaterialModel> call, Response<MaterialModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MaterialModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+    public void getentrypurposes(getMaterialModel_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getentrypurposes(new Callback<MaterialModel>() {
+            @Override
+            public void onResponse(Call<MaterialModel> call, Response<MaterialModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MaterialModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+    public void getexitpurposes(getMaterialModel_ModelResponse logresponse, Context context, String id) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getexitpurposes(new Callback<MaterialModel>() {
+            @Override
+            public void onResponse(Call<MaterialModel> call, Response<MaterialModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MaterialModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id);
+    }
+
+
+    public void getsubhierarchysmaterial(GetsubhierarchysResponse logresponse, Context context, String id, String indexid) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getsubhierarchysmaterial(new Callback<GetsubhierarchysModel>() {
+            @Override
+            public void onResponse(Call<GetsubhierarchysModel> call, Response<GetsubhierarchysModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetsubhierarchysModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, id, indexid);
+    }
+
+    public void getsearchemployeesmaterial(SearchEmployeesResponse logresponse, Context context, String l_id, String h_id, String type) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.getsearchemployeesmaterial(new Callback<GetSearchEmployeesModel>() {
+            @Override
+            public void onResponse(Call<GetSearchEmployeesModel> call, Response<GetSearchEmployeesModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetSearchEmployeesModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, l_id, h_id, type);
+    }
+
+    //Create Material permit
+    public void actionentrypermitrequest(actionentrypermitrequest_ModelResponse logresponse, Context context, JsonObject jsonObject) {
+        DataManger dataManger = DataManger.getDataManager();
+        dataManger.actionentrypermitrequest(new Callback<MaterialModel>() {
+            @Override
+            public void onResponse(Call<MaterialModel> call, Response<MaterialModel> response) {
+                if (response.isSuccessful()) {
+                    logresponse.onResponse(response.body());
+
+                } else {
+                    logresponse.onFailure(new Throwable(response.message()));
+                }
+            }
+            @Override
+            public void onFailure(Call<MaterialModel> call, Throwable t) {
+                logresponse.onFailure(new Throwable(t));
+            }
+        }, context, jsonObject);
+    }
+
+
     public interface VisitorActionResponse {
         void onResponse(VisitorActionModel visitorActionModel);
 
@@ -924,6 +1045,19 @@ public class ApiRepository {
 
         void onFailure(Throwable t);
     }
+
+    public interface getMaterialModel_ModelResponse {
+        void onResponse(MaterialModel materialModel);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface actionentrypermitrequest_ModelResponse {
+        void onResponse(MaterialModel entryPermitModel);
+
+        void onFailure(Throwable t);
+    }
+
 
 
 }
