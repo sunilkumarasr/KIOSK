@@ -3,6 +3,8 @@ package com.provizit.kioskcheckin.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +17,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
+
+import com.provizit.kioskcheckin.config.ViewController;
 import com.provizit.kioskcheckin.logins.AdminLoginActivity;
 import com.provizit.kioskcheckin.logins.OTPPermitActivity;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.api.DataManger;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
+import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 
 import java.util.Locale;
 
@@ -127,7 +132,7 @@ public class SplashActivity extends AppCompatActivity {
             if (Login_Status.equalsIgnoreCase("")) {
                 startActivity( new Intent( getApplicationContext(), AdminLoginActivity.class ) );
             } else {
-                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
+//                startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
 
 //                Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
 //                intent.putExtra("model_key", "model");
@@ -140,6 +145,7 @@ public class SplashActivity extends AppCompatActivity {
 //                intent.putExtra("permitType", "workpermit");
 //                intent.putExtra("ndaStatus", "true");
 //                startActivity(intent);
+
             }
         }, 3000);
     }

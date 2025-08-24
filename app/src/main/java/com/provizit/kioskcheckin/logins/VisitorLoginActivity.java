@@ -1810,7 +1810,6 @@ public class VisitorLoginActivity extends AppCompatActivity implements View.OnCl
                                         Intent intent = new Intent(getApplicationContext(), OTPActivity.class);
                                         intent.putExtra("model_key", model);
                                         startActivity(intent);
-                                        ;
                                     }
                                 }
                             } catch (Exception e) {

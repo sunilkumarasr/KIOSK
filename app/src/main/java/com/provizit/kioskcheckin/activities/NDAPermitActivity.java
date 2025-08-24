@@ -235,7 +235,6 @@ public class NDAPermitActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btnAccept:
                 if (checkBox.isChecked()) {
-
                     if (permitType.equalsIgnoreCase("workpermit")) {
                         Intent intent = new Intent(getApplicationContext(), WorkPermitActivity.class);
                         intent.putExtra("_id", comp_id);
@@ -253,7 +252,6 @@ public class NDAPermitActivity extends AppCompatActivity implements View.OnClick
                         intent.putExtra("ndaStatus", ndaStatus);
                         startActivity(intent);
                     }
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Please Accept the terms and conditions", Toast.LENGTH_SHORT).show();
                 }

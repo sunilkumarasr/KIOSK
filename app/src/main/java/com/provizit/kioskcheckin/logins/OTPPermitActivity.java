@@ -357,7 +357,6 @@ public class OTPPermitActivity extends AppCompatActivity implements View.OnClick
                             }
 
                         }
-
                     } else {
                         no1.setText("");
                         no2.setText("");

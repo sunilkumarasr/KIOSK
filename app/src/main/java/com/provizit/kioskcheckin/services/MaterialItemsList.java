@@ -15,7 +15,7 @@ public class MaterialItemsList implements Serializable {
     private String supertype;
 
     @SerializedName("return")
-    private String returnType;
+    private boolean returnType;
 
     public CommonObject get_id() {
         return _id;
@@ -66,11 +66,11 @@ public class MaterialItemsList implements Serializable {
         this.supertype = supertype;
     }
 
-    public String getReturnType() {
+    public boolean getReturnType() {
         return returnType;
     }
 
-    public void setReturnType(String returnType) {
+    public void setReturnType(boolean returnType) {
         this.returnType = returnType;
     }
 }

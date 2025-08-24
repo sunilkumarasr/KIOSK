@@ -34,6 +34,13 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="SupplierName"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/EditSupplierName"
             style="@style/medium_font"
@@ -43,6 +50,13 @@
             android:inputType="text"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Email *"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/EditEmail"
             style="@style/medium_font"
@@ -52,6 +66,13 @@
             android:inputType="textEmailAddress"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Name *"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/EditName"
             style="@style/medium_font"
@@ -61,6 +82,13 @@
             android:inputType="text"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Mobile Number *"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,6 +115,13 @@
                 android:textColorHint="#707070"
                 android:textSize="@dimen/_12sdp" />
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="ID Number"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/EditIDNumber"
             style="@style/medium_font"
@@ -95,6 +130,13 @@
             android:hint="@string/IDNumber"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Nationality *"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <Spinner
             android:id="@+id/spinnerNationality"
             android:layout_width="match_parent"
@@ -106,6 +148,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Vehicle Number"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/EditVehicleNumber"
             style="@style/medium_font"
@@ -114,6 +163,13 @@
             android:hint="@string/VehicleNumberM"
             android:textColorHint="#707070"
             android:textSize="@dimen/_12sdp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Vehicle Type"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/EditVehicleType"
             style="@style/medium_font"

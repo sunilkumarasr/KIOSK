@@ -422,6 +422,7 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
             case R.id.proceed:
                 AnimationSet animation1 = Conversions.animation();
                 view.startAnimation(animation1);
+
                 JSONObject jsonObj_ = new JSONObject();
                 ArrayList<VisitorFormDetailsOtherArray> others = new ArrayList<>();
                 VisitorFormDetailsOtherArray other1 = new VisitorFormDetailsOtherArray();
@@ -567,8 +568,10 @@ public class MeetingRequestDetailsActivity2 extends AppCompatActivity implements
                 }
                 break;
             case R.id.back_image:
+
                 animation1 = Conversions.animation();
                 view.startAnimation(animation1);
+
                 String emp_id = Preferences.loadStringValue(getApplicationContext(), Preferences.email_id, "");
                 String location_id = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
                 String val_email =  model.getIncomplete_data().getEmail();

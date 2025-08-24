@@ -3,6 +3,7 @@ package com.provizit.kioskcheckin.activities;
 import static android.view.View.GONE;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -137,6 +139,8 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
     ApiViewModel apiViewModel;
 
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,6 +200,12 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         } else {
             Glide.with(WorkPermitFormActivity.this).load(c_Logo).into(company_logo);
         }
+
+        progress = new ProgressDialog(this);
+        progress.setTitle(getResources().getString(R.string.Loading));
+        progress.setMessage(getResources().getString(R.string.whileloading));
+        progress.setCancelable(true);
+        progress.setCanceledOnTouchOutside(true);
 
         //internet connection
         relative_internet = findViewById(R.id.relative_internet);
@@ -283,6 +293,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
         //submit workPermit form
         apiViewModel.actionworkpermita_response().observe(this, model -> {
+            progress.dismiss();
             if (model.getResult().equals(200)){
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
@@ -365,6 +376,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                 } else {
                     JsonObject json = createWorkPermitSubmit();
                     apiViewModel.actionworkpermita(getApplicationContext(), json);
+                    progress.show();
 
                 }
                 break;
@@ -921,6 +933,8 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
                 if (email.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Enter Email", Toast.LENGTH_SHORT).show();
+                }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(getApplicationContext(), "Enter a valid email address", Toast.LENGTH_SHORT).show();
                 } else if (workPermitMobile.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Enter Mobile Number", Toast.LENGTH_SHORT).show();
                 } else if (companyName.equalsIgnoreCase("")) {
@@ -1116,6 +1130,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
         setDataForSubContractor(spinnerWorkPermitSubSelectID, spinnerMaterialNationality);
 
+
         btnAddMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1131,6 +1146,8 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
                 if (email.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Enter Email", Toast.LENGTH_SHORT).show();
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(getApplicationContext(), "Enter a valid email address", Toast.LENGTH_SHORT).show();
                 } else if (MaterialPermitMobile.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Enter Mobile Number", Toast.LENGTH_SHORT).show();
                 } else if (companyName.equalsIgnoreCase("")) {
@@ -1194,6 +1211,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
 
         imgClose.setOnClickListener(v -> dialog.dismiss());
+
     }
 
     private void setDataForSubContractor(Spinner spinnerWorkPermitSubSelectID, Spinner spinnerMaterialNationality) {

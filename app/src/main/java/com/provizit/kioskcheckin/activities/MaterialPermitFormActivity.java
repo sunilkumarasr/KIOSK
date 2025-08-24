@@ -3,6 +3,7 @@ package com.provizit.kioskcheckin.activities;
 import static android.view.View.GONE;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -117,7 +119,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
     Spinner spinnerPurpose;
     String PurposeItem;
     String PurposeId;
-    String PurposeReturn;
+    boolean PurposeReturn;
 
     //Pertains
     Spinner spinnerPertains;
@@ -127,7 +129,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
     //Employee
     Spinner spinnerEmployee;
     String EmployeeItem;
-    String EmployeeId;
+    String EmployeeId = "";
 
     Spinner spinnerLocation;
     String locationItem;
@@ -141,6 +143,8 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
 
     Button btnNext;
     ApiViewModel apiViewModel;
+
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +199,12 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         } else {
             Glide.with(MaterialPermitFormActivity.this).load(c_Logo).into(company_logo);
         }
+
+        progress = new ProgressDialog(this);
+        progress.setTitle(getResources().getString(R.string.Loading));
+        progress.setMessage(getResources().getString(R.string.whileloading));
+        progress.setCancelable(true);
+        progress.setCanceledOnTouchOutside(true);
 
         //internet connection
         relative_internet = findViewById(R.id.relative_internet);
@@ -264,6 +274,18 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         SpinnersListApis();
 
 
+        //submit Material Permit form
+        apiViewModel.actionentrypermitrequest_response().observe(this, model -> {
+            progress.dismiss();
+            if (model.getResult().equals(200)){
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                startActivity(intent);
+            }else {
+                Toast.makeText(getApplicationContext(), "Failed Please Try Again", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         back_image.setOnClickListener(this);
         linearSupplierDetails.setOnClickListener(this);
         btnAddMoreSupplierDetails.setOnClickListener(this);
@@ -323,15 +345,13 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                     Toast.makeText(getApplicationContext(), "Please Select Location", Toast.LENGTH_SHORT).show();
                 }else if (PertainsItem.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Please Select Pertains", Toast.LENGTH_SHORT).show();
-                }else if (EmployeeItem.equalsIgnoreCase("")) {
-                    Toast.makeText(getApplicationContext(), "Please Select Employee", Toast.LENGTH_SHORT).show();
                 }else if (materialDetailsList.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Add Material Details", Toast.LENGTH_SHORT).show();
                 }else {
 
                     JsonObject json = createMaterialPermitSubmit();
                     apiViewModel.actionentrypermitrequest(getApplicationContext(), json);
-
+                    progress.show();
                 }
 
                 break;
@@ -371,8 +391,6 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
             e.printStackTrace();
         }
 
-        String empId = Preferences.loadStringValue(getApplicationContext(), Preferences.email_id, "");
-        String locationId = Preferences.loadStringValue(getApplicationContext(), Preferences.location_id, "");
 
         try {
             jsonObj_.put("formtype", "insert");
@@ -382,14 +400,22 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
 
             if (EntryType.equalsIgnoreCase("1")){
                 jsonObj_.put("ref_document", RefDocItem);
+            }else {
+                jsonObj_.put("ref_document", "");
             }
 
             jsonObj_.put("purpose", PurposeItem);
             jsonObj_.put("purpose_id", PurposeId);
             jsonObj_.put("purpose_return", PurposeReturn);
             jsonObj_.put("l_id", locationIndexPosition);
+
+            if (EmployeeId != null && !EmployeeId.isEmpty()) {
+                jsonObj_.put("employee", EmployeeId);
+            }else {
+                jsonObj_.put("employee", "");
+            }
+
             jsonObj_.put("department", DepartmentId);
-            jsonObj_.put("employee", EmployeeId);
             jsonObj_.put("material_details", materialDetailsData);
             jsonObj_.put("supplier_name", supplierDetailsList.get(0).contact_person);
             jsonObj_.put("supplier_details", supplierDetailsData);
@@ -401,9 +427,9 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
             jsonObj_.put("nationality", "");
             jsonObj_.put("plate_no", "");
             jsonObj_.put("vehicle_type", "");
-            jsonObj_.put("emp_id", empId);
+            jsonObj_.put("emp_id", model.getIncomplete_data().get_id().get$oid());
             jsonObj_.put("comp_id", compId);
-            jsonObj_.put("location", locationId);
+            jsonObj_.put("location", "");
             JsonParser jsonParser = new JsonParser();
             gsonObject = (JsonObject) jsonParser.parse(jsonObj_.toString());
             System.out.println("createjsongsonObject::" + gsonObject);
@@ -452,36 +478,41 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                 String name = EditSupplierName.getText().toString();
                 String email = EditEmail.getText().toString();
                 String companyName = EditName.getText().toString();
-                String mobile = EditMobile.getText().toString();
                 String idNumber = EditIDNumber.getText().toString();
                 String nationality = Nationality;
                 String vehicleNumber = EditVehicleNumber.getText().toString();
                 String vehicleType = EditVehicleType.getText().toString();
                 String mobileWithCountryCode = CCP.getSelectedCountryCode() + EditMobile.getText().toString();
 
+
                 if (name.equalsIgnoreCase("")){
                     Toast.makeText(getApplicationContext(), "Enter SupplierName", Toast.LENGTH_SHORT).show();
-                }else if (email.equalsIgnoreCase("")){
+                } else if (email.equalsIgnoreCase("")){
                     Toast.makeText(getApplicationContext(), "Enter email", Toast.LENGTH_SHORT).show();
-                }else if (companyName.equalsIgnoreCase("")){
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(getApplicationContext(), "Enter a valid email address", Toast.LENGTH_SHORT).show();
+                } else if (companyName.equalsIgnoreCase("")){
                     Toast.makeText(getApplicationContext(), "Enter name", Toast.LENGTH_SHORT).show();
-                }else if (mobile.equalsIgnoreCase("")){
-                    Toast.makeText(getApplicationContext(), "Enter mobile Number", Toast.LENGTH_SHORT).show();
-                }else if (idNumber.equalsIgnoreCase("")){
-                    Toast.makeText(getApplicationContext(), "Enter id Number", Toast.LENGTH_SHORT).show();
                 }else if (nationality.equalsIgnoreCase("")){
                     Toast.makeText(getApplicationContext(), "Select Nationality", Toast.LENGTH_SHORT).show();
-                }else if (vehicleNumber.equalsIgnoreCase("")){
-                    Toast.makeText(getApplicationContext(), "Enter vehicle Number", Toast.LENGTH_SHORT).show();
-                }else if (vehicleType.equalsIgnoreCase("")){
-                    Toast.makeText(getApplicationContext(), "Enter vehicle Type", Toast.LENGTH_SHORT).show();
                 }else {
+
                     String number = EditMobile.getText().toString();
                     String internationalNumber = CCP.getSelectedCountryCodeWithPlus() + EditMobile.getText().toString();
                     String nationalNumber = "0"+EditMobile.getText().toString();
                     String e164Number = CCP.getSelectedCountryCodeWithPlus() + EditMobile.getText().toString().trim();
                     String countryCode = CCP.getSelectedCountryNameCode();
                     String dialCode = CCP.getSelectedCountryCodeWithPlus();
+
+
+                    if (number.equalsIgnoreCase("") || number == null){
+                        number = "";
+                        internationalNumber = "";
+                        nationalNumber = "";
+                        e164Number = "";
+                        countryCode = "";
+                        dialCode = "";
+                    }
 
                     // Build MobileData object
                     SupplierMobile mobileData = new SupplierMobile(
@@ -492,6 +523,17 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                             countryCode,
                             dialCode
                     );
+
+                    if (idNumber.equalsIgnoreCase("") || idNumber == null){
+                        idNumber = "";
+                    }
+                    if (vehicleNumber.equalsIgnoreCase("") || vehicleNumber == null){
+                        vehicleNumber = "";
+                    }
+                    if (vehicleType.equalsIgnoreCase("") || vehicleType == null){
+                        vehicleType = "";
+                    }
+
 
                     // Create SubContractor object
                     SupplierDetails supplierDetails = new SupplierDetails(
@@ -504,6 +546,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                             vehicleType,
                             false
                     );
+
 
                     //list
                     supplierDetailsList.add(supplierDetails);
@@ -795,6 +838,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         apiViewModel.getsubhierarchysmaterial_response().observe(this, dModel -> {
             ArrayList<Getsubhierarchys> documentsList = dModel.getItems();
             ArrayList<String> PertainsList = new ArrayList<>();
+            PertainsList.clear();
 
             // Prepare list for spinner
             for (Getsubhierarchys doc : documentsList) {
@@ -814,7 +858,8 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                     PertainsItem = parent.getItemAtPosition(position).toString();
 
                     for (Getsubhierarchys item : documentsList) {
-                        if (item.getName().equals(PertainsItem)) {
+                        String dd = item.getName()+"("+item.getHierarchy()+")";
+                        if (dd.equalsIgnoreCase(PertainsItem)) {
                             DepartmentId = item.get_id().get$oid();
                             break;
                         }
@@ -837,7 +882,8 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         apiViewModel.getResponseforSearchEmployees().observe(this, model -> {
             ArrayList<GetSearchEmployees> documentsList = model.getItems();
             ArrayList<String> employeesList = new ArrayList<>();
-
+            employeesList.clear();
+            EmployeeId = "";
             // Prepare list for spinner
             for (GetSearchEmployees doc : documentsList) {
                 employeesList.add(doc.getName());
@@ -854,7 +900,6 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     EmployeeItem = parent.getItemAtPosition(position).toString();
-
                     for (GetSearchEmployees item : documentsList) {
                         if (item.getName().equals(EmployeeItem)) {
                             EmployeeId = item.get_id().get$oid();

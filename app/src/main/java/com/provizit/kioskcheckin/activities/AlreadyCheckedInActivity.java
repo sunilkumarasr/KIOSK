@@ -81,15 +81,12 @@ public class AlreadyCheckedInActivity extends AppCompatActivity implements View.
         companylogo = findViewById(R.id.company_logo);
         btncancel = findViewById(R.id.btn_cancel);
 
-        Runnable checkInTimeoutRunnable = () -> {
-            // Your code here
-            Intent intents = new Intent(getApplicationContext(), VisitorLoginActivity.class);
-            startActivity(intents);
-        };
-        handler.postDelayed(checkInTimeoutRunnable, 10000);
-
-
-
+//        Runnable checkInTimeoutRunnable = () -> {
+//            // Your code here
+//            Intent intents = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+//            startActivity(intents);
+//        };
+//        handler.postDelayed(checkInTimeoutRunnable, 30000);
 
         //internet connection
         relativeinternet = findViewById(R.id.relative_internet);
@@ -270,11 +267,23 @@ public class AlreadyCheckedInActivity extends AppCompatActivity implements View.
                 // Observe API response
                 apiViewModel.getResponseforactioncheckinout().observe(AlreadyCheckedInActivity.this, responseModel -> {
                     if (responseModel != null) {
+
                         // Handle successful response
                         Log.d(TAG_CONFIRMATION_POPUP, "Check-in/Check-out action response received: " + responseModel);
+
+                        // Start VisitorLoginActivity after API call
+                        Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                        startActivity(intent);
+
                     } else {
+
                         // Log no action required
                         Log.d(TAG_CONFIRMATION_POPUP, "No action required for the response.");
+
+                        // Start VisitorLoginActivity after API call
+                        Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                        startActivity(intent);
+
                     }
                 });
 
@@ -282,14 +291,23 @@ public class AlreadyCheckedInActivity extends AppCompatActivity implements View.
                 // Handle the JSONException appropriately
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG_CONFIRMATION_POPUP, "JSON Exception: " + ex.getMessage(),ex);  // Debugging
+
+                    // Start VisitorLoginActivity after API call
+                    Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                    startActivity(intent);
+
                 } else {
                     Log.e(TAG_CONFIRMATION_POPUP, "Error occurred while creating JSON object.", ex);  // Production log
+
+                    // Start VisitorLoginActivity after API call
+                    Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+                    startActivity(intent);
                 }
             }
 
-            // Start VisitorLoginActivity after API call
-            Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
-            startActivity(intent);
+//            // Start VisitorLoginActivity after API call
+//            Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
+//            startActivity(intent);
 
             // Clean up callbacks and dismiss the dialog
             handler.removeCallbacksAndMessages(null);
