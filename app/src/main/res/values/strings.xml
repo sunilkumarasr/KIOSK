@@ -270,7 +270,6 @@
     <string name="MeetingExit">Meeting Exit</string>
     <string name="AreYouSureMeetingExit">Are you sure you want to Exit this MeetingSetUp?</string>
 
-
 <!--    Access denied-->
     <string name="number_email_belongs">This number/email belongs to an employee of this organization</string>
 

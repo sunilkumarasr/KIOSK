@@ -76,7 +76,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_38sdp"
             android:hint="@string/CompanyNameM"
-            android:inputType="textEmailAddress"
             android:textColorHint="@color/colorSecondary"
             android:textSize="@dimen/_12sdp" />
         <androidx.appcompat.widget.AppCompatEditText

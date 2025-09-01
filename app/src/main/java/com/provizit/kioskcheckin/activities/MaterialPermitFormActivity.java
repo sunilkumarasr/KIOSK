@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationSet;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -48,6 +50,7 @@ import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.services.Contractor;
+import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.LocationAddressList;
 import com.provizit.kioskcheckin.services.MaterialDetailsSet;
@@ -80,7 +83,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
     RelativeLayout relative_internet;
     RelativeLayout relative_ui;
     ImageView company_logo;
-    ImageView back_image;
+    ImageView back_image, ChangeMeeting;
     LinearLayout linearSupplierDetails;
 
     RadioGroup radioGroup ;
@@ -121,16 +124,22 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
     String PurposeId;
     boolean PurposeReturn;
 
+    ArrayList<Getsubhierarchys> subhierarchysmaterial = new ArrayList<>();
+
+
     //Pertains
     Spinner spinnerPertains;
     String PertainsItem;
     String DepartmentId;
 
     //Employee
+    ArrayList<GetSearchEmployees> searchemployeesmaterial = new ArrayList<>();
     Spinner spinnerEmployee;
     String EmployeeItem;
     String EmployeeId = "";
 
+    //location
+    ArrayList<LocationAddressList> LocationList = new ArrayList<>();
     Spinner spinnerLocation;
     String locationItem;
     String locationIndexPosition;
@@ -184,6 +193,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         txtMaterial = findViewById(R.id.txtMaterial);
         btnNext = findViewById(R.id.btnNext);
         back_image = findViewById(R.id.back_image);
+        ChangeMeeting = findViewById(R.id.ChangeMeeting);
         // Check if the layout direction is right-to-left
         if (isRightToLeft()) {
             // If layout direction is right-to-left, mirror the image
@@ -287,6 +297,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         });
 
         back_image.setOnClickListener(this);
+        ChangeMeeting.setOnClickListener(this);
         linearSupplierDetails.setOnClickListener(this);
         btnAddMoreSupplierDetails.setOnClickListener(this);
         txtFromDate.setOnClickListener(this);
@@ -303,6 +314,9 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
             case R.id.back_image:
                 Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.ChangeMeeting:
+                MeetingTypeDailougeBottomPopUp();
                 break;
             case R.id.linearSupplierDetails:
                 SupplierDetailsPopUp();
@@ -783,11 +797,14 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
         //Location
         apiViewModel.getuserDetails(getApplicationContext(), "address");
         apiViewModel.getuserDetails_response().observe(this, dModel -> {
-            ArrayList<LocationAddressList> documentsList = dModel.getItems().getAddress();
+            LocationList = new ArrayList<>();
+            LocationList.clear();
+            LocationList = dModel.getItems().getAddress();
             ArrayList<String> visitTypeList = new ArrayList<>();
+            visitTypeList.clear();
 
             // Prepare list for spinner
-            for (LocationAddressList doc : documentsList) {
+            for (LocationAddressList doc : LocationList) {
                 visitTypeList.add(doc.getName());
             }
 
@@ -836,12 +853,14 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
 
         apiViewModel.getsubhierarchysmaterial(getApplicationContext(), compId, position);
         apiViewModel.getsubhierarchysmaterial_response().observe(this, dModel -> {
-            ArrayList<Getsubhierarchys> documentsList = dModel.getItems();
+            subhierarchysmaterial = new ArrayList<>();
+            subhierarchysmaterial.clear();
+            subhierarchysmaterial = dModel.getItems();
             ArrayList<String> PertainsList = new ArrayList<>();
             PertainsList.clear();
 
             // Prepare list for spinner
-            for (Getsubhierarchys doc : documentsList) {
+            for (Getsubhierarchys doc : subhierarchysmaterial) {
                 PertainsList.add(doc.getName()+"("+doc.getHierarchy()+")");
             }
 
@@ -857,7 +876,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     PertainsItem = parent.getItemAtPosition(position).toString();
 
-                    for (Getsubhierarchys item : documentsList) {
+                    for (Getsubhierarchys item : subhierarchysmaterial) {
                         String dd = item.getName()+"("+item.getHierarchy()+")";
                         if (dd.equalsIgnoreCase(PertainsItem)) {
                             DepartmentId = item.get_id().get$oid();
@@ -865,7 +884,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                         }
                     }
                     //employeesList
-                    employeesList(position+"",DepartmentId);
+                    employeesList(locationIndexPosition+"",DepartmentId);
 
                 }
 
@@ -880,12 +899,14 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
     private void employeesList(String position, String departmentId) {
         apiViewModel.getsearchemployeesmaterial(getApplicationContext(), position, departmentId, "");
         apiViewModel.getResponseforSearchEmployees().observe(this, model -> {
-            ArrayList<GetSearchEmployees> documentsList = model.getItems();
+            searchemployeesmaterial = new ArrayList<>();
+            searchemployeesmaterial.clear();
+            searchemployeesmaterial = model.getItems();
             ArrayList<String> employeesList = new ArrayList<>();
             employeesList.clear();
             EmployeeId = "";
             // Prepare list for spinner
-            for (GetSearchEmployees doc : documentsList) {
+            for (GetSearchEmployees doc : searchemployeesmaterial) {
                 employeesList.add(doc.getName());
             }
 
@@ -900,7 +921,7 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     EmployeeItem = parent.getItemAtPosition(position).toString();
-                    for (GetSearchEmployees item : documentsList) {
+                    for (GetSearchEmployees item : searchemployeesmaterial) {
                         if (item.getName().equals(EmployeeItem)) {
                             EmployeeId = item.get_id().get$oid();
                             break;
@@ -1019,6 +1040,54 @@ public class MaterialPermitFormActivity extends AppCompatActivity implements Vie
     protected void registoreNetWorkBroadcast() {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    //change meeting popup
+    private void MeetingTypeDailougeBottomPopUp() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+        View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
+        bottomSheetDialog.setContentView(sheetView);
+
+        ImageView imgClose = sheetView.findViewById(R.id.imgClose);
+        LinearLayout linearNewMeeting = sheetView.findViewById(R.id.linearNewMeeting);
+        LinearLayout linearNewWorkingPermit = sheetView.findViewById(R.id.linearNewWorkingPermit);
+        LinearLayout linearNewMaterialPermit = sheetView.findViewById(R.id.linearNewMaterialPermit);
+        linearNewMaterialPermit.setVisibility(GONE);
+
+        imgClose.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMeeting.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), VisitorFormCreateActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewWorkingPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMaterialPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), MaterialPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 
     @Override

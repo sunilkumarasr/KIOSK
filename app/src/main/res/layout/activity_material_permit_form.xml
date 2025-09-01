@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/txtVersion">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,18 @@
                 android:autoMirrored="true"
                 android:src="@drawable/backimg" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/ChangeMeeting"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="25dp"
+                android:autoMirrored="true"
+                android:src="@drawable/change_ic" />
+
+        </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/company_logo"

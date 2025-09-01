@@ -3,7 +3,6 @@ package com.provizit.kioskcheckin.utilities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 public class GetSearchEmployees implements Serializable {
     private OidModel _id;
     private MobileDataAddress mobiledata;

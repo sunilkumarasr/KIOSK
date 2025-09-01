@@ -46,8 +46,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.provizit.kioskcheckin.activities.MaterialPermitFormActivity;
+import com.provizit.kioskcheckin.activities.VisitorFormCreateActivity;
+import com.provizit.kioskcheckin.activities.WorkPermitFormActivity;
 import com.provizit.kioskcheckin.activities.YourRequestSentActivity;
 import com.provizit.kioskcheckin.adapters.CustomAdapter;
 import com.provizit.kioskcheckin.adapters.DepartmentsAdapter;
@@ -88,7 +92,7 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
     BroadcastReceiver broadcastReceiver;
     RelativeLayout relative_internet;
     RelativeLayout relative_ui;
-    ImageView company_logo, back_image;
+    ImageView company_logo, back_image, ChangeMeeting;
     TextView txtVersion;
     CircleImageView host_img;
     LinearLayout or_model, host_details;
@@ -172,6 +176,7 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
         btn_next = findViewById(R.id.btn_next);
         btn_next.setTypeface(ResourcesCompat.getFont(this, R.font.arbfonts_dinnextttlrabic_medium));
         back_image = findViewById(R.id.back_image);
+        ChangeMeeting = findViewById(R.id.ChangeMeeting);
         auto_search = findViewById(R.id.auto_search);
         departments = new ArrayList<Getsubhierarchys>();
         purposes = new ArrayList<Getpurposes>();
@@ -546,6 +551,7 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
         btn_No.setOnClickListener(this);
 //        search_btn.setOnClickListener(this);
         back_image.setOnClickListener(this);
+        ChangeMeeting.setOnClickListener(this);
     }
 
     //disable auto click action after scann
@@ -604,6 +610,8 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
     private void disableTriggeredItems() {
         back_image.setFocusable(false);
         back_image.setFocusableInTouchMode(false);
+        ChangeMeeting.setFocusable(false);
+        ChangeMeeting.setFocusableInTouchMode(false);
         btn_next.setFocusable(false);
         btn_next.setFocusableInTouchMode(false);
         btn_Yes.setFocusable(false);
@@ -634,6 +642,8 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
 
             back_image.setFocusable(true);
             back_image.setFocusableInTouchMode(true);
+            ChangeMeeting.setFocusable(true);
+            ChangeMeeting.setFocusableInTouchMode(true);
             btn_next.setFocusable(true);
             btn_next.setFocusableInTouchMode(true);
             btn_Yes.setFocusable(true);
@@ -759,6 +769,9 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
                     DataManger.internetpopup(MeetingRequestFormActivity.this);
                 }
 //                btnYesPressed = false;
+                break;
+            case R.id.ChangeMeeting:
+                MeetingTypeDailougeBottomPopUp();
                 break;
             case R.id.back_image:
                 animation1 = Conversions.animation();
@@ -1149,4 +1162,56 @@ public class MeetingRequestFormActivity extends AppCompatActivity implements Vie
             return null;
         }
     }
+
+
+    //change meeting popup
+    private void MeetingTypeDailougeBottomPopUp() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+        View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
+        bottomSheetDialog.setContentView(sheetView);
+
+        ImageView imgClose = sheetView.findViewById(R.id.imgClose);
+        LinearLayout linearNewMeeting = sheetView.findViewById(R.id.linearNewMeeting);
+        LinearLayout linearNewWorkingPermit = sheetView.findViewById(R.id.linearNewWorkingPermit);
+        LinearLayout linearNewMaterialPermit = sheetView.findViewById(R.id.linearNewMaterialPermit);
+        linearNewMeeting.setVisibility(GONE);
+
+        imgClose.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMeeting.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), VisitorFormCreateActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewWorkingPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMaterialPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), MaterialPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
+    }
+
+
+
 }

@@ -793,6 +793,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
     private void MeetingTypeDailougeBottomPopUp() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+
+        // Disable outside touch and back button cancel
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
+        bottomSheetDialog.setCancelable(false);
+
         View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
         bottomSheetDialog.setContentView(sheetView);
 
@@ -810,7 +815,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         linearNewMeeting.setOnClickListener(v -> {
             AnimationSet animation = Conversions.animation();
             v.startAnimation(animation);
-            Intent intent = new Intent(getApplicationContext(), VisitorFormCreateActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
             intent.putExtra("model_key", model);
             startActivity(intent);
             bottomSheetDialog.dismiss();

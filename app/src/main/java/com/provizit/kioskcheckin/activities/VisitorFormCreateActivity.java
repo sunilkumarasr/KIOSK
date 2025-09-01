@@ -1420,6 +1420,11 @@ public class VisitorFormCreateActivity extends AppCompatActivity implements View
 
     private void MeetingTypeDailougeBottomPopUp() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+
+        // Disable outside touch and back button cancel
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
+        bottomSheetDialog.setCancelable(false);
+
         View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
         bottomSheetDialog.setContentView(sheetView);
 

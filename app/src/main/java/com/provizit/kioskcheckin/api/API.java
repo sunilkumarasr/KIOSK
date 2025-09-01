@@ -173,6 +173,5 @@ public interface API {
     @POST("entry/actionentrypermitrequest")
     Call<MaterialModel> actionentrypermitrequest(@Header("Authorization") String Bearer, @Header("DeviceId") String header, @Body JsonObject jsonBody);
 
-
 }
 

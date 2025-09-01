@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationSet;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -48,6 +50,7 @@ import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.logins.VisitorLoginActivity;
 import com.provizit.kioskcheckin.mvvm.ApiViewModel;
 import com.provizit.kioskcheckin.services.Contractor;
+import com.provizit.kioskcheckin.services.Conversions;
 import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.LocationAddressList;
 import com.provizit.kioskcheckin.services.MobileData;
@@ -78,7 +81,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
     RelativeLayout relative_internet;
     RelativeLayout relative_ui;
     ImageView company_logo;
-    ImageView back_image;
+    ImageView back_image, ChangeMeeting;
     Button btnAddMoreContractors, btnAddMoreSubContractors;
     LinearLayout linearContractor, linearSubContractor;
 
@@ -162,6 +165,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
     private void inits() {
         back_image = findViewById(R.id.back_image);
+        ChangeMeeting = findViewById(R.id.ChangeMeeting);
         linearC = findViewById(R.id.linearC);
         imgContractorInfo = findViewById(R.id.imgContractorInfo);
         linearContractor = findViewById(R.id.linearContractor);
@@ -261,14 +265,12 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                 if (isChecked) {
                     checkBoxWorkingHR.setChecked(false);
                     linearTime.setVisibility(GONE);
-                    Toast.makeText(getApplicationContext(), "Checked", Toast.LENGTH_SHORT).show();
                 } else {
                     if (checkBoxWorkingHR.isChecked()) {
                         linearTime.setVisibility(GONE);
                     } else {
                         linearTime.setVisibility(View.VISIBLE);
                     }
-                    Toast.makeText(getApplicationContext(), "Unchecked", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -278,14 +280,12 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                 if (isChecked) {
                     checkBox24HR.setChecked(false);
                     linearTime.setVisibility(GONE);
-                    Toast.makeText(getApplicationContext(), "Checked", Toast.LENGTH_SHORT).show();
                 } else {
                     if (checkBox24HR.isChecked()) {
                         linearTime.setVisibility(GONE);
                     } else {
                         linearTime.setVisibility(View.VISIBLE);
                     }
-                    Toast.makeText(getApplicationContext(), "Unchecked", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -305,6 +305,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
 
         back_image.setOnClickListener(this);
+        ChangeMeeting.setOnClickListener(this);
         linearContractor.setOnClickListener(this);
         btnAddMoreContractors.setOnClickListener(this);
         linearSubContractor.setOnClickListener(this);
@@ -322,6 +323,9 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
             case R.id.back_image:
                 Intent intent = new Intent(getApplicationContext(), VisitorLoginActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.ChangeMeeting:
+                MeetingTypeDailougeBottomPopUp();
                 break;
             case R.id.linearContractor:
                 AddContractorPopUp();
@@ -1053,7 +1057,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                     String selectedDocId = selectedDoc.get_id().get$oid();
                     ContractorSelectId = selectedDoc.getName();
 
-                    // Update nationality spinner
+                    //Update nationality spinner
                     nationalityNames.clear();
                     for (Getnationality nationality : selectedDoc.getNationlities()) {
                         if (nationality.getActive()) {
@@ -1087,7 +1091,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         }
     }
 
-    //    Sub Contractor
+    //Sub Contractor
     private void AddSubContractorPopUp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.add_sub_contractor_popup_layout, null);
@@ -1299,7 +1303,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         }
     }
 
-    // Function to check if the layout direction is right-to-left
+    //Function to check if the layout direction is right-to-left
     private boolean isRightToLeft() {
         return getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     }
@@ -1307,6 +1311,54 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
     protected void registoreNetWorkBroadcast() {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    //change meeting popup
+    private void MeetingTypeDailougeBottomPopUp() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+        View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_meetingtype_selection, null);
+        bottomSheetDialog.setContentView(sheetView);
+
+        ImageView imgClose = sheetView.findViewById(R.id.imgClose);
+        LinearLayout linearNewMeeting = sheetView.findViewById(R.id.linearNewMeeting);
+        LinearLayout linearNewWorkingPermit = sheetView.findViewById(R.id.linearNewWorkingPermit);
+        LinearLayout linearNewMaterialPermit = sheetView.findViewById(R.id.linearNewMaterialPermit);
+        linearNewWorkingPermit.setVisibility(GONE);
+
+        imgClose.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMeeting.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), VisitorFormCreateActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewWorkingPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), WorkPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        linearNewMaterialPermit.setOnClickListener(v -> {
+            AnimationSet animation = Conversions.animation();
+            v.startAnimation(animation);
+            Intent intent = new Intent(getApplicationContext(), MaterialPermitFormActivity.class);
+            intent.putExtra("model_key", model);
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 
     @Override
