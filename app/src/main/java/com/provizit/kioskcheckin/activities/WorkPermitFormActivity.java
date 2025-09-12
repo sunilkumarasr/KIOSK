@@ -40,6 +40,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 import com.provizit.kioskcheckin.R;
 import com.provizit.kioskcheckin.adapters.ContractorAdapter;
@@ -59,9 +60,15 @@ import com.provizit.kioskcheckin.services.WorkVisitTypeList;
 import com.provizit.kioskcheckin.services.WorkingDaysList;
 import com.provizit.kioskcheckin.utilities.Getdocuments;
 import com.provizit.kioskcheckin.utilities.Getnationality;
+import com.provizit.kioskcheckin.utilities.NationalityStaticFile;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1003,7 +1010,6 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
         imgClose.setOnClickListener(v -> dialog.dismiss());
 
     }
-
     private void setDataForContractor(Spinner spinnerSelectID, Spinner spinnerNationality) {
         //api
         apiViewModel.getdocuments(getApplicationContext());
@@ -1065,6 +1071,32 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                         }
                     }
 
+                    if (activeDocuments.get(position).getNationlities().isEmpty()){
+                        if (activeDocuments.get(position).getActive() && activeDocuments.get(position).getCommon()) {
+                            Log.e("nationalityTest", "true");
+                            try {
+                                InputStream is = getResources().openRawResource(R.raw.nationalities);
+                                int size = is.available();
+                                byte[] buffer = new byte[size];
+                                is.read(buffer);
+                                is.close();
+                                String json = new String(buffer, "UTF-8");
+                                // Parse JSON to List<Nationality>
+                                Gson gson = new Gson();
+                                Type listType = new TypeToken<List<NationalityStaticFile>>() {}.getType();
+                                List<NationalityStaticFile> nationalityList = gson.fromJson(json, listType);
+                                // Add to your document
+                                for (NationalityStaticFile national : nationalityList) {
+                                    Log.e("nationality", national.getName());
+                                    nationalityNames.add(national.getName());
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+
                     nationalityAdapter.notifyDataSetChanged();
                 }
 
@@ -1075,7 +1107,6 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
 
         });
     }
-
     private void setRecyclerContractorList() {
         RecyclerView recyclerView = findViewById(R.id.recyclerviewContractor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -1090,6 +1121,7 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
             imgContractorInfo.setVisibility(View.VISIBLE);
         }
     }
+
 
     //Sub Contractor
     private void AddSubContractorPopUp() {
@@ -1277,6 +1309,33 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
                             nationalityNamesList.add(nationality.getName());
                         }
                     }
+
+                    if (activeDocuments.get(position).getNationlities().isEmpty()){
+                        if (activeDocuments.get(position).getActive() && activeDocuments.get(position).getCommon()) {
+                            Log.e("nationalityTest", "true");
+                            try {
+                                InputStream is = getResources().openRawResource(R.raw.nationalities);
+                                int size = is.available();
+                                byte[] buffer = new byte[size];
+                                is.read(buffer);
+                                is.close();
+                                String json = new String(buffer, "UTF-8");
+                                // Parse JSON to List<Nationality>
+                                Gson gson = new Gson();
+                                Type listType = new TypeToken<List<NationalityStaticFile>>() {}.getType();
+                                List<NationalityStaticFile> nationalityList = gson.fromJson(json, listType);
+                                // Add to your document
+                                for (NationalityStaticFile national : nationalityList) {
+                                    Log.e("nationality", national.getName());
+                                    nationalityNamesList.add(national.getName());
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+
                     nationalityAdapter.notifyDataSetChanged();
                 }
 

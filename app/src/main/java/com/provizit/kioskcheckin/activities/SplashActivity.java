@@ -135,9 +135,9 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity( new Intent( getApplicationContext(), VisitorLoginActivity.class ) );
 
 //                Intent intent = new Intent(getApplicationContext(), NDAPermitActivity.class);
-//                intent.putExtra("comp_id", "6810a810068b1114eb361f5d");
+//                intent.putExtra("comp_id", "68c11e4bbf2b92056383fa15");
 //                intent.putExtra("valueType", "email");
-//                intent.putExtra("inputValue", "aj169408@gmail.com");
+//                intent.putExtra("inputValue", "aj16.940.8@gmail.com");
 //                intent.putExtra("permitType", "workpermit");
 //                intent.putExtra("ndaStatus", "true");
 //                startActivity(intent);

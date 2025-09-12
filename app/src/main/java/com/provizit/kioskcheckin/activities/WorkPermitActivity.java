@@ -195,14 +195,14 @@ public class WorkPermitActivity extends AppCompatActivity implements View.OnClic
                                 LinearDetails.setVisibility(View.VISIBLE);
                                 line1.setVisibility(View.VISIBLE);
                                 linearWarning.setVisibility(GONE);
-                            }else {
+                            } else {
                                 System.out.println("Converted 1: " + "6");
                                 LinearDetails.setVisibility(GONE);
                                 line1.setVisibility(GONE);
                                 linearWarning.setVisibility(View.VISIBLE);
                             }
                         }
-                    }else {
+                    } else {
                         System.out.println("Converted 1: " + "2");
                         LinearDetails.setVisibility(GONE);
                         line1.setVisibility(GONE);

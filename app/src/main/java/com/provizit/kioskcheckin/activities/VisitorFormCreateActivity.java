@@ -1221,16 +1221,16 @@ public class VisitorFormCreateActivity extends AppCompatActivity implements View
                             intent1.putExtra("model_key", model);
                             startActivity(intent1);
                         } else {
-//                            Intent intent1 = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
-//                            intent1.putExtra("model_key", model);
-//                            startActivity(intent1);
-                            MeetingTypeDailougeBottomPopUp();
+                            Intent intent1 = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
+                            intent1.putExtra("model_key", model);
+                            startActivity(intent1);
+//                            MeetingTypeDailougeBottomPopUp();
                         }
                     } else {
-//                        Intent intent1 = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
-//                        intent1.putExtra("model_key", model);
-//                        startActivity(intent1);
-                        MeetingTypeDailougeBottomPopUp();
+                        Intent intent1 = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
+                        intent1.putExtra("model_key", model);
+                        startActivity(intent1);
+//                        MeetingTypeDailougeBottomPopUp();
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);

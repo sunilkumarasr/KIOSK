@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingRequestFormActivity;
 import com.provizit.kioskcheckin.activities.Meetings.MeetingDetailsActivity;
@@ -33,9 +31,7 @@ import com.provizit.kioskcheckin.services.GetCVisitorDetailsModel;
 import com.provizit.kioskcheckin.services.VisitorformDetailsModel;
 import com.provizit.kioskcheckin.config.Preferences;
 import com.provizit.kioskcheckin.utilities.Getdocuments;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,7 +45,6 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     GetCVisitorDetailsModel model;
     Button btn_confirm;
     ApiViewModel apiViewModel;
-
 
     VisitorformDetailsModel visiter_model;
     // Define a constant for "model_key"
