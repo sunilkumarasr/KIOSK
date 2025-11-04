@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/back_image"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
@@ -34,7 +34,7 @@
                 android:autoMirrored="true"
                 android:src="@drawable/backimg" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ChangeMeeting"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"

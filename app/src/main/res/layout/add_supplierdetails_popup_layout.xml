@@ -29,169 +29,174 @@
             android:src="@drawable/pic_cancle"/>
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="SupplierName"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditSupplierName"
-            style="@style/medium_font"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            android:hint="@string/SupplierName"
-            android:inputType="text"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Email *"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditEmail"
-            style="@style/medium_font"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            android:hint="@string/enter_email"
-            android:inputType="textEmailAddress"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Name *"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditName"
-            style="@style/medium_font"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            android:hint="@string/Name"
-            android:inputType="text"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Mobile Number *"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/CCP"
-                style="@style/medium_font"
+            android:padding="16dp"
+            android:orientation="vertical">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:ccp_showFlag="true"
-                app:ccp_showNameCode="false"
-                app:ccp_textSize="@dimen/_12sdp" />
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="SupplierName"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/EditMobile"
+                android:id="@+id/EditSupplierName"
                 style="@style/medium_font"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_38sdp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:hint="@string/enter_mobile"
-                android:maxLength="10"
-                android:inputType="number"
+                android:hint="@string/SupplierName"
+                android:inputType="text"
                 android:textColorHint="#707070"
                 android:textSize="@dimen/_12sdp" />
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="ID Number"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditIDNumber"
-            style="@style/medium_font"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            android:hint="@string/IDNumber"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Nationality *"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <Spinner
-            android:id="@+id/spinnerNationality"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            style="@style/medium_font"
-            android:textSize="@dimen/_12sdp" />
-        <!-- Underline -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorSecondary"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Vehicle Number"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditVehicleNumber"
-            style="@style/medium_font"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            android:hint="@string/VehicleNumberM"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Vehicle Type"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_11sdp"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EditVehicleType"
-            style="@style/medium_font"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
-            android:hint="@string/VehicleType"
-            android:textColorHint="#707070"
-            android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Email *"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/EditEmail"
+                style="@style/medium_font"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:hint="@string/enter_email"
+                android:inputType="textEmailAddress"
+                android:textColorHint="#707070"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Name *"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/EditName"
+                style="@style/medium_font"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:hint="@string/Name"
+                android:inputType="text"
+                android:textColorHint="#707070"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Mobile Number *"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/CCP"
+                    style="@style/medium_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    app:ccp_showFlag="true"
+                    app:ccp_showNameCode="false"
+                    app:ccp_textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/EditMobile"
+                    style="@style/medium_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:hint="@string/enter_mobile"
+                    android:maxLength="10"
+                    android:inputType="number"
+                    android:textColorHint="#707070"
+                    android:textSize="@dimen/_12sdp" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="ID Number"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/EditIDNumber"
+                style="@style/medium_font"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:hint="@string/IDNumber"
+                android:textColorHint="#707070"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Nationality *"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <Spinner
+                android:id="@+id/spinnerNationality"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                style="@style/medium_font"
+                android:textSize="@dimen/_12sdp" />
+            <!-- Underline -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSecondary"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Vehicle Number"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/EditVehicleNumber"
+                style="@style/medium_font"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:hint="@string/VehicleNumberM"
+                android:textColorHint="#707070"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Vehicle Type"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/EditVehicleType"
+                style="@style/medium_font"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:hint="@string/VehicleType"
+                android:textColorHint="#707070"
+                android:textSize="@dimen/_12sdp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmit"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/Submit"
-            android:textColor="#fff"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold"
-            app:cornerRadius="5dp"
-            app:strokeColor="#414F6C"
-            app:strokeWidth="1dp" />
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/Submit"
+                android:textColor="#fff"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                app:cornerRadius="5dp"
+                app:strokeColor="#414F6C"
+                app:strokeWidth="1dp" />
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

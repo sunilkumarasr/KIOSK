@@ -173,10 +173,10 @@ public class NDA_FormActivity extends AppCompatActivity implements View.OnClickL
                     intent1.putExtra("model_key", model);
                     startActivity(intent1);
                 }else {
-//                    MeetingTypeDailougeBottomPopUp();
-                    Intent intents = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
-                    intents.putExtra("model_key", model);
-                    startActivity(intents);
+                    MeetingTypeDailougeBottomPopUp();
+//                    Intent intents = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
+//                    intents.putExtra("model_key", model);
+//                    startActivity(intents);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -336,10 +336,10 @@ public class NDA_FormActivity extends AppCompatActivity implements View.OnClickL
                         }
 
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
-                        intent.putExtra("model_key", model);
-                        startActivity(intent);
-//                        MeetingTypeDailougeBottomPopUp();
+//                        Intent intent = new Intent(getApplicationContext(), MeetingRequestFormActivity.class);
+//                        intent.putExtra("model_key", model);
+//                        startActivity(intent);
+                        MeetingTypeDailougeBottomPopUp();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Please Accept the terms and conditions", Toast.LENGTH_SHORT).show();
