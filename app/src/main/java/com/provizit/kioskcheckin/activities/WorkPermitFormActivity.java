@@ -1263,8 +1263,13 @@ public class WorkPermitFormActivity extends AppCompatActivity implements View.On
             // Prepare list for spinner
             for (Getdocuments doc : documentsList) {
                 if (doc.getActive()) {
-                    activeDocuments.add(doc); // keep full object
-                    selectIDNames.add(doc.getName());
+                    if (!doc.getCommon() && !doc.getNationlities().isEmpty()) {
+                        activeDocuments.add(doc); // keep full object
+                        selectIDNames.add(doc.getName());
+                    }else if (doc.getCommon()){
+                        activeDocuments.add(doc); // keep full object
+                        selectIDNames.add(doc.getName());
+                    }
                 }
             }
 
